@@ -1,0 +1,115 @@
+/* Motor Insurance Platform shell — design tokens mirror the Garage Portal (modules/garage). */
+:root {
+  --primary: #0369a1;
+  --primary-light: #0ea5e9;
+  --primary-dark: #075985;
+  --success: #15803d;
+  --bg: #f8fafc;
+  --bg-alt: #f1f5f9;
+  --card: #ffffff;
+  --text: #0f172a;
+  --text-secondary: #475569;
+  --text-muted: #94a3b8;
+  --border: #e2e8f0;
+  --shadow: 0 4px 24px rgba(0,0,0,0.06);
+  --shadow-lg: 0 8px 40px rgba(0,0,0,0.1);
+  --radius: 16px;
+  --radius-sm: 10px;
+  --font: 'Outfit', sans-serif;
+  --mono: 'JetBrains Mono', monospace;
+  --gradient-hero: linear-gradient(135deg, #0c4a6e 0%, #0369a1 40%, #0ea5e9 100%);
+  --live-bg: rgba(21,128,61,0.12);
+  --planned-bg: rgba(148,163,184,0.16);
+  --accent: #0369a1;
+}
+[data-theme="dark"] {
+  --bg: #0f172a;
+  --bg-alt: #1e293b;
+  --card: #1e293b;
+  --text: #f1f5f9;
+  --text-secondary: #94a3b8;
+  --text-muted: #64748b;
+  --border: #334155;
+  --shadow: 0 4px 24px rgba(0,0,0,0.2);
+  --shadow-lg: 0 8px 40px rgba(0,0,0,0.3);
+  --live-bg: rgba(34,197,94,0.16);
+  --planned-bg: rgba(100,116,139,0.2);
+  --accent: #38bdf8;
+  --success: #4ade80;
+}
+
+* { margin:0; padding:0; box-sizing:border-box; }
+body { font-family:var(--font); background:var(--bg); color:var(--text); min-height:100vh; }
+
+/* Top bar */
+.topbar {
+  height:64px; padding:0 32px;
+  display:flex; align-items:center; justify-content:space-between;
+  background:var(--card); border-bottom:1px solid var(--border);
+  position:sticky; top:0; z-index:10;
+}
+.brand { display:flex; align-items:center; gap:12px; }
+.brand-mark {
+  width:36px; height:36px; border-radius:10px; background:var(--gradient-hero);
+  color:#fff; display:flex; align-items:center; justify-content:center; font-weight:800; font-size:16px;
+}
+.brand-name { font-size:17px; font-weight:800; color:var(--accent); letter-spacing:-0.3px; }
+.brand-sub { font-size:11px; color:var(--text-muted); font-family:var(--mono); }
+.topbar-actions { display:flex; align-items:center; gap:8px; }
+.icon-btn {
+  width:40px; height:40px; border-radius:10px; border:1px solid var(--border);
+  background:var(--card); color:var(--text-secondary); cursor:pointer; font-size:17px;
+}
+.icon-btn:hover { background:var(--bg-alt); color:var(--text); }
+
+/* Header band */
+.platform-header { background:var(--gradient-hero); color:#fff; padding:36px 32px 40px; }
+.platform-header-inner { max-width:1200px; margin:0 auto; }
+.platform-eyebrow { font-size:11px; letter-spacing:1.5px; text-transform:uppercase; opacity:0.75; font-weight:600; }
+.platform-title { font-size:28px; font-weight:800; letter-spacing:-0.5px; margin-top:6px; }
+.platform-subtitle { font-size:14px; opacity:0.85; margin-top:6px; }
+.platform-summary {
+  display:inline-block; margin-top:16px; padding:6px 12px; border-radius:999px;
+  background:rgba(255,255,255,0.14); font-size:12px; font-family:var(--mono);
+}
+
+/* Modules */
+.content { max-width:1200px; margin:0 auto; padding:28px 32px 48px; }
+.module-group { margin-bottom:28px; }
+.group-title {
+  font-size:12px; font-weight:700; color:var(--text-muted);
+  text-transform:uppercase; letter-spacing:0.8px; margin-bottom:12px;
+}
+.module-grid { display:grid; grid-template-columns:repeat(auto-fill, minmax(260px, 1fr)); gap:16px; }
+.module-card {
+  display:flex; flex-direction:column; gap:8px;
+  padding:20px; border-radius:var(--radius);
+  background:var(--card); border:1px solid var(--border); box-shadow:var(--shadow);
+  text-decoration:none; color:inherit; min-height:190px;
+  transition:transform 0.15s, box-shadow 0.15s, border-color 0.15s;
+}
+.module-card.live { cursor:pointer; border-color:rgba(3,105,161,0.35); }
+.module-card.live:hover, .module-card.live:focus-visible {
+  transform:translateY(-2px); box-shadow:var(--shadow-lg); border-color:var(--primary); outline:none;
+}
+.module-card.planned { opacity:0.7; cursor:default; }
+.module-top { display:flex; align-items:center; justify-content:space-between; }
+.module-icon {
+  width:44px; height:44px; border-radius:12px; background:var(--bg-alt);
+  display:flex; align-items:center; justify-content:center; font-size:22px;
+}
+.module-status { font-size:10px; font-weight:700; padding:4px 8px; border-radius:999px; font-family:var(--mono); }
+.module-status.is-live { background:var(--live-bg); color:var(--success); }
+.module-status.is-planned { background:var(--planned-bg); color:var(--text-secondary); }
+.module-name { font-size:16px; font-weight:700; margin-top:4px; }
+.module-desc { font-size:13px; color:var(--text-secondary); line-height:1.45; flex:1; }
+.module-cta { font-size:12px; font-weight:600; color:var(--text-muted); }
+.module-card.live .module-cta { color:var(--accent); }
+
+.footer { text-align:center; font-size:11px; color:var(--text-muted); padding:0 16px 32px; font-family:var(--mono); }
+
+@media (max-width: 640px) {
+  .topbar, .platform-header, .content { padding-left:16px; padding-right:16px; }
+  .platform-title { font-size:22px; }
+  .brand-sub { display:none; }
+}

@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Motor Insurance Platform</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="platform/platform.css">
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <div class="brand-mark">V</div>
+      <div>
+        <div class="brand-name">Volaris One</div>
+        <div class="brand-sub">Motor Insurance Platform</div>
+      </div>
+    </div>
+    <div class="topbar-actions">
+      <button class="icon-btn" id="themeToggle" title="Toggle theme" aria-label="Toggle light or dark theme">🌙</button>
+    </div>
+  </header>
+
+  <section class="platform-header">
+    <div class="platform-header-inner">
+      <div class="platform-eyebrow">Motor Insurance Platform</div>
+      <h1 class="platform-title">Select a module</h1>
+      <p class="platform-subtitle">Each module has its own sign-in and workspace.</p>
+      <span class="platform-summary" id="moduleSummary"></span>
+    </div>
+  </section>
+
+  <main class="content" id="moduleGroups"></main>
+
+  <footer class="footer">Volaris One · Motor Insurance Platform</footer>
+
+  <script src="platform/modules.js"></script>
+  <script src="platform/platform.js"></script>
+</body>
+</html>
