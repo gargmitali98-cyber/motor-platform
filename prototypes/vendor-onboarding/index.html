@@ -1,0 +1,1045 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Vendor Onboarding</title>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --font:'Outfit',sans-serif; --mono:'JetBrains Mono',monospace;
+  --vd:#0075BE; --vd2:#0096D6; --vd-grad:linear-gradient(135deg,#0075BE,#0096D6);
+  --vd-soft:rgba(0,150,214,.07); --vd-border:rgba(0,150,214,.2);
+  --bg:#f1f5f9; --glass:rgba(255,255,255,.78); --line:rgba(0,0,0,.07);
+  --text-1:#0f172a; --text-2:#334155; --text-3:#64748b;
+  --ok:#15803d; --warn:#d97706; --bad:#dc2626;
+  --r-sm:8px; --r-md:12px; --r-xl:16px;
+}
+*{box-sizing:border-box}
+body{margin:0;font-family:var(--font);color:var(--text-1);background:radial-gradient(1200px 600px at 85% 10%,rgba(0,150,214,.08),transparent),var(--bg);font-size:14px}
+button,input,select,textarea{font-family:var(--font)}
+.mono{font-family:var(--mono)}
+/* login */
+#login{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,#001426 0%,#002a5c 55%,#003d80 100%);z-index:50}
+.login-card{width:400px;max-width:calc(100% - 32px);background:#fff;border-radius:18px;padding:30px;box-shadow:0 20px 60px rgba(0,0,0,.35)}
+.logo{font-weight:900;font-size:24px;color:#0075BE;letter-spacing:-.5px}
+.logo small{display:block;font-size:9px;letter-spacing:.12em;color:#64748b;font-weight:700}
+/* shell */
+.shell{display:flex;min-height:100vh}
+aside{width:262px;background:rgba(255,255,255,.92);border-right:1px solid var(--line);display:flex;flex-direction:column;position:sticky;top:0;height:100vh}
+aside .brand{padding:18px 20px;border-bottom:1px solid var(--line)}
+nav{flex:1;overflow:auto;padding:12px}
+.nav-sec{font-size:10.5px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:#0f172a;background:rgba(0,150,214,.07);border-left:3px solid var(--vd);padding:8px 10px;border-radius:6px;margin:12px 0 6px}
+.nav-item{padding:9px 12px;border-radius:9px;color:var(--text-2);cursor:pointer;font-size:13.5px;display:flex;justify-content:space-between;align-items:center}
+.nav-item:hover{background:rgba(0,150,214,.06)}
+.nav-item.active{background:#fff;border:1px solid var(--vd-border);color:var(--vd);font-weight:700;box-shadow:0 1px 4px rgba(0,117,190,.1)}
+.nav-item.off{opacity:.45;cursor:not-allowed}
+.nav-badge{background:var(--vd);color:#fff;border-radius:999px;font-size:10.5px;font-weight:800;padding:1px 7px}
+.side-foot{padding:14px 18px;border-top:1px solid var(--line);display:flex;gap:10px;align-items:center}
+.avatar{width:34px;height:34px;border-radius:50%;background:var(--vd-grad);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:13px;flex-shrink:0}
+.main{flex:1;min-width:0;display:flex;flex-direction:column}
+.topbar{display:flex;align-items:center;gap:14px;padding:12px 24px;background:rgba(255,255,255,.7);backdrop-filter:blur(8px);border-bottom:1px solid var(--line);position:sticky;top:0;z-index:5;flex-wrap:wrap}
+.crumb{color:var(--text-3);font-size:13px;flex:1}
+.crumb b{color:var(--text-1)}
+.role-sel{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--text-3)}
+.role-sel select{padding:7px 10px;border:1.5px solid var(--vd-border);border-radius:9px;font-weight:700;color:var(--vd);background:#fff}
+.content{padding:22px 24px 60px;max-width:1360px;width:100%}
+/* hero */
+.hero{background:linear-gradient(135deg,#001426 0%,#002a5c 55%,#003d80 100%);border-radius:var(--r-xl);padding:22px 28px;position:relative;overflow:hidden;margin-bottom:18px;color:#fff}
+.hero:before{content:"";position:absolute;width:220px;height:220px;border-radius:50%;background:rgba(255,255,255,.05);right:-40px;top:-40px}
+.hero .eyebrow{font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.55)}
+.hero h1{margin:6px 0 0;font-size:24px;font-weight:800;letter-spacing:-.3px}
+.hero .stats{display:flex;gap:28px;margin-top:14px;flex-wrap:wrap}
+.hero .stat b{display:block;font-size:30px;font-weight:900;font-family:var(--mono);line-height:1;color:#38bdf8}
+.hero .stat b.w{color:#fff}
+.hero .stat span{font-size:9.5px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:rgba(255,255,255,.55)}
+.hero .acts{position:absolute;top:22px;right:28px;display:flex;gap:10px}
+/* buttons */
+.btn{border:none;border-radius:9px;padding:9px 16px;font-size:13px;font-weight:700;cursor:pointer;display:inline-flex;align-items:center;gap:6px;white-space:nowrap}
+.btn.p{background:var(--vd);color:#fff;box-shadow:0 3px 10px rgba(0,117,190,.25)}
+.btn.p:hover{background:#00649f}
+.btn.g{background:#fff;color:var(--text-2);border:1.5px solid rgba(0,0,0,.1)}
+.btn.s{background:var(--vd-soft);color:var(--vd);border:1.5px solid var(--vd-border)}
+.btn.ok{background:rgba(21,128,61,.1);color:var(--ok);border:1.5px solid rgba(21,128,61,.25)}
+.btn.bad{background:rgba(220,38,38,.07);color:var(--bad);border:1.5px solid rgba(220,38,38,.25)}
+.btn.ghost-w{background:rgba(255,255,255,.1);color:#fff;border:1.5px solid rgba(255,255,255,.25)}
+.btn[disabled]{opacity:.45;cursor:not-allowed}
+.btn.sm{padding:5px 10px;font-size:11.5px;border-radius:7px}
+/* cards & tables */
+.card{background:var(--glass);border:1px solid rgba(255,255,255,.9);border-radius:var(--r-xl);box-shadow:0 2px 10px rgba(15,23,42,.05);padding:18px 20px;margin-bottom:16px}
+.card h3{margin:0 0 12px;font-size:12px;font-weight:800;letter-spacing:.07em;text-transform:uppercase;color:var(--vd);padding-bottom:7px;border-bottom:1px solid var(--vd-border)}
+.tbl-wrap{overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-size:13px}
+th{background:rgba(0,150,214,.07);padding:9px 12px;font-size:9.5px;font-weight:800;letter-spacing:.07em;text-transform:uppercase;color:var(--vd);text-align:left;border-bottom:1.5px solid rgba(0,150,214,.12);white-space:nowrap}
+td{padding:9px 12px;border-bottom:1px solid rgba(0,0,0,.05);vertical-align:middle}
+tr.click:hover td{background:rgba(3,105,161,.035);cursor:pointer}
+.code{font-family:var(--mono);font-size:11px;font-weight:700;color:var(--vd)}
+.pill{display:inline-flex;align-items:center;gap:5px;padding:2px 9px;border-radius:999px;font-size:11.5px;font-weight:700;white-space:nowrap}
+.chip{display:inline-block;padding:2px 8px;border-radius:5px;background:var(--vd-soft);color:var(--vd);font-size:11.5px;font-weight:600}
+.muted{color:var(--text-3)}
+.toolbar{display:flex;gap:10px;align-items:center;margin-bottom:14px;flex-wrap:wrap}
+.search{flex:1;min-width:220px;display:flex;align-items:center;gap:8px;background:rgba(255,255,255,.9);border:1.5px solid rgba(0,0,0,.1);border-radius:9px;padding:8px 13px}
+.search input{border:none;outline:none;flex:1;font-size:13px;background:transparent}
+.toolbar select{padding:9px 12px;border:1.5px solid rgba(0,0,0,.1);border-radius:9px;font-size:13px;background:rgba(255,255,255,.9)}
+.tabs{display:flex;gap:4px;border-bottom:1.5px solid var(--line);margin-bottom:14px;overflow-x:auto}
+.tab{padding:9px 14px;font-size:13px;font-weight:700;color:var(--text-3);cursor:pointer;border-bottom:2.5px solid transparent;margin-bottom:-1.5px;white-space:nowrap}
+.tab.on{color:var(--vd);border-color:var(--vd)}
+.tab .np{font-size:9.5px;background:#e2e8f0;color:#475569;border-radius:4px;padding:1px 5px;margin-left:5px}
+/* forms */
+.grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px 16px}
+.grid.two{grid-template-columns:repeat(2,minmax(0,1fr))}
+.f{display:flex;flex-direction:column;gap:5px;min-width:0}
+.f.full{grid-column:1/-1}
+.f label{font-size:12px;font-weight:700;color:var(--text-2)}
+.f label .req{color:var(--bad)}
+.f input,.f select,.f textarea{padding:9px 11px;border:1.5px solid #e2e8f0;border-radius:8px;font-size:13px;background:#fff;color:var(--text-1);width:100%}
+.f input:focus,.f select:focus{outline:none;border-color:var(--vd);box-shadow:0 0 0 3px rgba(0,150,214,.12)}
+.f input[readonly]{background:#f8fafc;color:var(--text-3)}
+.f .hint{font-size:11px;color:var(--text-3)}
+.f .err{font-size:11px;color:var(--bad);font-weight:600}
+.f.bad input,.f.bad select{border-color:var(--bad)}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chips .c{padding:6px 11px;border-radius:999px;border:1.5px solid #e2e8f0;background:#fff;font-size:12.5px;cursor:pointer;font-weight:600;color:var(--text-2)}
+.chips .c.on{background:var(--vd-soft);border-color:var(--vd);color:var(--vd)}
+.radio{display:flex;gap:8px;flex-wrap:wrap}
+.radio .c{padding:7px 14px;border-radius:8px;border:1.5px solid #e2e8f0;background:#fff;font-size:12.5px;cursor:pointer;font-weight:600}
+.radio .c.on{background:var(--vd-soft);border-color:var(--vd);color:var(--vd)}
+.subhead{font-size:12.5px;font-weight:800;color:var(--vd);margin:18px 0 10px;padding-bottom:5px;border-bottom:1px solid var(--vd-border)}
+.subhead:first-child{margin-top:0}
+/* banners */
+.banner{border-radius:10px;padding:11px 14px;font-size:13px;margin-bottom:14px;display:flex;gap:10px;align-items:flex-start}
+.banner.ok{background:rgba(21,128,61,.07);border:1.5px solid rgba(21,128,61,.2);color:#14532d}
+.banner.warn{background:rgba(217,119,6,.08);border:1.5px solid rgba(217,119,6,.25);color:#78350f}
+.banner.bad{background:rgba(220,38,38,.06);border:1.5px solid rgba(220,38,38,.22);color:#7f1d1d}
+.banner.info{background:var(--vd-soft);border:1.5px solid var(--vd-border);color:#0c4a6e}
+.banner b{display:block;margin-bottom:2px}
+/* stepper */
+.stepper{display:flex;gap:6px;margin-bottom:16px;overflow-x:auto;padding-bottom:2px}
+.st{flex:1;min-width:120px;display:flex;align-items:center;gap:8px;padding:9px 11px;border-radius:10px;background:#fff;border:1.5px solid #e2e8f0;font-size:12px;font-weight:700;color:var(--text-3);cursor:pointer}
+.st .n{width:22px;height:22px;border-radius:50%;background:#e2e8f0;color:#475569;display:flex;align-items:center;justify-content:center;font-size:11px;flex-shrink:0}
+.st.on{border-color:var(--vd);color:var(--vd)}
+.st.on .n{background:var(--vd);color:#fff}
+.st.done .n{background:var(--ok);color:#fff}
+.st.err .n{background:var(--bad);color:#fff}
+.actionbar{display:flex;gap:10px;justify-content:flex-end;align-items:center;margin-top:6px;flex-wrap:wrap}
+.actionbar .msg{flex:1;color:var(--bad);font-size:12.5px;font-weight:600}
+/* type cards */
+.types{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin-bottom:16px}
+.tcard{background:#fff;border:1.5px solid #e2e8f0;border-radius:12px;padding:14px;cursor:pointer;position:relative}
+.tcard.on{border-color:var(--vd);box-shadow:0 0 0 3px rgba(0,150,214,.12)}
+.tcard.off{opacity:.55;cursor:not-allowed}
+.tcard .ic{font-size:22px}
+.tcard .nm{font-weight:800;margin-top:6px}
+.tcard .ds{font-size:12px;color:var(--text-3);margin-top:3px}
+.tcard .np{position:absolute;top:10px;right:10px;font-size:9.5px;font-weight:800;background:#e2e8f0;color:#475569;border-radius:4px;padding:2px 6px}
+/* record */
+.rec-head{background:linear-gradient(135deg,#001426 0%,#002a5c 55%,#003d80 100%);color:#fff;border-radius:var(--r-xl);padding:20px 24px;margin-bottom:16px;display:flex;gap:16px;align-items:flex-start;flex-wrap:wrap}
+.rec-head .t{flex:1;min-width:240px}
+.rec-head h2{margin:0;font-size:21px;font-weight:900}
+.rec-head .meta{font-size:12px;opacity:.75;margin-top:4px}
+.rec-head .ids{display:flex;gap:18px;flex-wrap:wrap;margin-top:10px}
+.rec-head .ids div{font-size:10px;letter-spacing:.06em;text-transform:uppercase;color:rgba(255,255,255,.55);font-weight:700}
+.rec-head .ids b{display:block;font-family:var(--mono);font-size:13px;color:#fff;letter-spacing:0;text-transform:none;margin-top:2px}
+.track{display:flex;gap:0;margin-bottom:16px;background:#fff;border-radius:12px;border:1px solid var(--line);overflow:hidden}
+.track .s{flex:1;padding:11px 12px;font-size:12px;font-weight:700;color:var(--text-3);border-right:1px solid var(--line);display:flex;gap:8px;align-items:center}
+.track .s:last-child{border-right:none}
+.track .s .d{width:20px;height:20px;border-radius:50%;background:#e2e8f0;display:flex;align-items:center;justify-content:center;font-size:10px;color:#475569;flex-shrink:0}
+.track .s.done{color:var(--ok)} .track .s.done .d{background:var(--ok);color:#fff}
+.track .s.on{color:var(--vd);background:var(--vd-soft)} .track .s.on .d{background:var(--vd);color:#fff}
+.track .s.x{color:var(--bad)} .track .s.x .d{background:var(--bad);color:#fff}
+.rec-grid{display:grid;grid-template-columns:minmax(0,1fr) 340px;gap:16px;align-items:start}
+.kv{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0 18px}
+.kv div{display:flex;justify-content:space-between;gap:10px;padding:7px 0;border-bottom:1px solid rgba(0,0,0,.05);font-size:12.5px}
+.kv div span:first-child{color:var(--text-3);font-weight:600}
+.kv div span:last-child{font-weight:700;text-align:right}
+.act-panel .who{font-size:11px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--text-3);margin:12px 0 6px}
+.act-panel .who:first-of-type{margin-top:0}
+.act-panel .row{display:flex;gap:8px;flex-wrap:wrap}
+.flag{display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid rgba(0,0,0,.05);font-size:12.5px}
+.timeline .ev{display:flex;gap:10px;padding:8px 0;border-bottom:1px solid rgba(0,0,0,.05)}
+.timeline .ev .dot{width:9px;height:9px;border-radius:50%;background:var(--vd);margin-top:5px;flex-shrink:0}
+.timeline .ev .w{font-size:11.5px;color:var(--text-3)}
+.doc{display:flex;align-items:center;gap:10px;padding:9px 0;border-bottom:1px solid rgba(0,0,0,.05);flex-wrap:wrap}
+.doc .nm{flex:1;min-width:200px;font-weight:600;font-size:13px}
+.doc .dot{width:9px;height:9px;border-radius:50%;background:#cbd5e1}
+.doc .dot.ok{background:var(--ok)}
+.doc input[type=date]{padding:6px 8px;border:1.5px solid #e2e8f0;border-radius:7px;font-size:12px}
+.bar{height:7px;background:#e2e8f0;border-radius:99px;overflow:hidden}
+.bar i{display:block;height:100%;background:var(--vd-grad)}
+.rep{display:grid;gap:8px;grid-template-columns:2fr 1.4fr 1fr 1fr .8fr 32px;align-items:end;margin-bottom:8px}
+.rep.sig{grid-template-columns:2fr 1.4fr 1.6fr 32px}
+.rep input,.rep select{padding:8px 9px;border:1.5px solid #e2e8f0;border-radius:7px;font-size:12.5px;width:100%}
+.rep .x{border:none;background:rgba(220,38,38,.07);color:var(--bad);border-radius:7px;height:34px;cursor:pointer;font-weight:800}
+.rep-h{display:grid;gap:8px;grid-template-columns:2fr 1.4fr 1fr 1fr .8fr 32px;font-size:11px;font-weight:700;color:var(--text-3);margin-bottom:4px}
+.rep-h.sig{grid-template-columns:2fr 1.4fr 1.6fr 32px}
+.check{display:flex;gap:8px;align-items:center;font-size:12.5px;font-weight:600;cursor:pointer}
+.check input{accent-color:var(--vd);width:15px;height:15px}
+.review-sec{display:flex;justify-content:space-between;align-items:center;margin:14px 0 6px}
+.review-sec b{font-size:12.5px;color:var(--vd);text-transform:uppercase;letter-spacing:.06em}
+#toast{position:fixed;bottom:22px;left:50%;transform:translateX(-50%) translateY(20px);background:#0f172a;color:#fff;padding:11px 18px;border-radius:10px;font-size:13px;font-weight:600;opacity:0;transition:.25s;z-index:80;pointer-events:none;max-width:calc(100% - 32px)}
+#toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+.modal-bg{position:fixed;inset:0;background:rgba(15,23,42,.45);display:flex;align-items:center;justify-content:center;z-index:60;padding:16px}
+.modal{background:#fff;border-radius:16px;padding:22px;width:460px;max-width:100%;box-shadow:0 20px 60px rgba(0,0,0,.3)}
+.modal h4{margin:0 0 6px;font-size:17px}
+.modal p{margin:0 0 12px;color:var(--text-3);font-size:13px}
+.modal .f{margin-bottom:12px}
+@media (max-width:1100px){.rec-grid{grid-template-columns:1fr}.types{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:820px){aside{display:none}.grid{grid-template-columns:1fr 1fr}.content{padding:16px}.hero .acts{position:static;margin-top:14px}.kv{grid-template-columns:1fr}.track{flex-direction:column}.track .s{border-right:none;border-bottom:1px solid var(--line)}}
+@media (max-width:560px){.grid,.grid.two{grid-template-columns:1fr}.types{grid-template-columns:1fr}.rep,.rep-h,.rep.sig,.rep-h.sig{grid-template-columns:1fr 1fr}}
+</style>
+</head>
+<body>
+
+<div id="login">
+  <div class="login-card">
+    <div class="logo">AlKoot<small>INSURANCE &amp; REINSURANCE</small></div>
+    <div style="margin:18px 0 4px;font-size:19px;font-weight:800">Sign in to Volaris Core</div>
+    <div class="muted" style="font-size:13px;margin-bottom:16px">Demo: Super Admin credentials are filled in.</div>
+    <div class="f" style="margin-bottom:12px"><label>Email</label><input id="lg-email" value="super.admin@platform.com"></div>
+    <div class="f" style="margin-bottom:16px"><label>Password</label><input id="lg-pw" type="password" value="Super@123"></div>
+    <div id="lg-err" class="banner bad" style="display:none"></div>
+    <button class="btn p" style="width:100%;justify-content:center;padding:12px" onclick="doLogin()">Sign In</button>
+  </div>
+</div>
+
+<div class="shell" id="app" style="display:none">
+  <aside>
+    <div class="brand"><div class="logo">AlKoot<small>INSURANCE &amp; REINSURANCE</small></div></div>
+    <nav>
+      <div class="nav-sec">Dashboard</div>
+      <div class="nav-item off">Dashboard Report</div>
+      <div class="nav-sec">Claims Operations</div>
+      <div class="nav-item off">Claims — End to End Process</div>
+      <div class="nav-sec">Partner &amp; Vendor Ecosystem</div>
+      <div class="nav-item" data-nav="list" onclick="go('list')"><span>Vendor Onboarding</span><span class="nav-badge" id="nav-badge">0</span></div>
+      <div class="nav-item off">Network (Garages / Partners)</div>
+      <div class="nav-item off">Insurers &amp; Co-Insurers</div>
+      <div class="nav-sec">Admin &amp; System Control</div>
+      <div class="nav-item" data-nav="config" onclick="go('config')">Vendor Type Configuration</div>
+    </nav>
+    <div class="side-foot"><div class="avatar" id="sf-av">JD</div><div><div style="font-weight:700;font-size:13px" id="sf-name">John Doe</div><div style="font-size:11.5px;color:var(--vd);font-weight:700" id="sf-role">Super Admin</div></div></div>
+  </aside>
+  <div class="main">
+    <header class="topbar">
+      <div class="crumb" id="crumb">Al Koot Insurance &amp; Reinsurance Company / <b>Vendor Onboarding</b></div>
+      <div class="role-sel">Acting as
+        <select id="role" onchange="setRole(this.value)"></select>
+      </div>
+      <button class="btn g sm" onclick="resetDemo()" title="Restore the seeded demo data">Reset demo</button>
+    </header>
+    <div class="content" id="main"></div>
+  </div>
+</div>
+<div id="toast"></div>
+<div id="modal"></div>
+
+<script>
+/* ════════════ Reference data ════════════ */
+var ROLES = {
+  SA:  { label:'Super Admin',       user:'John Doe' },
+  NE:  { label:'Network Executive', user:'Mariam Al-Kuwari' },
+  CM:  { label:'Claims Manager',    user:'Sara Al-Marri' },
+  HOC: { label:'Head of Claims',    user:'Khalid Al-Thani' },
+  CO:  { label:'Compliance',        user:'Noora Al-Sada' },
+  FI:  { label:'Finance',           user:'Rahul Menon' },
+  DS:  { label:'Data Steward',      user:'Aisha Rahman' }
+};
+var VTYPES = {
+  garage:   { label:'Garage',       icon:'🔧', desc:'Agency, panel and preferred workshops', party:'P-08 Garage and repair workshop', role:'Supplier', created:'Onboarding (empanelment) approval', approver:'Claims Manager / Head of Claims + Finance (bank)', agreement:'Panel workshop agreement · rate card · SLA', portal:'Garage Portal (if Uses Garage Portal = Yes)', live:true },
+  surveyor: { label:'Surveyor',     icon:'🔍', desc:'Surveyors and loss adjusters', party:'P-09 Surveyor / loss adjuster', role:'Supplier', created:'BRD: first assignment (to align)', approver:'Claims Manager / Head of Claims + Finance (bank)', agreement:'Surveyor service agreement · fee plan', portal:'Surveyor Portal', live:false },
+  rsa:      { label:'RSA provider', icon:'🚐', desc:'Towing and roadside assistance', party:'P-10 Towing and RSA provider', role:'Supplier', created:'Onboarding approval (SLA approved)', approver:'Claims Manager / Head of Claims + Finance (bank)', agreement:'RSA framework agreement · SLA', portal:'To confirm', live:false },
+  broker:   { label:'Broker',       icon:'🤝', desc:'Licensed insurance brokers', party:'P-04 Broker', role:'Customer and supplier', created:'Onboarding approval (broker agreement)', approver:'Head of Underwriting & Client Services + Compliance', agreement:'Broker agreement · commission plan', portal:'Broker Portal', live:false }
+};
+var STATUS = {
+  'Draft':                        { c:'#475569', b:'rgba(100,116,139,.12)' },
+  'Pending Empanelment Approval': { c:'#d97706', b:'rgba(217,119,6,.1)' },
+  'Returned for Correction':      { c:'#c2410c', b:'rgba(234,88,12,.1)' },
+  'Pending KYC':                  { c:'#0075BE', b:'rgba(0,150,214,.1)' },
+  'Pending Approval':             { c:'#7c3aed', b:'rgba(124,58,237,.1)' },
+  'Active':                       { c:'#15803d', b:'rgba(21,128,61,.1)' },
+  'Rejected':                     { c:'#dc2626', b:'rgba(220,38,38,.08)' },
+  'Inactive':                     { c:'#64748b', b:'rgba(100,116,139,.1)' },
+  'Soft Blocked':                 { c:'#b45309', b:'rgba(180,83,9,.1)' }
+};
+var CITIES = ['Doha','Al Rayyan','Al Wakrah','Al Khor','Lusail','Umm Salal','Al Daayen','Dukhan'];
+var REGIONS = ['Doha','Al Rayyan','Al Wakrah','Al Khor','Lusail','Industrial Area','Other'];
+var BRANDS = ['All makes','Toyota','Lexus','Nissan','Infiniti','Mitsubishi','Hyundai','Kia','Ford','Chevrolet','GMC','BMW','Mercedes-Benz','Audi','Volkswagen','Land Rover','Porsche','Tesla'];
+var SERVICES = ['Body / denting & painting','Mechanical','Electrical & AC','Glass','Tyres','Towing / recovery','EV repair','Luxury vehicles'];
+var BANKS = ['Qatar National Bank (QNB)','Commercial Bank of Qatar','Doha Bank','Qatar Islamic Bank (QIB)','Masraf Al Rayan','Dukhan Bank','Ahli Bank','HSBC Qatar'];
+var DOCS = [
+  { id:'cr',     label:'Commercial Registration (CR) certificate', rule:'M', exp:true },
+  { id:'tl',     label:'Trade licence',                             rule:'M', exp:true },
+  { id:'opl',    label:'Garage / workshop operating licence',       rule:'M', exp:true },
+  { id:'ids',    label:'Owner and signatory IDs (QID / passport)',  rule:'M', exp:true },
+  { id:'auth',   label:'Signatory authorisation letter',            rule:'C', cond:'signatoryNotOwner', why:'a signatory is not an owner' },
+  { id:'bank',   label:'Bank letter / IBAN certificate',            rule:'M' },
+  { id:'ins',    label:'Garage liability insurance certificate',    rule:'M', exp:true },
+  { id:'oem',    label:'Agency / OEM authorisation letter',         rule:'C', cond:'agency', exp:true, why:'category is Agency' },
+  { id:'tax',    label:'Tax registration certificate',              rule:'C', cond:'tax', why:'a tax number is given' },
+  { id:'agr',    label:'Signed panel agreement',                    rule:'A', exp:true },
+  { id:'price',  label:'Price list',                                rule:'O' },
+  { id:'photos', label:'Workshop photographs',                      rule:'O' },
+  { id:'equip',  label:'Equipment list',                            rule:'O' }
+];
+var STEPS = [
+  { id:'profile',   label:'Garage profile' },
+  { id:'services',  label:'Services & capacity' },
+  { id:'contacts',  label:'Contacts & owners' },
+  { id:'bank',      label:'Bank & payment' },
+  { id:'docs',      label:'Documents' },
+  { id:'agreement', label:'Agreement & SLA' },
+  { id:'review',    label:'Review & submit' }
+];
+var REJECT_REASONS = ['Approver declined','Request lapsed or withdrawn','Screening failed'];
+
+/* Field schema per wizard step. t: text|select|date|number|email|tel|chips|radio|textarea. req: true | function(d) */
+var F = {
+  profile: [
+    { h:'Identity' },
+    { id:'legalName', l:'Legal name (English)', req:true, hint:'Exactly as on the CR' },
+    { id:'arabicName', l:'Name (Arabic)', req:true, dir:'rtl' },
+    { id:'tradeName', l:'Trade name' },
+    { id:'legalForm', l:'Legal form', t:'select', o:['W.L.L.','LLC','Sole proprietorship','Partnership','Branch'], req:true },
+    { id:'regDate', l:'Date of registration', t:'date', req:true, past:true },
+    { id:'regCountry', l:'Country of registration', t:'select', o:['Qatar','UAE','Saudi Arabia','Other'], req:true },
+    { id:'crNo', l:'CR number', req:true, ro:true, hint:'From the duplicate check' },
+    { id:'crExpiry', l:'CR expiry', t:'date', req:true, future:true },
+    { id:'estNo', l:'Establishment card number', ro:true },
+    { id:'tlNo', l:'Trade licence number', req:true, ro:true },
+    { id:'tlExpiry', l:'Trade licence expiry', t:'date', req:true, future:true },
+    { id:'taxNo', l:'Tax registration number', hint:'When applicable' },
+    { h:'Classification' },
+    { id:'category', l:'Garage category', t:'radio', o:['Agency','Panel','Preferred'], req:true, hint:'Agency = manufacturer-authorised workshop. Used to filter the Claims Core allocation list' },
+    { id:'brands', l:'Brands', t:'chips', o:BRANDS, req:function(d){return d.category==='Agency';}, full:true, hint:'Mandatory for Agency. Pick "All makes" for a multi-brand workshop' },
+    { id:'usesPortal', l:'Uses Garage Portal', t:'radio', o:['Yes','No'], req:true, full:true, hint:'No = the Claims Handler operates the Garage Portal for this workshop (agency mode). Yes = an admin user is invited at go-live' },
+    { h:'Location' },
+    { id:'building', l:'Building no.', req:true },
+    { id:'street', l:'Street no.', req:true },
+    { id:'zone', l:'Zone no.', req:true },
+    { id:'unit', l:'Unit / shop' },
+    { id:'city', l:'City', t:'select', o:CITIES, req:true },
+    { id:'region', l:'Region', t:'select', o:REGIONS, req:true },
+    { id:'gps', l:'Map pin (lat, long)', req:true, pin:true, hint:'Used for distance at allocation' }
+  ],
+  services: [
+    { h:'Services' },
+    { id:'services', l:'Services offered', t:'chips', o:SERVICES, req:true, full:true },
+    { id:'vclass', l:'Vehicle classes', t:'chips', o:['Light','Heavy','Motorcycle'], req:true, full:true },
+    { h:'Capacity and hours' },
+    { id:'capacity', l:'Repair capacity (vehicles / month)', t:'number', req:true },
+    { id:'bays', l:'Number of bays', t:'number', req:true },
+    { id:'hours', l:'Working days and hours', req:true, hint:'e.g. Sat–Thu 07:00–19:00' },
+    { id:'courtesy', l:'Courtesy / replacement car', t:'radio', o:['Yes','No'] },
+    { id:'evCert', l:'EV-certified technicians', t:'radio', o:['Yes','No'], req:function(d){return (d.services||[]).indexOf('EV repair')>-1;}, hint:'Mandatory when "EV repair" is selected' }
+  ],
+  contacts: [
+    { h:'Primary contact' },
+    { id:'pcName', l:'Name', req:true }, { id:'pcDesig', l:'Designation', req:true }, { id:'pcMobile', l:'Mobile', t:'tel', req:true }, { id:'pcEmail', l:'Email', t:'email', req:true },
+    { h:'Claims SPOC (printed on transfer letters; Garage Portal admin user)' },
+    { id:'spName', l:'Name', req:true }, { id:'spTitle', l:'Title', req:true }, { id:'spMobile', l:'Mobile', t:'tel', req:true },
+    { id:'spWhatsapp', l:'WhatsApp', t:'tel', req:true }, { id:'spEmail', l:'Email', t:'email', req:true }, { id:'spAvail', l:'Availability', req:true, hint:'e.g. Sun–Thu 07:00–20:00' },
+    { h:'Finance contact (bank call-back)' },
+    { id:'fcName', l:'Name', req:true }, { id:'fcMobile', l:'Mobile', t:'tel', req:true }, { id:'fcEmail', l:'Email', t:'email', req:true },
+    { h:'Communication consent' },
+    { id:'consent', l:'Channels', t:'chips', o:['SMS','WhatsApp','Email'], req:true, full:true }
+  ],
+  bank: [
+    { h:'Bank account' },
+    { id:'bankName', l:'Bank', t:'select', o:BANKS, req:true },
+    { id:'branch', l:'Branch' },
+    { id:'holder', l:'Account holder name', req:true, hint:'Must match the legal name' },
+    { id:'iban', l:'IBAN', req:true, iban:true, hint:'QA + 2 check digits + 4-letter bank code + 21 characters' },
+    { id:'currency', l:'Payment currency', t:'select', o:['QAR','USD','EUR'], req:true },
+    { id:'swift', l:'SWIFT / BIC', req:function(d){return d.currency && d.currency!=='QAR';}, hint:'Mandatory for a foreign-currency account' },
+    { h:'Payment' },
+    { id:'method', l:'Payment method', t:'select', o:['Bank transfer','Cheque'], req:true },
+    { id:'terms', l:'Payment terms (days from invoice submission)', t:'number', req:true },
+    { id:'selfBilling', l:'Self-billing agreement', t:'radio', o:['Yes','No'], req:true }
+  ],
+  agreement: [
+    { h:'Agreement' },
+    { id:'agTemplate', l:'Template', t:'select', o:['Standard Panel Workshop Agreement','Preferred Workshop Agreement','Agency Workshop Agreement'], req:true },
+    { id:'agRef', l:'Agreement reference', ro:true },
+    { id:'agFrom', l:'Effective date', t:'date', req:true },
+    { id:'agYears', l:'Validity', t:'select', o:['1 year','2 years','3 years'], req:true },
+    { id:'agTo', l:'End date', ro:true, hint:'Calculated' },
+    { id:'agDiscount', l:'Discount on invoice (%)', t:'number' },
+    { h:'Labour rates (QAR / hour)' },
+    { id:'rGen', l:'General', t:'number', req:true }, { id:'rMech', l:'Mechanical', t:'number', req:true }, { id:'rElec', l:'Electrical', t:'number', req:true },
+    { h:'Paint and body (QAR)' },
+    { id:'rPaint', l:'Paint per panel', t:'number', req:true }, { id:'rDent', l:'Denting per panel', t:'number', req:true }, { id:'rMetallic', l:'Metallic surcharge (%)', t:'number', req:true },
+    { h:'Parts and consumables' },
+    { id:'rOem', l:'OEM discount minimum (%)', t:'number', req:true },
+    { id:'rAfter', l:'Aftermarket parts allowed', t:'radio', o:['Yes','No'], req:true },
+    { id:'rUsed', l:'Used parts allowed', t:'radio', o:['Yes','No'], req:true },
+    { id:'rUsedAge', l:'Used parts: minimum vehicle age (years)', t:'number', req:function(d){return d.rUsed==='Yes';} },
+    { id:'rCons', l:'Consumables (% of labour)', t:'number', req:true }, { id:'rConsCap', l:'Consumables cap (% of bill)', t:'number', req:true },
+    { id:'rEv', l:'EV labour loading (%)', t:'number' }, { id:'rLux', l:'Luxury labour multiplier', t:'number' },
+    { h:'Service levels' },
+    { id:'sAccept', l:'Accept allocation within (hours)', t:'number', req:true },
+    { id:'sEstimate', l:'Estimate within (hours of vehicle receipt)', t:'number', req:true },
+    { id:'sMinor', l:'Minor repair (days)', t:'number', req:true }, { id:'sMajor', l:'Major repair (days)', t:'number', req:true },
+    { id:'sUpdate', l:'Status update every (hours)', t:'number', req:true },
+    { id:'sDelivery', l:'Delivery adherence (%)', t:'number', req:true }, { id:'sCsat', l:'Minimum CSAT (out of 5)', t:'number', req:true },
+    { h:'Penalties' },
+    { id:'pTat', l:'TAT breach (% per day)', t:'number' }, { id:'pCap', l:'TAT penalty cap (%)', t:'number' }, { id:'pRepeat', l:'Repeat-breach threshold (count)', t:'number' }
+  ]
+};
+var AGR_DEFAULTS = { agTemplate:'Standard Panel Workshop Agreement', agYears:'1 year', agDiscount:'5', rGen:'120', rMech:'150', rElec:'160', rPaint:'180', rDent:'120', rMetallic:'15', rOem:'10', rAfter:'No', rUsed:'Yes', rUsedAge:'4', rCons:'7', rConsCap:'7.5', rEv:'25', rLux:'2.0', sAccept:'24', sEstimate:'24', sMinor:'3', sMajor:'7', sUpdate:'48', sDelivery:'92', sCsat:'4.2', pTat:'2', pCap:'10', pRepeat:'3' };
+
+/* ════════════ Helpers ════════════ */
+function esc(s){ return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+function today(){ return new Date().toISOString().slice(0,10); }
+function addDays(d,n){ var x=new Date(d); x.setDate(x.getDate()+n); return x.toISOString().slice(0,10); }
+function addYears(d,n){ var x=new Date(d); x.setFullYear(x.getFullYear()+n); x.setDate(x.getDate()-1); return x.toISOString().slice(0,10); }
+function fmtD(d){ if(!d) return '—'; var x=new Date(d); if(isNaN(x)) return d; return x.toLocaleDateString('en-GB',{day:'2-digit',month:'short',year:'numeric'}); }
+function nowStamp(){ return new Date().toISOString(); }
+function fmtT(t){ var x=new Date(t); return x.toLocaleDateString('en-GB',{day:'2-digit',month:'short'})+' '+x.toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'}); }
+function normName(s){ return String(s||'').toLowerCase().replace(/[.,'’\-()&]/g,' ').replace(/\b(w\s*l\s*l|llc|co|company|est|establishment|the|trading)\b/g,' ').replace(/\bel\b/g,'al').replace(/\s+/g,' ').trim(); }
+function normNum(s){ return String(s||'').replace(/[\s\-]/g,'').toUpperCase(); }
+function normPhone(s){ var d=String(s||'').replace(/\D/g,''); if(d.length===8) d='974'+d; return d; }
+function nameSimilar(a,b){ a=normName(a); b=normName(b); if(!a||!b) return false; if(a===b||a.indexOf(b)>-1||b.indexOf(a)>-1) return true; var wa=a.split(' '), wb=b.split(' '); var common=wa.filter(function(w){return w.length>2&&wb.indexOf(w)>-1;}).length; return common>=2; }
+function ibanValid(iban){
+  var s=normNum(iban); if(!/^QA\d{2}[A-Z]{4}[A-Z0-9]{21}$/.test(s)) return false;
+  var r=s.slice(4)+s.slice(0,4), n=''; for(var i=0;i<r.length;i++){ var c=r.charCodeAt(i); n+= (c>=65&&c<=90)?String(c-55):r[i]; }
+  var m=0; for(var j=0;j<n.length;j++){ m=(m*10+(+n[j]))%97; } return m===1;
+}
+function makeIban(code){ // valid QA IBAN for demo
+  var bban=code+String(Math.floor(Math.random()*1e10)).padStart(10,'0')+String(Math.floor(Math.random()*1e11)).padStart(11,'0');
+  for(var k=2;k<99;k++){ var cand='QA'+String(k).padStart(2,'0')+bban; if(ibanValid(cand)) return cand; } return 'QA00'+bban;
+}
+function groupIban(s){ return normNum(s).replace(/(.{4})/g,'$1 ').trim(); }
+function toast(m){ var t=document.getElementById('toast'); t.textContent=m; t.className='show'; clearTimeout(t._h); t._h=setTimeout(function(){t.className='';},2600); }
+function pill(st){ var s=STATUS[st]||STATUS.Draft; return '<span class="pill" style="color:'+s.c+';background:'+s.b+'">'+esc(st)+'</span>'; }
+function me(){ return ROLES[S.role]; }
+
+/* ════════════ State ════════════ */
+var KEY='vo-proto-v1';
+var S = { role:'SA', view:'list', id:null, step:0, tab:'all', q:'', fStatus:'all', fCat:'all', recTab:'overview', start:null, showErr:false };
+
+function seed(){
+  var t0=today();
+  function base(o){
+    var d=Object.assign({}, AGR_DEFAULTS, {
+      arabicName:'كراج', legalForm:'W.L.L.', regDate:'2015-03-12', regCountry:'Qatar', crExpiry:addDays(t0,420), tlExpiry:addDays(t0,300),
+      category:'Panel', brands:['All makes'], usesPortal:'Yes', building:'21', street:'340', zone:'56', city:'Doha', region:'Doha', gps:'25.2391, 51.5050',
+      services:['Body / denting & painting','Mechanical','Electrical & AC'], vclass:['Light'], capacity:'60', bays:'12', hours:'Sat–Thu 07:00–19:00', courtesy:'No', evCert:'No',
+      pcDesig:'Owner', spTitle:'Claims Coordinator', spAvail:'Sun–Thu 07:00–20:00', consent:['SMS','Email','WhatsApp'],
+      bankName:'Qatar National Bank (QNB)', branch:'Head Office', currency:'QAR', method:'Bank transfer', terms:'30', selfBilling:'No',
+      agFrom:t0, agRef:'', owners:[], signatories:[]
+    }, o.d||{});
+    d.holder = d.holder || d.legalName;
+    d.agTo = addYears(d.agFrom, parseInt(d.agYears,10)||1);
+    var docs={}; DOCS.forEach(function(x){ if(x.rule==='M'||(x.rule==='C'&&docNeeded(x,d))) docs[x.id]={ file:x.id+'.pdf', expiry:x.exp?addDays(t0,200):'' }; });
+    return Object.assign({ type:'garage', createdBy:'Mariam Al-Kuwari', createdAt:addDays(t0,-12)+'T09:10:00', updatedAt:addDays(t0,-1)+'T11:40:00',
+      flags:{ sanctions:'Not started', kyc:'Not started', aml:'Not screened', edd:'Not required', bank:'Not verified' }, docs:docs, activity:[], dup:{ level:'none' } }, o, { d:d });
+  }
+  var V=[];
+  V.push(base({ id:'VND-0001', name:'Al Rayyan Auto Centre', status:'Active', partyId:'PTY-100481', supplierCode:'SUP-GAR-0001', crmId:'CRM-55120', panel:{status:'Panel',from:'2025-01-12',to:'2027-01-11'}, createdAt:'2025-01-05T09:00:00',
+    flags:{ sanctions:'Clear', kyc:'KYC Success', aml:'AML Clear', edd:'Not required', bank:'Verified' },
+    d:{ legalName:'Al Rayyan Auto Centre W.L.L.', crNo:'104521', tlNo:'TL-58821', estNo:'EST-22019', city:'Al Rayyan', region:'Al Rayyan', pcName:'Hassan Al-Sulaiti', pcMobile:'+974 5500 1001', pcEmail:'hassan@alrayyan.qa', spName:'Hassan Al-Sulaiti', spMobile:'+974 5500 1001', spWhatsapp:'+974 5500 1001', spEmail:'claims@alrayyan.qa', fcName:'Imran Shaikh', fcMobile:'+974 5500 1101', fcEmail:'accounts@alrayyan.qa', iban:makeIban('QNBA'),
+      owners:[{name:'Hassan Al-Sulaiti',id:'28463400111',exp:addDays(t0,500),nat:'Qatar',pct:'100'}], signatories:[{name:'Hassan Al-Sulaiti',id:'28463400111',auth:'All'}] } }));
+  V.push(base({ id:'VND-0002', name:'Doha Motors Workshop', status:'Active', partyId:'PTY-100502', supplierCode:'SUP-GAR-0002', crmId:'CRM-55141', panel:{status:'Panel',from:'2025-03-05',to:'2027-03-04'}, createdAt:'2025-03-01T09:00:00',
+    flags:{ sanctions:'Clear', kyc:'KYC Success', aml:'AML Clear', edd:'Not required', bank:'Verified' },
+    d:{ legalName:'Doha Motors Workshop W.L.L.', crNo:'98110', tlNo:'TL-40177', category:'Agency', brands:['Toyota','Lexus'], usesPortal:'No', region:'Industrial Area', pcName:'Khalid Al-Emadi', pcMobile:'+974 5500 1002', pcEmail:'ops@dohamotors.qa', spName:'Khalid Al-Emadi', spMobile:'+974 5500 1002', spWhatsapp:'+974 5500 1002', spEmail:'ops@dohamotors.qa', fcName:'Ali Rahman', fcMobile:'+974 5500 1102', fcEmail:'finance@dohamotors.qa', iban:makeIban('CBQA'),
+      owners:[{name:'Khalid Al-Emadi',id:'27963400222',exp:addDays(t0,400),nat:'Qatar',pct:'60'},{name:'Saeed Al-Emadi',id:'28163400333',exp:addDays(t0,380),nat:'Qatar',pct:'40'}], signatories:[{name:'Khalid Al-Emadi',id:'27963400222',auth:'All'}] } }));
+  V.push(base({ id:'VND-0007', name:'Gulf Star Garage', status:'Draft', createdAt:addDays(t0,-2)+'T10:00:00', updatedAt:addDays(t0,-1)+'T15:20:00', step:2,
+    d:{ legalName:'Gulf Star Garage W.L.L.', crNo:'131877', tlNo:'TL-77120', city:'Al Wakrah', region:'Al Wakrah', pcName:'Rami Haddad', pcMobile:'+974 5512 4410', pcEmail:'rami@gulfstar.qa', spName:'', spMobile:'', fcName:'', iban:'' } }));
+  V.push(base({ id:'VND-0008', name:'Lusail Auto Care', status:'Pending Empanelment Approval', createdAt:addDays(t0,-6)+'T09:30:00', updatedAt:addDays(t0,-1)+'T09:00:00',
+    flags:{ sanctions:'Clear', kyc:'Not started', aml:'Not screened', edd:'Not required', bank:'Not verified' },
+    d:{ legalName:'Lusail Auto Care W.L.L.', crNo:'140233', tlNo:'TL-81004', category:'Preferred', city:'Lusail', region:'Lusail', services:['Body / denting & painting','Mechanical','EV repair','Luxury vehicles'], evCert:'Yes', pcName:'Omar Farouk', pcMobile:'+974 5530 2201', pcEmail:'omar@lusailautocare.qa', spName:'Nadia Karim', spMobile:'+974 5530 2202', spWhatsapp:'+974 5530 2202', spEmail:'claims@lusailautocare.qa', fcName:'Vikram Iyer', fcMobile:'+974 5530 2203', fcEmail:'accounts@lusailautocare.qa', iban:makeIban('DOHB'), bankName:'Doha Bank',
+      owners:[{name:'Omar Farouk',id:'P8810221',exp:addDays(t0,900),nat:'Egypt',pct:'51'},{name:'Faisal Al-Naimi',id:'28263400444',exp:addDays(t0,700),nat:'Qatar',pct:'49'}], signatories:[{name:'Omar Farouk',id:'P8810221',auth:'All'}] } }));
+  V.push(base({ id:'VND-0009', name:'Al Wakrah Body Shop', status:'Pending KYC', kycCorrection:'Signatory QID expired — upload the renewed QID', partyId:'PTY-100733', createdAt:addDays(t0,-9)+'T08:30:00', updatedAt:addDays(t0,-1)+'T13:10:00',
+    flags:{ sanctions:'Clear', kyc:'KYC Failed', aml:'AML Clear', edd:'Not required', bank:'Not verified' },
+    d:{ legalName:'Al Wakrah Body Shop', legalForm:'Sole proprietorship', crNo:'119045', tlNo:'TL-66310', city:'Al Wakrah', region:'Al Wakrah', pcName:'Jassim Al-Kaabi', pcMobile:'+974 5541 8890', pcEmail:'jassim@wakrahbody.qa', spName:'Jassim Al-Kaabi', spMobile:'+974 5541 8890', spWhatsapp:'+974 5541 8890', spEmail:'jassim@wakrahbody.qa', fcName:'Jassim Al-Kaabi', fcMobile:'+974 5541 8890', fcEmail:'jassim@wakrahbody.qa', iban:makeIban('QISB'), bankName:'Qatar Islamic Bank (QIB)',
+      owners:[{name:'Jassim Al-Kaabi',id:'27663400555',exp:addDays(t0,-20),nat:'Qatar',pct:'100'}], signatories:[{name:'Jassim Al-Kaabi',id:'27663400555',auth:'All'}] } }));
+  V.push(base({ id:'VND-0010', name:'West Bay Motors', status:'Pending Approval', partyId:'PTY-100760', createdAt:addDays(t0,-14)+'T08:00:00', updatedAt:addDays(t0,-1)+'T10:05:00',
+    flags:{ sanctions:'Clear', kyc:'KYC Success', aml:'AML Clear', edd:'Not required', bank:'Not verified' },
+    d:{ legalName:'West Bay Motors W.L.L.', crNo:'122870', tlNo:'TL-70052', category:'Agency', brands:['Nissan','Infiniti'], pcName:'Tariq Mansour', pcMobile:'+974 5560 1120', pcEmail:'tariq@westbaymotors.qa', spName:'Leena Thomas', spMobile:'+974 5560 1121', spWhatsapp:'+974 5560 1121', spEmail:'claims@westbaymotors.qa', fcName:'Ahmed Saleh', fcMobile:'+974 5560 1122', fcEmail:'finance@westbaymotors.qa', iban:makeIban('MAFR'), bankName:'Masraf Al Rayan', holder:'West Bay Motors Trading',
+      owners:[{name:'Tariq Mansour',id:'28663400666',exp:addDays(t0,600),nat:'Qatar',pct:'100'}], signatories:[{name:'Tariq Mansour',id:'28663400666',auth:'All'}] } }));
+  V.push(base({ id:'VND-0011', name:'Industrial Area Garage', status:'Returned for Correction', returnNote:'Workshop operating licence uploaded is for another branch. Upload the licence for Street 24.', createdAt:addDays(t0,-5)+'T09:00:00', updatedAt:addDays(t0,-1)+'T16:00:00',
+    flags:{ sanctions:'Clear', kyc:'Not started', aml:'Not screened', edd:'Not required', bank:'Not verified' },
+    d:{ legalName:'Industrial Area Garage W.L.L.', crNo:'109982', tlNo:'TL-59870', region:'Industrial Area', services:['Mechanical','Tyres','Towing / recovery'], vclass:['Light','Heavy'], pcName:'Sunil Varghese', pcMobile:'+974 5577 0031', pcEmail:'sunil@iagarage.qa', spName:'Sunil Varghese', spMobile:'+974 5577 0031', spWhatsapp:'+974 5577 0031', spEmail:'sunil@iagarage.qa', fcName:'Sunil Varghese', fcMobile:'+974 5577 0031', fcEmail:'sunil@iagarage.qa', iban:makeIban('ABQQ'), bankName:'Ahli Bank',
+      owners:[{name:'Sunil Varghese',id:'P5521780',exp:addDays(t0,800),nat:'India',pct:'100'}], signatories:[{name:'Sunil Varghese',id:'P5521780',auth:'All'}] } }));
+  V.push(base({ id:'VND-0006', name:'Speed Auto Repairs', status:'Rejected', rejection:{ code:'Approver declined', note:'Workshop capacity below panel minimum; reapply after expansion.' }, createdAt:'2026-03-02T09:00:00', updatedAt:'2026-03-09T12:00:00',
+    flags:{ sanctions:'Clear', kyc:'Not started', aml:'Not screened', edd:'Not required', bank:'Not verified' },
+    d:{ legalName:'Speed Auto Repairs', crNo:'125540', tlNo:'TL-71211', city:'Lusail', region:'Lusail', pcName:'Deepak Singh', pcMobile:'+974 5501 1003', pcEmail:'deepak@speedauto.qa', capacity:'8' } }));
+  V.push(base({ id:'VND-0003', name:'Old Salwa Garage', status:'Inactive', partyId:'PTY-100120', supplierCode:'SUP-GAR-0003', createdAt:'2023-06-01T09:00:00', updatedAt:'2025-12-31T09:00:00', panel:{status:'Suspended',from:'2023-06-10',to:'2025-12-31'},
+    flags:{ sanctions:'Clear', kyc:'KYC Expired', aml:'AML Clear', edd:'Not required', bank:'Verified' },
+    d:{ legalName:'Old Salwa Garage W.L.L.', crNo:'77001', tlNo:'TL-31200', pcName:'Mohammed Al-Hajri', pcMobile:'+974 5500 7700', pcEmail:'info@oldsalwa.qa' } }));
+  // other vendor types (framework view only)
+  [['VND-0004','Gulf Insurance Brokers','broker','BRK-QAT-001'],['VND-0005','Precision Loss Adjusters','surveyor','SRV-QAT-001'],['VND-0012','Qatar Roadside Assist Co.','rsa','RSA-QAT-001']].forEach(function(r){
+    V.push({ id:r[0], name:r[1], type:r[2], status:'Active', supplierCode:r[3], createdBy:'Migrated', createdAt:'2024-11-22T09:00:00', updatedAt:'2025-08-14T09:00:00', d:{ city:'Doha', crNo:'—' }, flags:{ kyc:'KYC Success', aml:'AML Clear', bank:'Verified' }, docs:{}, activity:[] });
+  });
+  V.forEach(function(v){
+    if(v.type!=='garage') return;
+    v.d.agRef = 'AGR-GAR-'+v.createdAt.slice(0,4)+'-'+v.id.slice(-4);
+    var a=[{ t:v.createdAt, who:v.createdBy+' · Network Executive', what:'Duplicate check run — no match. Draft created' }];
+    if(v.status!=='Draft'){ a.push({ t:addDays(v.createdAt,1)+'T10:00:00', who:v.createdBy+' · Network Executive', what:'Application submitted for empanelment approval' }); }
+    if(['Pending KYC','Pending Approval','Active','Inactive'].indexOf(v.status)>-1){
+      a.push({ t:addDays(v.createdAt,1)+'T14:00:00', who:'Noora Al-Sada · Compliance', what:'Preliminary sanctions check cleared' });
+      a.push({ t:addDays(v.createdAt,2)+'T11:00:00', who:'Sara Al-Marri · Claims Manager', what:'Empanelment approved' });
+      a.push({ t:addDays(v.createdAt,2)+'T11:01:00', who:'System', what:'Party created in the Party Master: '+v.partyId });
+    }
+    if(v.status==='Pending KYC') a.push({ t:addDays(v.createdAt,3)+'T09:00:00', who:'System · AML / KYC', what:'KYC Failed: '+v.kycCorrection });
+    if(['Pending Approval','Active','Inactive'].indexOf(v.status)>-1) a.push({ t:addDays(v.createdAt,3)+'T09:00:00', who:'System · AML / KYC', what:'KYC Success · screening complete' });
+    if(v.status==='Active'||v.status==='Inactive'){ a.push({ t:addDays(v.createdAt,4)+'T09:00:00', who:'Rahul Menon · Finance', what:'Bank details verified after call-back' }); a.push({ t:addDays(v.createdAt,5)+'T10:00:00', who:'Khalid Al-Thani · Head of Claims', what:'Activation approved. Supplier Code '+v.supplierCode+' issued' }); }
+    if(v.status==='Returned for Correction') a.push({ t:v.updatedAt, who:'Sara Al-Marri · Claims Manager', what:'Sent back: '+v.returnNote });
+    if(v.status==='Rejected') a.push({ t:v.updatedAt, who:'Sara Al-Marri · Claims Manager', what:'Declined — '+v.rejection.code+': '+v.rejection.note });
+    if(v.status==='Inactive') a.push({ t:v.updatedAt, who:'Sara Al-Marri · Claims Manager', what:'Deactivated: panel agreement ended' });
+    v.activity=a;
+    if(v.status==='Active'||v.status==='Inactive') v.docs.agr={ file:'signed_panel_agreement.pdf', expiry:v.d.agTo };
+  });
+  V[0].docs.ins.expiry=addDays(t0,20);
+  V[2].maxStep=2;
+  return V;
+}
+function load(){ try{ var j=localStorage.getItem(KEY); if(j){ var o=JSON.parse(j); if(o&&o.vendors) return o.vendors; } }catch(e){} return seed(); }
+function save(){ try{ localStorage.setItem(KEY, JSON.stringify({ vendors:VENDORS })); }catch(e){} }
+var VENDORS = load();
+document.addEventListener('keydown',function(e){ if(e.key==='Enter' && document.getElementById('login').style.display!=='none') doLogin(); });
+function resetDemo(){ try{ localStorage.removeItem(KEY); }catch(e){} VENDORS=seed(); S.view='list'; S.id=null; render(); toast('Demo data restored'); }
+function V(id){ return VENDORS.find(function(v){return v.id===id;}); }
+function log(v, what){ v.activity.push({ t:nowStamp(), who:me().user+' · '+me().label, what:what }); v.updatedAt=nowStamp(); save(); }
+
+/* ════════════ Status logic ════════════ */
+function pendingWith(v){
+  switch(v.status){
+    case 'Draft': case 'Returned for Correction': return 'Network Executive';
+    case 'Pending Empanelment Approval': return v.flags.sanctions==='Clear' ? 'Claims Manager / HoC' : 'Compliance';
+    case 'Pending KYC': if(v.kycCorrection) return 'Network Executive'; if(v.flags.aml==='AML Flagged') return 'Compliance'; return 'System (screening)';
+    case 'Pending Approval': if(!hasSignedAgreement(v)) return 'Network Executive'; return v.flags.bank==='Verified' ? 'Claims Manager / HoC' : 'Finance';
+    default: return '—';
+  }
+}
+function roleOwns(role, pw){
+  if(role==='SA') return pw!=='—' && pw!=='System (screening)';
+  return { NE:'Network Executive', CM:'Claims Manager / HoC', HOC:'Claims Manager / HoC', CO:'Compliance', FI:'Finance' }[role]===pw;
+}
+function isApprover(){ return S.role==='CM'||S.role==='HOC'||S.role==='SA'; }
+function isMaker(v){ return me().user===v.createdBy; }
+function hasSignedAgreement(v){ return !!(v.docs.agr && v.docs.agr.file); }
+function amlLabel(v){
+  if(S.role==='CO'||S.role==='SA') return v.flags.aml;
+  if(v.flags.aml==='AML Clear'||v.flags.aml==='AML Failed') return 'Screening complete';
+  if(v.flags.aml==='Not screened') return 'Not started';
+  return 'Screening under review';
+}
+function docNeeded(x, d){
+  if(x.rule==='M') return true; if(x.rule!=='C') return false;
+  if(x.cond==='agency') return d.category==='Agency';
+  if(x.cond==='tax') return !!(d.taxNo&&String(d.taxNo).trim());
+  if(x.cond==='signatoryNotOwner'){ var on=(d.owners||[]).map(function(o){return normName(o.name);}); return (d.signatories||[]).some(function(s){ return s.name && on.indexOf(normName(s.name))<0; }); }
+  return false;
+}
+
+/* ════════════ Validation ════════════ */
+function isReq(f, d){ return typeof f.req==='function' ? f.req(d) : !!f.req; }
+function fieldErr(f, d){
+  var val=d[f.id];
+  var empty = val==null || (Array.isArray(val)? val.length===0 : String(val).trim()==='');
+  if(isReq(f,d) && empty) return 'Required';
+  if(empty) return '';
+  if(f.t==='email' && !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(val)) return 'Enter a valid email';
+  if(f.t==='tel' && normPhone(val).length<11) return 'Enter a mobile with country code, e.g. +974 5xxx xxxx';
+  if(f.future && val<=today()) return 'Must be a future date';
+  if(f.past && val>today()) return 'Cannot be in the future';
+  if(f.iban && !ibanValid(val)) return 'Not a valid Qatar IBAN';
+  if(f.t==='number' && isNaN(+val)) return 'Enter a number';
+  return '';
+}
+function stepErrors(stepId, v){
+  var d=v.d, errs=[];
+  if(F[stepId]) F[stepId].forEach(function(f){ if(f.h) return; var e=fieldErr(f,d); if(e) errs.push({ id:f.id, l:f.l, e:e }); });
+  if(stepId==='contacts'){
+    var ow=(d.owners||[]).filter(function(o){return o.name;});
+    if(!ow.length) errs.push({ id:'owners', l:'Owners', e:'Add at least one owner with 20% or more' });
+    ow.forEach(function(o,i){ if(!o.id||!o.exp||!o.nat||!o.pct) errs.push({ id:'owners', l:'Owner '+(i+1), e:'Name, ID, ID expiry, nationality and % are required' }); else if(o.exp<=today()) errs.push({ id:'owners', l:'Owner '+(i+1), e:'ID has expired' }); });
+    var tot=ow.reduce(function(a,o){return a+(+o.pct||0);},0); if(tot>100) errs.push({ id:'owners', l:'Owners', e:'Ownership adds up to '+tot+'%' });
+    var sg=(d.signatories||[]).filter(function(s){return s.name;});
+    if(!sg.length) errs.push({ id:'signatories', l:'Signatories', e:'Add at least one authorised signatory' });
+    sg.forEach(function(s,i){ if(!s.id||!s.auth) errs.push({ id:'signatories', l:'Signatory '+(i+1), e:'ID and authority are required' }); });
+  }
+  if(stepId==='docs'){
+    DOCS.forEach(function(x){ if(!docNeeded(x,d)) return; var u=v.docs[x.id]; if(!u||!u.file) errs.push({ id:'doc-'+x.id, l:x.label, e:'Upload required' }); else if(x.exp && !u.expiry) errs.push({ id:'doc-'+x.id, l:x.label, e:'Expiry date required' }); else if(x.exp && u.expiry<=today()) errs.push({ id:'doc-'+x.id, l:x.label, e:'Document has expired' }); });
+  }
+  return errs;
+}
+function allErrors(v){ var out={}; STEPS.forEach(function(s){ if(s.id!=='review') out[s.id]=stepErrors(s.id,v); }); return out; }
+
+/* ════════════ Shell ════════════ */
+function doLogin(){
+  var e=document.getElementById('lg-email').value.trim(), p=document.getElementById('lg-pw').value;
+  if(e.toLowerCase()!=='super.admin@platform.com'||p!=='Super@123'){ var b=document.getElementById('lg-err'); b.style.display='flex'; b.textContent='Invalid email or password.'; return; }
+  document.getElementById('login').style.display='none'; document.getElementById('app').style.display='flex';
+  var sel=document.getElementById('role'); sel.innerHTML=Object.keys(ROLES).map(function(k){return '<option value="'+k+'">'+ROLES[k].label+' — '+ROLES[k].user+'</option>';}).join('');
+  render();
+}
+function setRole(r){ S.role=r; var u=ROLES[r]; document.getElementById('sf-name').textContent=u.user; document.getElementById('sf-role').textContent=u.label; document.getElementById('sf-av').textContent=u.user.split(' ').map(function(w){return w[0];}).slice(0,2).join(''); render(); toast('Acting as '+u.label); }
+function go(view, id){ S.view=view; if(id!==undefined) S.id=id; S.showErr=false; window.scrollTo(0,0); render(); }
+function render(){
+  var m=document.getElementById('main');
+  document.querySelectorAll('.nav-item[data-nav]').forEach(function(n){ n.classList.toggle('active', n.getAttribute('data-nav')===(S.view==='config'?'config':'list')); });
+  var mine=VENDORS.filter(function(v){return v.type==='garage'&&roleOwns(S.role,pendingWith(v));}).length;
+  document.getElementById('nav-badge').textContent=mine;
+  var c=document.getElementById('crumb'), root='Al Koot Insurance &amp; Reinsurance Company / ';
+  if(S.view==='list'){ c.innerHTML=root+'<b>Vendor Onboarding</b>'; m.innerHTML=viewList(); }
+  else if(S.view==='start'){ c.innerHTML=root+'Vendor Onboarding / <b>Onboard vendor</b>'; m.innerHTML=viewStart(); }
+  else if(S.view==='wizard'){ var v=V(S.id); c.innerHTML=root+'Vendor Onboarding / <b>'+esc(v.name)+'</b>'; m.innerHTML=viewWizard(v); }
+  else if(S.view==='record'){ var r=V(S.id); c.innerHTML=root+'Vendor Onboarding / <b>'+esc(r.name)+'</b>'; m.innerHTML=viewRecord(r); }
+  else if(S.view==='config'){ c.innerHTML=root+'Admin &amp; System Control / <b>Vendor Type Configuration</b>'; m.innerHTML=viewConfig(); }
+}
+
+/* ════════════ List ════════════ */
+function viewList(){
+  var garages=VENDORS.filter(function(v){return v.type==='garage';});
+  var inOnb=VENDORS.filter(function(v){return ['Draft','Pending Empanelment Approval','Returned for Correction','Pending KYC','Pending Approval'].indexOf(v.status)>-1;}).length;
+  var active=VENDORS.filter(function(v){return v.status==='Active';}).length;
+  var mine=garages.filter(function(v){return roleOwns(S.role,pendingWith(v));}).length;
+  var exp=garages.filter(function(v){ return v.status==='Active' && Object.keys(v.docs).some(function(k){ var e=v.docs[k].expiry; return e && e<=addDays(today(),30); }); }).length;
+  var tabs=[['all','All'],['garage','Garages'],['surveyor','Surveyors'],['rsa','RSA'],['broker','Brokers']];
+  var rows=VENDORS.filter(function(v){
+    if(S.tab!=='all' && v.type!==S.tab) return false;
+    if(S.fStatus!=='all' && v.status!==S.fStatus) return false;
+    if(S.fCat!=='all' && (v.d.category||'')!==S.fCat) return false;
+    var q=S.q.toLowerCase().trim(); if(!q) return true;
+    return [v.name,v.id,v.d.crNo,v.d.pcMobile,v.supplierCode,v.partyId].join(' ').toLowerCase().indexOf(q)>-1;
+  }).sort(function(a,b){ return (b.updatedAt||'').localeCompare(a.updatedAt||''); });
+  var nextPhase = S.tab!=='all' && S.tab!=='garage';
+  return '<div class="hero"><div class="acts"><button class="btn p" onclick="startOnboard()">+ Onboard vendor</button></div>'
+    +'<div class="eyebrow">Partner &amp; Vendor Ecosystem</div><h1>Vendor Onboarding</h1>'
+    +'<div class="stats">'
+    +'<div class="stat"><b class="w">'+VENDORS.length+'</b><span>Total vendors</span></div>'
+    +'<div class="stat"><b>'+active+'</b><span>Active</span></div>'
+    +'<div class="stat"><b>'+inOnb+'</b><span>In onboarding</span></div>'
+    +'<div class="stat"><b>'+mine+'</b><span>Pending my action</span></div>'
+    +'<div class="stat"><b>'+exp+'</b><span>Docs expiring ≤ 30 days</span></div>'
+    +'</div></div>'
+    +'<div class="tabs">'+tabs.map(function(t){ var np=(t[0]!=='all'&&t[0]!=='garage')?'<span class="np">Next phase</span>':''; return '<div class="tab'+(S.tab===t[0]?' on':'')+'" onclick="S.tab=\''+t[0]+'\';render()">'+t[1]+np+'</div>'; }).join('')+'</div>'
+    +(nextPhase?'<div class="banner info"><div><b>'+VTYPES[S.tab].label+' onboarding is the next phase</b>Existing '+VTYPES[S.tab].label.toLowerCase()+'s are listed; the onboarding journey for this type is configured but not yet enabled.</div></div>':'')
+    +'<div class="toolbar"><div class="search">🔍<input placeholder="Search name, Vendor ID, CR number, mobile, Supplier Code" value="'+esc(S.q)+'" oninput="S.q=this.value;renderListRows()"></div>'
+    +'<select onchange="S.fStatus=this.value;render()"><option value="all">All statuses</option>'+Object.keys(STATUS).map(function(s){return '<option'+(S.fStatus===s?' selected':'')+'>'+s+'</option>';}).join('')+'</select>'
+    +'<select onchange="S.fCat=this.value;render()"><option value="all">All categories</option>'+['Agency','Panel','Preferred'].map(function(s){return '<option'+(S.fCat===s?' selected':'')+'>'+s+'</option>';}).join('')+'</select>'
+    +'<span class="muted" style="font-size:12px">'+rows.length+' / '+VENDORS.length+'</span></div>'
+    +'<div class="card" style="padding:0;overflow:hidden"><div class="tbl-wrap"><table><thead><tr>'
+    +['Vendor ID','Vendor name','Type','Category','CR number','City','Status','KYC flag','Pending with','Last updated',''].map(function(h){return '<th>'+h+'</th>';}).join('')
+    +'</tr></thead><tbody id="list-rows">'+listRows(rows)+'</tbody></table></div></div>';
+}
+function listRows(rows){
+  if(!rows.length) return '<tr><td colspan="11" style="text-align:center;padding:28px" class="muted">No vendors match the filters.</td></tr>';
+  return rows.map(function(v){
+    var pw=pendingWith(v), mine=v.type==='garage'&&roleOwns(S.role,pw);
+    var act = v.type!=='garage' ? '<button class="btn g sm" onclick="event.stopPropagation();toast(\''+VTYPES[v.type].label+' record view comes with its onboarding phase\')">View</button>'
+      : (v.status==='Draft'||v.status==='Returned for Correction') && (S.role==='NE'||S.role==='SA') ? '<button class="btn s sm">Continue</button>'
+      : mine ? '<button class="btn p sm">Review</button>' : '<button class="btn g sm">View</button>';
+    return '<tr class="click" onclick="openVendor(\''+v.id+'\')">'
+      +'<td><span class="code">'+v.id+'</span></td>'
+      +'<td><b>'+esc(v.name)+'</b>'+(v.supplierCode?'<div class="muted mono" style="font-size:10.5px">'+esc(v.supplierCode)+'</div>':'')+'</td>'
+      +'<td><span class="chip">'+VTYPES[v.type].icon+' '+VTYPES[v.type].label+'</span></td>'
+      +'<td>'+esc(v.d.category||'—')+'</td>'
+      +'<td class="mono" style="font-size:12px">'+esc(v.d.crNo||'—')+'</td>'
+      +'<td>'+esc(v.d.city||'—')+'</td>'
+      +'<td>'+pill(v.status)+'</td>'
+      +'<td style="font-size:12px">'+esc(v.flags.kyc||'—')+'</td>'
+      +'<td style="font-size:12px">'+(mine?'<b style="color:var(--vd)">● '+esc(pw)+'</b>':esc(pw))+'</td>'
+      +'<td class="muted" style="font-size:12px">'+fmtT(v.updatedAt)+'</td>'
+      +'<td>'+act+'</td></tr>';
+  }).join('');
+}
+function renderListRows(){ var el=document.getElementById('list-rows'); if(!el) return; var q=S.q; render(); var inp=document.querySelector('.search input'); if(inp){ inp.focus(); inp.setSelectionRange(q.length,q.length); } }
+function openVendor(id){
+  var v=V(id); if(v.type!=='garage'){ toast(VTYPES[v.type].label+' record view comes with its onboarding phase'); return; }
+  if((v.status==='Draft'||v.status==='Returned for Correction') && (S.role==='NE'||S.role==='SA')){ S.step=v.step||0; go('wizard', id); }
+  else { S.recTab='overview'; go('record', id); }
+}
+
+/* ════════════ Start + duplicate check ════════════ */
+function startOnboard(){
+  if(!(S.role==='NE'||S.role==='SA')){ toast('Only the Network Executive starts an onboarding request'); return; }
+  S.start={ type:'garage', crNo:'', tlNo:'', estNo:'', legalName:'', mobile:'', email:'', result:null };
+  go('start');
+}
+function viewStart(){
+  var s=S.start;
+  var types=Object.keys(VTYPES).map(function(k){ var t=VTYPES[k];
+    return '<div class="tcard'+(s.type===k?' on':'')+(t.live?'':' off')+'" onclick="'+(t.live?'S.start.type=\''+k+'\';render()':'toast(\''+t.label+' onboarding is the next phase\')')+'">'+(t.live?'':'<span class="np">Next phase</span>')
+      +'<div class="ic">'+t.icon+'</div><div class="nm">'+t.label+'</div><div class="ds">'+t.desc+'</div></div>'; }).join('');
+  var f=function(id,l,req,hint,ph){ return '<div class="f"><label>'+l+(req?' <span class="req">*</span>':'')+'</label><input value="'+esc(s[id])+'" placeholder="'+esc(ph||'')+'" oninput="S.start[\''+id+'\']=this.value;S.start.result=null;var r=document.getElementById(\'dup-res\');if(r)r.innerHTML=\'\'">'+(hint?'<div class="hint">'+hint+'</div>':'')+'</div>'; };
+  return '<div style="margin-bottom:12px"><button class="btn g sm" onclick="go(\'list\')">← Vendor Onboarding</button></div>'
+    +'<div class="card"><h3>1 · Vendor type</h3><div class="types">'+types+'</div>'
+    +'<h3>2 · Duplicate check</h3>'
+    +'<div class="banner info"><div><b>The check runs before an application is created.</b>Strong fields (CR, trade licence, establishment number) stop creation on an exact match. Name, mobile and email are supporting fields. Demo: CR <span class="mono">104521</span> = Active garage · <span class="mono">77001</span> = Inactive garage · name "Doha Motors" with mobile +974 5500 1002 = probable match.</div></div>'
+    +'<div class="grid">'+f('crNo','CR number',true,'Spaces and hyphens are ignored')+f('tlNo','Trade licence number',true)+f('estNo','Establishment card number',false,'Where held')
+    +f('legalName','Legal name (English)',true,'As on the CR')+f('mobile','Mobile',true,'','+974 5xxx xxxx')+f('email','Email',true)+'</div>'
+    +'<div class="actionbar" style="margin-top:14px"><div class="msg" id="start-msg"></div><button class="btn p" onclick="runDup()">Run duplicate check</button></div>'
+    +'<div id="dup-res" style="margin-top:14px">'+(s.result?dupResult(s.result):'')+'</div></div>';
+}
+function runDup(){
+  var s=S.start, msg=document.getElementById('start-msg');
+  if(!s.crNo.trim()||!s.tlNo.trim()||!s.legalName.trim()||!s.mobile.trim()||!s.email.trim()){ msg.textContent='Fill CR number, trade licence number, legal name, mobile and email.'; return; }
+  if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(s.email)){ msg.textContent='Enter a valid email.'; return; }
+  msg.textContent='';
+  var cr=normNum(s.crNo), tl=normNum(s.tlNo), est=normNum(s.estNo), mob=normPhone(s.mobile), em=s.email.trim().toLowerCase();
+  var res={ level:'none', match:null, fields:[] };
+  VENDORS.forEach(function(v){
+    if(res.level==='exact') return;
+    var d=v.d||{};
+    var strong=[]; if(cr && normNum(d.crNo)===cr) strong.push('CR number'); if(tl && normNum(d.tlNo)===tl) strong.push('Trade licence number'); if(est && d.estNo && normNum(d.estNo)===est) strong.push('Establishment number');
+    if(strong.length){ res={ level:'exact', match:v, fields:strong }; return; }
+    var sup=[]; if(nameSimilar(d.legalName||v.name, s.legalName)) sup.push('Name'); if(mob && normPhone(d.pcMobile)===mob) sup.push('Mobile'); if(em && String(d.pcEmail||'').toLowerCase()===em) sup.push('Email');
+    if(sup.indexOf('Name')>-1 && sup.length>1 && res.level!=='probable') res={ level:'probable', match:v, fields:sup };
+    else if(sup.length && res.level==='none') res={ level:'possible', match:v, fields:sup };
+  });
+  s.result=res; document.getElementById('dup-res').innerHTML=dupResult(res);
+}
+function mask(s){ s=String(s||''); return s.length<=3? '***' : s.slice(0,2)+'•••'+s.slice(-2); }
+function dupResult(r){
+  var m=r.match;
+  if(r.level==='exact'){
+    var act='', msg='';
+    if(m.status==='Active'){ msg='This garage is already Active. It is reused; no new party is created.'; act='<button class="btn s" onclick="openVendor(\''+m.id+'\')">Open existing record</button>'; }
+    else if(m.status==='Inactive'){ msg='This garage exists but is Inactive. Request a reinstatement review instead of a new onboarding (BRD 4.6.3).'; act='<button class="btn p" onclick="requestReinstate(\''+m.id+'\')">Request reinstatement</button>'; }
+    else if(m.status==='Rejected' && m.rejection && m.rejection.code==='Screening failed'){ msg='This request cannot proceed.'; }
+    else if(m.status==='Rejected'){ msg='A previous request was declined ('+esc(m.rejection.code)+'). A new request may be raised only with new information — open the previous record first.'; act='<button class="btn g" onclick="openVendor(\''+m.id+'\')">Open previous request</button>'; }
+    else if(m.status==='Soft Blocked'||m.status==='Blocked'){ msg='This request cannot proceed.'; }
+    else { msg='An onboarding request is already open for this garage ('+esc(m.status)+'). A second request is not started.'; act='<button class="btn s" onclick="openVendor(\''+m.id+'\')">Open existing request</button>'; }
+    return '<div class="banner bad"><div style="flex:1"><b>Exact match on '+r.fields.join(', ')+' — creation stopped</b>'
+      +'<div style="margin:6px 0 8px"><span class="mono">'+m.id+'</span> · '+esc(m.name)+' · CR '+mask(m.d.crNo)+' · '+pill(m.status)+'</div>'+msg+'<div style="margin-top:10px;display:flex;gap:8px">'+act+'</div></div></div>';
+  }
+  if(r.level==='probable'){
+    return '<div class="banner warn"><div style="flex:1"><b>Probable match on '+r.fields.join(' + ')+' — sent to the data steward</b>'
+      +'<div style="margin:6px 0">'+esc(m.name)+' · CR '+mask(m.d.crNo)+' · '+pill(m.status)+'</div>'
+      +'The data steward compares both records and decides. You can save a draft; it cannot be submitted until the decision is recorded.'
+      +'<div style="margin-top:10px;display:flex;gap:8px;flex-wrap:wrap"><button class="btn s" onclick="createDraft(\'probable\')">Save as draft (held)</button>'
+      +((S.role==='DS'||S.role==='SA')?'<button class="btn g" onclick="createDraft(\'cleared\')">Data steward: different party — continue</button><button class="btn bad" onclick="openVendor(\''+m.id+'\')">Data steward: same party — reuse</button>':'')+'</div></div></div>';
+  }
+  var note = r.level==='possible' ? 'Possible match on '+r.fields.join(', ')+' with '+esc(m.name)+' — logged for the data steward to review later. Creation is allowed.' : 'No existing garage matches these details.';
+  return '<div class="banner ok"><div style="flex:1"><b>No duplicate found</b>'+note+'<div style="margin-top:10px"><button class="btn p" onclick="createDraft(\''+r.level+'\')">Start application →</button></div></div></div>';
+}
+function requestReinstate(id){ var v=V(id); log(v,'Reinstatement review requested from the duplicate check (new panel entry planned)'); toast('Reinstatement review requested for '+v.name); go('list'); }
+function createDraft(level){
+  var s=S.start, n=1+VENDORS.reduce(function(a,v){ return Math.max(a, parseInt(v.id.slice(4),10)); },0);
+  var id='VND-'+String(n).padStart(4,'0');
+  var d=Object.assign({}, AGR_DEFAULTS, { legalName:s.legalName.trim(), crNo:s.crNo.trim(), tlNo:s.tlNo.trim(), estNo:s.estNo.trim(), pcMobile:s.mobile.trim(), pcEmail:s.email.trim(), regCountry:'Qatar', currency:'QAR', method:'Bank transfer', terms:'30', agFrom:today(), agRef:'AGR-GAR-'+today().slice(0,4)+'-'+id.slice(-4), consent:['SMS','Email'], owners:[{name:'',id:'',exp:'',nat:'',pct:''}], signatories:[{name:'',id:'',auth:''}] });
+  d.agTo=addYears(d.agFrom,1);
+  var v={ id:id, type:'garage', name:s.legalName.trim().replace(/\s+W\.?L\.?L\.?$/i,''), status:'Draft', createdBy:me().user, createdAt:nowStamp(), updatedAt:nowStamp(), step:0,
+    flags:{ sanctions:'Not started', kyc:'Not started', aml:'Not screened', edd:'Not required', bank:'Not verified' }, docs:{}, activity:[], d:d, dup:{ level:level } };
+  v.activity.push({ t:nowStamp(), who:me().user+' · '+me().label, what:'Duplicate check: '+({none:'no match',possible:'possible match logged',probable:'probable match — held for the data steward',cleared:'probable match — data steward recorded "different party"'}[level])+'. Draft created with Volaris ID '+id });
+  VENDORS.push(v); save(); S.step=0; go('wizard', id); toast('Draft '+id+' created');
+}
+
+/* ════════════ Wizard ════════════ */
+function viewWizard(v){
+  var errs=allErrors(v), st=STEPS[S.step];
+  var stepper='<div class="stepper">'+STEPS.map(function(s,i){
+    var e=s.id!=='review'&&errs[s.id].length, cls=i===S.step?'on':(i<(v.maxStep||0)||i<S.step)?(e?'err':'done'):'';
+    return '<div class="st '+cls+'" onclick="gotoStep('+i+')"><span class="n">'+(cls==='done'?'✓':cls==='err'?'!':i+1)+'</span>'+s.label+'</div>'; }).join('')+'</div>';
+  var banner='';
+  if(v.status==='Returned for Correction') banner='<div class="banner warn"><div><b>Returned for correction</b>'+esc(v.returnNote)+'</div></div>';
+  if(v.dup && v.dup.level==='probable') banner+='<div class="banner warn"><div><b>Held: probable duplicate</b>The data steward has to decide before this application can be submitted.</div></div>';
+  var body = st.id==='review' ? reviewStep(v, errs) : st.id==='docs' ? docsStep(v) : formStep(st.id, v);
+  return '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;gap:10px;flex-wrap:wrap"><button class="btn g sm" onclick="go(\'list\')">← Vendor Onboarding</button>'
+    +'<div class="muted" style="font-size:12.5px"><span class="mono" style="color:var(--vd);font-weight:700">'+v.id+'</span> · '+pill(v.status)+' · Garage</div></div>'
+    +stepper+banner+'<div class="card">'+body+'</div>'
+    +'<div class="actionbar"><div class="msg" id="wz-msg"></div>'
+    +(S.step>0?'<button class="btn g" onclick="gotoStep('+(S.step-1)+')">← Back</button>':'')
+    +'<button class="btn s" onclick="saveDraft()">Save draft</button>'
+    +(st.id!=='review'?'<button class="btn p" onclick="nextStep()">Continue →</button>':'')
+    +'</div>';
+}
+function gotoStep(i){ var v=V(S.id); var visited=i<(v.maxStep||0); v.maxStep=Math.max(v.maxStep||0,S.step); S.step=i; v.step=i; S.showErr=visited; save(); render(); window.scrollTo(0,0); }
+function nextStep(){
+  var v=V(S.id), id=STEPS[S.step].id, e=stepErrors(id,v);
+  if(e.length){ S.showErr=true; render(); document.getElementById('wz-msg').textContent=e.length+' item(s) to fix on this step'; var first=document.querySelector('.f.bad, .doc .err, .rep-err'); if(first) first.scrollIntoView({behavior:'smooth',block:'center'}); return; }
+  S.showErr=false; v.maxStep=Math.max(v.maxStep||0,S.step+1); S.step++; v.step=S.step; save(); render(); window.scrollTo(0,0);
+}
+function saveDraft(){ var v=V(S.id); log(v,'Draft saved (step: '+STEPS[S.step].label+')'); toast('Draft saved'); }
+function setD(fid, val, rerender){ var v=V(S.id); v.d[fid]=val; if(fid==='legalName'){ v.name=val.replace(/\s+W\.?L\.?L\.?$/i,'')||v.name; }
+  if(fid==='agFrom'||fid==='agYears'){ v.d.agTo=addYears(v.d.agFrom||today(), parseInt(v.d.agYears,10)||1); rerender=true; }
+  if(fid==='agTemplate' && val==='Agency Workshop Agreement' && v.d.category!=='Agency') toast('Tip: Agency template is meant for category Agency');
+  save(); if(rerender) render(); }
+function toggleChip(fid, opt){ var v=V(S.id), a=(v.d[fid]||[]).slice(), i=a.indexOf(opt); if(i>-1) a.splice(i,1); else a.push(opt);
+  if(fid==='brands'){ if(opt==='All makes'&&i<0) a=['All makes']; else a=a.filter(function(x){return x!=='All makes'||opt==='All makes';}); }
+  v.d[fid]=a; save(); render(); }
+function fieldHtml(f, v){
+  var d=v.d, val=d[f.id], e=S.showErr?fieldErr(f,d):'', req=isReq(f,d), cls='f'+(f.full||f.t==='chips'?' full':'')+(e?' bad':'');
+  var lab='<label>'+esc(f.l)+(req?' <span class="req">*</span>':'')+'</label>', inp='';
+  var rr=['taxNo','holder','iban','legalName','currency','rUsed','agFrom'].indexOf(f.id)>-1||f.t==='date';
+  var on='oninput="setD(\''+f.id+'\',this.value)"'+(rr?' onchange="setD(\''+f.id+'\',this.value,true)"':'');
+  if(f.t==='select') inp='<select onchange="setD(\''+f.id+'\',this.value,true)"><option value="">Select…</option>'+f.o.map(function(o){return '<option'+(val===o?' selected':'')+'>'+esc(o)+'</option>';}).join('')+'</select>';
+  else if(f.t==='chips') inp='<div class="chips">'+f.o.map(function(o){return '<span class="c'+((val||[]).indexOf(o)>-1?' on':'')+'" onclick="toggleChip(\''+f.id+'\',\''+o.replace(/'/g,"\\'")+'\')">'+esc(o)+'</span>';}).join('')+'</div>';
+  else if(f.t==='radio') inp='<div class="radio">'+f.o.map(function(o){return '<span class="c'+(val===o?' on':'')+'" onclick="setD(\''+f.id+'\',\''+o+'\',true)">'+esc(o)+'</span>';}).join('')+'</div>';
+  else inp='<input type="'+(f.t==='date'?'date':f.t==='number'?'number':f.t==='email'?'email':'text')+'" value="'+esc(val)+'"'+(f.ro?' readonly':'')+(f.dir?' dir="rtl"':'')+' '+(f.ro?'':on)+'>';
+  if(f.pin) inp='<div style="display:flex;gap:6px">'+inp.replace('<input','<input style="flex:1"')+'<button class="btn g sm" type="button" onclick="pickPin()">📍 Pick on map</button></div>';
+  var extra='';
+  if(f.iban && val){ extra = ibanValid(val)?'<div class="hint" style="color:var(--ok);font-weight:700">✓ Valid IBAN · '+esc(groupIban(val))+'</div>':''; }
+  if(f.id==='holder' && val && d.legalName){ extra = normName(val)===normName(d.legalName) ? '<div class="hint" style="color:var(--ok);font-weight:700">✓ Matches the legal name</div>' : '<div class="hint" style="color:var(--warn);font-weight:700">⚠ Differs from the legal name — needs Finance approval in writing (BR-13)</div>'; }
+  if(f.id==='usesPortal' && val==='No') extra='<div class="hint" style="color:var(--warn);font-weight:700">Agency mode: no Garage Portal user; the Claims Handler works for this workshop</div>';
+  return '<div class="'+cls+'">'+lab+inp+(e?'<div class="err">'+e+'</div>':f.hint?'<div class="hint">'+esc(f.hint)+'</div>':'')+extra+'</div>';
+}
+function pickPin(){ var lat=(25.15+Math.random()*0.25).toFixed(4), lng=(51.40+Math.random()*0.18).toFixed(4); setD('gps', lat+', '+lng, true); toast('Pin dropped at '+lat+', '+lng); }
+function formStep(stepId, v){
+  var out='', open=false;
+  F[stepId].forEach(function(f){
+    if(f.h){ if(open) out+='</div>'; out+='<div class="subhead">'+esc(f.h)+'</div><div class="grid">'; open=true; return; }
+    out+=fieldHtml(f,v);
+  });
+  if(open) out+='</div>';
+  if(stepId==='contacts') out+=ownersHtml(v);
+  if(stepId==='bank' && v.d.holder && v.d.legalName && normName(v.d.holder)!==normName(v.d.legalName)) out='<div class="banner warn"><div><b>Account holder differs from the legal name</b>The application can be submitted; Finance must approve the difference before activation.</div></div>'+out;
+  return out;
+}
+function ownersHtml(v){
+  var d=v.d, sErr=S.showErr?stepErrors('contacts',v).filter(function(e){return e.id==='owners'||e.id==='signatories';}):[];
+  var tot=(d.owners||[]).reduce(function(a,o){return a+(+o.pct||0);},0);
+  var o='<div class="subhead">Owners (20% or more, or control) — screened for KYC / AML</div><div class="rep-h"><span>Name</span><span>QID / passport no.</span><span>ID expiry</span><span>Nationality</span><span>%</span><span></span></div>'
+    +(d.owners||[]).map(function(x,i){ return '<div class="rep">'
+      +'<input value="'+esc(x.name)+'" placeholder="Full name" oninput="setRow(\'owners\','+i+',\'name\',this.value)">'
+      +'<input value="'+esc(x.id)+'" oninput="setRow(\'owners\','+i+',\'id\',this.value)">'
+      +'<input type="date" value="'+esc(x.exp)+'" onchange="setRow(\'owners\','+i+',\'exp\',this.value)">'
+      +'<input value="'+esc(x.nat)+'" oninput="setRow(\'owners\','+i+',\'nat\',this.value)">'
+      +'<input type="number" value="'+esc(x.pct)+'" oninput="setRow(\'owners\','+i+',\'pct\',this.value)">'
+      +'<button class="x" onclick="delRow(\'owners\','+i+')">×</button></div>'; }).join('')
+    +'<div style="display:flex;justify-content:space-between;align-items:center"><button class="btn g sm" onclick="addRow(\'owners\')">+ Add owner</button><span class="muted" style="font-size:12px">Total ownership listed: <b>'+tot+'%</b></span></div>'
+    +'<div class="subhead">Authorised signatories</div><div class="rep-h sig"><span>Name</span><span>QID / passport no.</span><span>Authority</span><span></span></div>'
+    +(d.signatories||[]).map(function(x,i){ return '<div class="rep sig">'
+      +'<input value="'+esc(x.name)+'" placeholder="Full name" oninput="setRow(\'signatories\','+i+',\'name\',this.value)">'
+      +'<input value="'+esc(x.id)+'" oninput="setRow(\'signatories\','+i+',\'id\',this.value)">'
+      +'<select onchange="setRow(\'signatories\','+i+',\'auth\',this.value)"><option value="">Select…</option>'+['All','Sign agreement','Instruct and invoice','Change bank details'].map(function(a){return '<option'+(x.auth===a?' selected':'')+'>'+a+'</option>';}).join('')+'</select>'
+      +'<button class="x" onclick="delRow(\'signatories\','+i+')">×</button></div>'; }).join('')
+    +'<button class="btn g sm" onclick="addRow(\'signatories\')">+ Add signatory</button>';
+  if(sErr.length) o+='<div class="banner bad rep-err" style="margin-top:12px"><div>'+sErr.map(function(e){return esc(e.l)+': '+esc(e.e);}).join('<br>')+'</div></div>';
+  return o;
+}
+function setRow(k,i,f,val){ var v=V(S.id); v.d[k][i][f]=val; save(); }
+function addRow(k){ var v=V(S.id); v.d[k]=v.d[k]||[]; v.d[k].push(k==='owners'?{name:'',id:'',exp:'',nat:'',pct:''}:{name:'',id:'',auth:''}); save(); render(); }
+function delRow(k,i){ var v=V(S.id); v.d[k].splice(i,1); save(); render(); }
+function docsStep(v){
+  var need=DOCS.filter(function(x){return docNeeded(x,v.d);}), up=need.filter(function(x){return v.docs[x.id]&&v.docs[x.id].file;}).length, pct=need.length?Math.round(up*100/need.length):100;
+  var errs=S.showErr?stepErrors('docs',v):[];
+  return '<div style="display:flex;justify-content:space-between;font-size:12.5px;font-weight:700;margin-bottom:6px"><span>'+up+' / '+need.length+' required documents uploaded</span><span style="color:var(--vd)">'+pct+'%</span></div><div class="bar"><i style="width:'+pct+'%"></i></div>'
+    +'<div class="muted" style="font-size:11.5px;margin:8px 0 6px">PDF, JPG or PNG · up to 5 MB each · a document with a past expiry date cannot be accepted</div>'
+    +DOCS.map(function(x){
+      var u=v.docs[x.id]||{}, needed=docNeeded(x,v.d), er=errs.find(function(e){return e.id==='doc-'+x.id;});
+      var tag = x.rule==='A' ? '<span class="pill" style="background:rgba(124,58,237,.1);color:#7c3aed">Before activation</span>'
+        : needed ? '<span class="pill" style="background:rgba(220,38,38,.07);color:var(--bad)">Required'+(x.rule==='C'?' — '+x.why:'')+'</span>'
+        : x.rule==='C' ? '<span class="pill" style="background:#f1f5f9;color:#64748b">Only if '+x.why+'</span>' : '<span class="pill" style="background:#f1f5f9;color:#64748b">Optional</span>';
+      return '<div class="doc"><span class="dot'+(u.file?' ok':'')+'"></span><span class="nm">'+esc(x.label)+'<br>'+tag+'</span>'
+        +(x.exp?'<label class="muted" style="font-size:11.5px">Expiry <input type="date" value="'+esc(u.expiry||'')+'" onchange="setDoc(\''+x.id+'\',\'expiry\',this.value)"></label>':'')
+        +(u.file?'<span class="muted" style="font-size:12px">📎 '+esc(u.file)+'</span>':'')
+        +'<label class="btn '+(u.file?'g':'s')+' sm" style="cursor:pointer">'+(u.file?'Replace':'⬆ Upload')+'<input type="file" accept=".pdf,.jpg,.jpeg,.png" style="display:none" onchange="uploadDoc(\''+x.id+'\',this)"></label>'
+        +(er?'<div class="err" style="width:100%;font-size:11.5px;color:var(--bad);font-weight:600">'+esc(er.e)+'</div>':'')+'</div>';
+    }).join('');
+}
+function uploadDoc(id, input){
+  var file=input.files&&input.files[0]; if(!file) return;
+  if(file.size>5*1024*1024){ toast('File is larger than 5 MB'); return; }
+  if(!/\.(pdf|jpe?g|png)$/i.test(file.name)){ toast('Only PDF, JPG or PNG'); return; }
+  var v=V(S.id); v.docs[id]=Object.assign({}, v.docs[id]||{}, { file:file.name }); save(); render(); toast('Uploaded: '+file.name);
+}
+function setDoc(id,k,val){ var v=V(S.id); if(k==='expiry'&&val&&val<=today()){ toast('Expiry is in the past — upload a valid document'); }
+  v.docs[id]=Object.assign({}, v.docs[id]||{}); v.docs[id][k]=val; save(); render(); }
+function reviewStep(v, errs){
+  var total=0, out='<div class="subhead">Review and submit</div>';
+  STEPS.forEach(function(s,i){ if(s.id==='review') return; var e=errs[s.id]; total+=e.length;
+    out+='<div class="review-sec"><b>'+(i+1)+'. '+s.label+'</b><span>'+(e.length?'<span class="pill" style="background:rgba(220,38,38,.07);color:var(--bad)">'+e.length+' to fix</span>':'<span class="pill" style="background:rgba(21,128,61,.1);color:var(--ok)">Complete</span>')+' <button class="btn g sm" onclick="gotoStep('+i+')">Edit</button></span></div>';
+    if(e.length) out+='<div style="font-size:12.5px;color:var(--bad);margin-bottom:6px">'+e.slice(0,6).map(function(x){return '• '+esc(x.l)+': '+esc(x.e);}).join('<br>')+(e.length>6?'<br>• …':'')+'</div>';
+    else out+='<div class="kv" style="margin-bottom:6px">'+summary(s.id, v)+'</div>';
+  });
+  var held = v.dup && v.dup.level==='probable';
+  out+='<div style="margin-top:16px;padding-top:12px;border-top:1px solid var(--line)"><label class="check"><input type="checkbox" id="decl"'+(v.decl?' checked':'')+' onchange="V(S.id).decl=this.checked;save();render()"> I have checked the details and documents against the originals.</label></div>'
+    +'<div class="actionbar" style="margin-top:14px">'
+    +(held?'<div class="msg">Held: the data steward has to decide the probable duplicate first.</div>':total?'<div class="msg">'+total+' item(s) to fix before submitting.</div>':'<div class="msg"></div>')
+    +'<button class="btn p" '+((total||held||!v.decl)?'disabled':'')+' onclick="submitApp()">Submit for empanelment approval</button></div>';
+  return out;
+}
+function summary(stepId, v){
+  var d=v.d, kv=function(a,b){return '<div><span>'+a+'</span><span>'+esc(b||'—')+'</span></div>';};
+  if(stepId==='profile') return kv('Legal name',d.legalName)+kv('CR number',d.crNo)+kv('Category',d.category)+kv('Brands',(d.brands||[]).join(', '))+kv('Uses Garage Portal',d.usesPortal)+kv('City · region',(d.city||'')+' · '+(d.region||''));
+  if(stepId==='services') return kv('Services',(d.services||[]).join(', '))+kv('Vehicle classes',(d.vclass||[]).join(', '))+kv('Capacity',d.capacity+' / month · '+d.bays+' bays')+kv('Hours',d.hours);
+  if(stepId==='contacts') return kv('Primary contact',d.pcName)+kv('Claims SPOC',d.spName+' · '+d.spMobile)+kv('Owners',(d.owners||[]).filter(function(o){return o.name;}).map(function(o){return o.name+' '+o.pct+'%';}).join(', '))+kv('Signatories',(d.signatories||[]).filter(function(s){return s.name;}).map(function(s){return s.name;}).join(', '));
+  if(stepId==='bank') return kv('Bank',d.bankName)+kv('IBAN',groupIban(d.iban))+kv('Account holder',d.holder)+kv('Payment terms',d.terms+' days');
+  if(stepId==='docs') return kv('Uploaded',Object.keys(v.docs).filter(function(k){return v.docs[k].file;}).length+' documents')+kv('Signed agreement',hasSignedAgreement(v)?'Uploaded':'Before activation');
+  if(stepId==='agreement') return kv('Template',d.agTemplate)+kv('Validity',fmtD(d.agFrom)+' – '+fmtD(d.agTo))+kv('Labour (gen / mech / elec)',d.rGen+' / '+d.rMech+' / '+d.rElec+' QAR')+kv('Repair TAT minor / major',d.sMinor+' / '+d.sMajor+' days');
+  return '';
+}
+function submitApp(){
+  var v=V(S.id), wasReturned=v.status==='Returned for Correction';
+  v.status='Pending Empanelment Approval'; v.flags.sanctions='In progress'; v.returnNote=null; v.decl=false;
+  log(v, wasReturned?'Corrections made and resubmitted for empanelment approval':'Application submitted for empanelment approval');
+  log(v, 'Preliminary sanctions check sent to Compliance');
+  S.recTab='overview'; go('record', v.id); toast('Submitted · Compliance preliminary sanctions check started');
+}
+
+/* ════════════ Record ════════════ */
+var TRACK=['Application','Empanelment approval','KYC & AML','Bank & activation','Live'];
+function trackIdx(v){ return { 'Draft':0,'Returned for Correction':0,'Pending Empanelment Approval':1,'Pending KYC':2,'Pending Approval':3,'Active':5,'Inactive':5 }[v.status]; }
+function viewRecord(v){
+  var idx=trackIdx(v), rej=v.status==='Rejected';
+  var rejAt = rej ? (v.rejection.code==='Screening failed'?2:1) : -1;
+  var track='<div class="track">'+TRACK.map(function(t,i){
+    var c = rej ? (i<rejAt?'done':i===rejAt?'x':'') : (i<idx?'done':i===idx?'on':'');
+    return '<div class="s '+c+'"><span class="d">'+(c==='done'?'✓':c==='x'?'✗':i+1)+'</span>'+t+'</div>'; }).join('')+'</div>';
+  var tabs=[['overview','Overview'],['services','Services'],['contacts','Contacts & owners'],['bank','Bank'],['docs','Documents'],['agreement','Agreement & SLA'],['screening','Screening'],['activity','Activity']];
+  var pw=pendingWith(v);
+  return '<div style="margin-bottom:12px"><button class="btn g sm" onclick="go(\'list\')">← Vendor Onboarding</button></div>'
+    +'<div class="rec-head"><div class="t"><h2>'+esc(v.name)+'</h2><div class="meta">Garage · '+esc(v.d.category||'—')+' · '+esc(v.d.city||'—')+' · created by '+esc(v.createdBy)+' on '+fmtD(v.createdAt)+'</div>'
+    +'<div class="ids"><div>Vendor ID<b>'+v.id+'</b></div><div>Party ID<b>'+(v.partyId||'—')+'</b></div><div>Supplier Code<b>'+(v.supplierCode||'—')+'</b></div><div>CRM ID<b>'+(v.crmId||'—')+'</b></div></div></div>'
+    +'<div style="text-align:right"><span style="background:#fff;border-radius:999px;display:inline-block">'+pill(v.status)+'</span><div style="font-size:12px;margin-top:8px;opacity:.8">Pending with</div><div style="font-weight:800">'+esc(pw)+'</div></div></div>'
+    +track
+    +'<div class="rec-grid"><div><div class="tabs">'+tabs.map(function(t){return '<div class="tab'+(S.recTab===t[0]?' on':'')+'" onclick="S.recTab=\''+t[0]+'\';render()">'+t[1]+'</div>';}).join('')+'</div>'
+    +recTab(v)+'</div><div>'+actionPanel(v)+flagsCard(v)+'</div></div>';
+}
+function kvs(rows){ return '<div class="kv">'+rows.map(function(r){return '<div><span>'+r[0]+'</span><span>'+(r[2]?r[1]:esc(r[1]||'—'))+'</span></div>';}).join('')+'</div>'; }
+function recTab(v){
+  var d=v.d;
+  if(S.recTab==='overview'){
+    var out='';
+    if(v.status==='Returned for Correction') out+='<div class="banner warn"><div><b>Returned for correction</b>'+esc(v.returnNote)+'</div></div>';
+    if(v.status==='Rejected') out+='<div class="banner bad"><div><b>Rejected — '+esc(v.rejection.code)+'</b>'+(v.rejection.code==='Screening failed'&&!(S.role==='CO'||S.role==='SA')?'This request cannot proceed.':esc(v.rejection.note||''))+'</div></div>';
+    if(v.kycCorrection) out+='<div class="banner warn"><div><b>KYC correction required</b>'+esc(v.kycCorrection)+(v.kycDue?' · correct by '+fmtD(v.kycDue):'')+'</div></div>';
+    if(v.status==='Active') out+=goLiveCard(v);
+    out+='<div class="card"><h3>Garage profile</h3>'+kvs([['Legal name',d.legalName],['Arabic name',d.arabicName],['Trade name',d.tradeName],['Legal form',d.legalForm],['CR number',d.crNo],['CR expiry',fmtD(d.crExpiry)],['Trade licence',d.tlNo],['Trade licence expiry',fmtD(d.tlExpiry)],['Establishment no.',d.estNo],['Tax no.',d.taxNo],['Category',d.category],['Brands',(d.brands||[]).join(', ')],['Uses Garage Portal',d.usesPortal],['Address','Bldg '+(d.building||'—')+', St '+(d.street||'—')+', Zone '+(d.zone||'—')+', '+(d.city||'')],['Region',d.region],['Map pin',d.gps]])+'</div>';
+    return out;
+  }
+  if(S.recTab==='services') return '<div class="card"><h3>Services and capacity</h3>'+kvs([['Services',(d.services||[]).join(', ')],['Vehicle classes',(d.vclass||[]).join(', ')],['Capacity',(d.capacity||'—')+' vehicles / month'],['Bays',d.bays],['Working hours',d.hours],['Courtesy car',d.courtesy],['EV-certified technicians',d.evCert]])+'</div>';
+  if(S.recTab==='contacts') return '<div class="card"><h3>Contacts</h3>'+kvs([['Primary contact',(d.pcName||'—')+' · '+(d.pcDesig||'')],['Mobile · email',(d.pcMobile||'—')+' · '+(d.pcEmail||'—')],['Claims SPOC',(d.spName||'—')+' · '+(d.spTitle||'')],['SPOC mobile · WhatsApp',(d.spMobile||'—')+' · '+(d.spWhatsapp||'—')],['SPOC email',d.spEmail],['Availability',d.spAvail],['Finance contact',(d.fcName||'—')+' · '+(d.fcMobile||'—')],['Consent',(d.consent||[]).join(', ')]])+'</div>'
+    +'<div class="card"><h3>Owners and signatories</h3><table><thead><tr><th>Owner</th><th>ID</th><th>ID expiry</th><th>Nationality</th><th>%</th></tr></thead><tbody>'+(d.owners||[]).filter(function(o){return o.name;}).map(function(o){return '<tr><td><b>'+esc(o.name)+'</b></td><td class="mono" style="font-size:12px">'+esc(o.id)+'</td><td'+(o.exp&&o.exp<=today()?' style="color:var(--bad);font-weight:700"':'')+'>'+fmtD(o.exp)+'</td><td>'+esc(o.nat)+'</td><td>'+esc(o.pct)+'</td></tr>';}).join('')+'</tbody></table>'
+    +'<table style="margin-top:12px"><thead><tr><th>Signatory</th><th>ID</th><th>Authority</th></tr></thead><tbody>'+(d.signatories||[]).filter(function(o){return o.name;}).map(function(o){return '<tr><td><b>'+esc(o.name)+'</b></td><td class="mono" style="font-size:12px">'+esc(o.id)+'</td><td>'+esc(o.auth)+'</td></tr>';}).join('')+'</tbody></table></div>';
+  if(S.recTab==='bank'){
+    var match=normName(d.holder)===normName(d.legalName);
+    return '<div class="card"><h3>Bank and payment</h3>'+(match?'':'<div class="banner warn"><div><b>Account holder differs from the legal name</b>'+esc(d.holder)+' vs '+esc(d.legalName)+'. Finance approval in writing is needed (BR-13).'+(v.nameMismatchOk?' <b style="display:inline;color:var(--ok)">Approved by Finance.</b>':'')+'</div></div>')
+      +kvs([['Bank',d.bankName],['Branch',d.branch],['Account holder',d.holder],['IBAN','<span class="mono">'+esc(groupIban(d.iban))+'</span>'+(d.iban&&ibanValid(d.iban)?' <span style="color:var(--ok)">✓</span>':''),true],['SWIFT / BIC',d.swift],['Currency',d.currency],['Method',d.method],['Payment terms',(d.terms||'—')+' days from invoice submission'],['Self-billing',d.selfBilling],['Verification',v.flags.bank],['Call-back',v.callback?v.callback.spoke+' on '+fmtT(v.callback.at):'—']])+'</div>';
+  }
+  if(S.recTab==='docs'){
+    return '<div class="card"><h3>Documents</h3>'+DOCS.map(function(x){ var u=v.docs[x.id]||{}, needed=docNeeded(x,d)||x.rule==='A';
+      if(!needed && !u.file) return '';
+      var expS = u.expiry ? (u.expiry<=today()?'<span style="color:var(--bad);font-weight:700">Expired '+fmtD(u.expiry)+'</span>':u.expiry<=addDays(today(),30)?'<span style="color:var(--warn);font-weight:700">Expires '+fmtD(u.expiry)+'</span>':'Expires '+fmtD(u.expiry)) : '';
+      var canUp = (x.id==='agr' && v.status==='Pending Approval' && (S.role==='NE'||S.role==='SA')) || (v.kycCorrection && x.id==='ids' && (S.role==='NE'||S.role==='SA'));
+      return '<div class="doc"><span class="dot'+(u.file?' ok':'')+'"></span><span class="nm">'+esc(x.label)+(x.rule==='A'?' <span class="pill" style="background:rgba(124,58,237,.1);color:#7c3aed">Before activation</span>':'')+'</span><span class="muted" style="font-size:12px">'+(u.file?'📎 '+esc(u.file):'Not uploaded')+'</span><span style="font-size:12px">'+expS+'</span>'
+        +(canUp?'<label class="btn s sm" style="cursor:pointer">⬆ Upload<input type="file" accept=".pdf,.jpg,.jpeg,.png" style="display:none" onchange="recUpload(\''+x.id+'\',this)"></label>':'')+'</div>'; }).join('')+'</div>';
+  }
+  if(S.recTab==='agreement') return '<div class="card"><h3>Agreement</h3>'+kvs([['Template',d.agTemplate],['Reference',d.agRef],['Effective',fmtD(d.agFrom)],['End',fmtD(d.agTo)],['Discount',(d.agDiscount||'—')+'%'],['Signed copy',hasSignedAgreement(v)?v.docs.agr.file:'Not uploaded']])+'</div>'
+    +'<div class="card"><h3>Rate card</h3>'+kvs([['Labour general / mech / elec',d.rGen+' / '+d.rMech+' / '+d.rElec+' QAR per hour'],['Paint per panel',d.rPaint+' QAR'],['Denting per panel',d.rDent+' QAR'],['Metallic surcharge',d.rMetallic+'%'],['OEM discount minimum',d.rOem+'%'],['Aftermarket parts',d.rAfter],['Used parts',d.rUsed+(d.rUsed==='Yes'?' (vehicles ≥ '+d.rUsedAge+' years)':'')],['Consumables',d.rCons+'% of labour · cap '+d.rConsCap+'%'],['EV loading · luxury multiplier',(d.rEv||'—')+'% · ×'+(d.rLux||'—')]])+'</div>'
+    +'<div class="card"><h3>Service levels and penalties</h3>'+kvs([['Accept allocation',d.sAccept+' h'],['Estimate after receipt',d.sEstimate+' h'],['Minor / major repair',d.sMinor+' / '+d.sMajor+' days'],['Status update',' every '+d.sUpdate+' h'],['Delivery adherence',d.sDelivery+'%'],['Minimum CSAT',d.sCsat],['TAT breach penalty',(d.pTat||'—')+'% per day, cap '+(d.pCap||'—')+'%'],['Repeat-breach threshold',d.pRepeat]])+'</div>';
+  if(S.recTab==='screening') return '<div class="card"><h3>Screening</h3>'+kvs([['Preliminary sanctions check',v.flags.sanctions],['KYC flag',v.flags.kyc],['AML flag',amlLabel(v)],['EDD flag',(S.role==='CO'||S.role==='SA'||isApprover())?v.flags.edd:'—'],['KYC ID',v.kycId||'—'],['AML ID',(S.role==='CO'||S.role==='SA')?(v.amlId||'—'):'Compliance only'],['Risk rating',v.risk||'—'],['Screened',((v.d.owners||[]).filter(function(o){return o.name;}).length)+' owner(s) · '+((v.d.signatories||[]).filter(function(o){return o.name;}).length)+' signatory(ies) · the garage']])
+    +((S.role==='CO'||S.role==='SA')?'':'<div class="muted" style="font-size:12px;margin-top:10px">The AML result and its reasons are visible to Compliance only (BR-42).</div>')+'</div>';
+  if(S.recTab==='activity') return '<div class="card"><h3>Activity (audit trail)</h3><div class="timeline">'+v.activity.slice().reverse().map(function(e){return '<div class="ev"><span class="dot"></span><div><div style="font-size:13px;font-weight:600">'+esc(e.what)+'</div><div class="w">'+esc(e.who)+' · '+fmtT(e.t)+'</div></div></div>';}).join('')+'</div></div>';
+  return '';
+}
+function goLiveCard(v){
+  var portal=v.d.usesPortal==='Yes';
+  return '<div class="card" style="border:1.5px solid rgba(21,128,61,.25)"><h3 style="color:var(--ok);border-color:rgba(21,128,61,.2)">Live on the panel</h3>'
+    +'<div class="flag"><span>Panel status</span><b>'+esc(v.panel?v.panel.status:'Panel')+' · '+fmtD(v.panel&&v.panel.from)+' – '+fmtD(v.panel&&v.panel.to)+'</b></div>'
+    +'<div class="flag"><span>Claims Core garage master</span><b style="color:var(--ok)">✓ Available for allocation (Step 4)</b></div>'
+    +'<div class="flag"><span>Transfer letter SPOC</span><b>'+esc(v.d.spName||'—')+'</b></div>'
+    +'<div class="flag"><span>Garage Portal</span><b style="color:'+(portal?'var(--ok)':'var(--warn)')+'">'+(portal?'✓ Admin invite sent to '+esc(v.d.spEmail||'SPOC'):'Agency mode — no portal user')+'</b></div>'
+    +'<div class="flag"><span>Welcome email with signed agreement</span><b style="color:var(--ok)">✓ Sent</b></div></div>';
+}
+function flagsCard(v){
+  var r=function(a,b,c){ return '<div class="flag"><span class="muted">'+a+'</span><b style="color:'+(c||'inherit')+'">'+esc(b)+'</b></div>'; };
+  var col=function(s){ return /Success|Clear|Verified|Accepted/.test(s)?'var(--ok)':/Failed|Flagged|Expired|Declined/.test(s)?'var(--bad)':/progress|review|call-back/i.test(s)?'var(--warn)':'var(--text-3)'; };
+  return '<div class="card"><h3>Flags</h3>'+r('Sanctions check',v.flags.sanctions,col(v.flags.sanctions))+r('KYC flag',v.flags.kyc,col(v.flags.kyc))+r('AML flag',amlLabel(v),col(amlLabel(v)))+r('Bank verification',v.flags.bank,col(v.flags.bank))+r('Signed agreement',hasSignedAgreement(v)?'Uploaded':'Not uploaded',hasSignedAgreement(v)?'var(--ok)':'var(--text-3)')+'</div>';
+}
+function recUpload(id,input){ var f=input.files&&input.files[0]; if(!f) return; var v=V(S.id); v.docs[id]=Object.assign({},v.docs[id]||{},{file:f.name, expiry:id==='agr'?v.d.agTo:addDays(today(),365)}); log(v,'Uploaded '+DOCS.find(function(x){return x.id===id;}).label+': '+f.name); render(); toast('Uploaded '+f.name); }
+
+/* ─── Action panel ─── */
+function btn(label, cls, fn, dis, tip){ return '<button class="btn '+cls+'" '+(dis?'disabled title="'+esc(tip||'')+'"':'')+' onclick="'+fn+'">'+label+'</button>'; }
+function actionPanel(v){
+  var r=S.role, sa=r==='SA', out='', makerBlock=isMaker(v), mk='The maker cannot approve their own request (BR-11) — switch to another approver';
+  var sec=function(who, html, note){ out+='<div class="who">'+who+'</div>'+(note?'<div class="muted" style="font-size:11.5px;margin-bottom:6px">'+note+'</div>':'')+'<div class="row">'+html+'</div>'; };
+  switch(v.status){
+    case 'Draft': case 'Returned for Correction':
+      if(r==='NE'||sa) sec('Network Executive', btn('Continue editing','p',"S.step="+(v.step||0)+";go('wizard','"+v.id+"')")+btn('Withdraw','bad',"askReason('withdraw','"+v.id+"')"));
+      break;
+    case 'Pending Empanelment Approval':
+      if(r==='CO'||sa){ if(v.flags.sanctions!=='Clear') sec('Compliance — preliminary sanctions check', btn('Clear','ok',"act('sanClear','"+v.id+"')")+btn('Refer / hold','bad',"askReason('sanRefer','"+v.id+"')"), v.flags.sanctions==='Referred'?'Referred: approval held until Compliance clears it.':'Garage, owners and signatories checked against sanctions lists.'); }
+      if(r==='CM'||r==='HOC'||sa){ var blk=v.flags.sanctions!=='Clear';
+        sec('Approver — empanelment', btn('Approve','ok',"act('empApprove','"+v.id+"')",blk||makerBlock, blk?'Waiting for the Compliance sanctions check':mk)+btn('Send back','g',"askReason('sendBack','"+v.id+"')",makerBlock,mk)+btn('Decline','bad',"askReason('decline','"+v.id+"')",makerBlock,mk), makerBlock?mk:(blk?'Approve is enabled once Compliance clears the sanctions check.':'Review the application, agreement and rate card.')); }
+      break;
+    case 'Pending KYC':
+      if(v.kycCorrection && (r==='NE'||sa)) sec('Network Executive — KYC correction', btn('Upload corrected document & resend','p',"act('kycResend','"+v.id+"')"), 'Fix: '+esc(v.kycCorrection));
+      if(!v.kycCorrection && v.flags.kyc==='In progress') sec('Simulate AML / KYC application', btn('KYC Success','ok',"act('kycOk','"+v.id+"')")+btn('KYC Failed','bad',"askReason('kycFail','"+v.id+"')"), 'Prototype only: the screening result returns from the AML / KYC application.');
+      if(v.flags.aml==='In progress' && (r==='CO'||sa)) sec('Simulate AML screening (Compliance view)', btn('AML Clear','ok',"act('amlClear','"+v.id+"')")+btn('AML Flagged','bad',"act('amlFlag','"+v.id+"')"));
+      if(v.flags.aml==='AML Flagged' && (r==='CO'||sa)) sec('Compliance — AML match review', btn('Clear as false positive','ok',"act('amlFalse','"+v.id+"')")+btn('Confirm match — reject','bad',"askReason('amlFail','"+v.id+"')"), 'Decision and reason are recorded. The requester sees only "under review".');
+      break;
+    case 'Pending Approval':
+      if(!hasSignedAgreement(v) && (r==='NE'||sa)) sec('Network Executive', '<button class="btn s" onclick="S.recTab=\'docs\';render()">Upload signed agreement</button>', 'The signed panel agreement is needed before activation.');
+      if(r==='FI'||sa){ var mism=normName(v.d.holder)!==normName(v.d.legalName);
+        if(v.flags.bank!=='Verified') sec('Finance — bank verification', btn(v.callback?'Call-back recorded ✓':'Record call-back','s',"askReason('callback','"+v.id+"')",!!v.callback)+(mism&&!v.nameMismatchOk?btn('Approve name mismatch','g',"askReason('mismatch','"+v.id+"')"):'')+btn('Verify bank','ok',"act('bankOk','"+v.id+"')",!v.callback||(mism&&!v.nameMismatchOk), !v.callback?'Record the call-back first':'Approve the name mismatch first')+btn('Return to maker','bad',"askReason('bankReturn','"+v.id+"')"), 'Call back on contact details already on file (BR-12). '+(mism?'Account holder differs from the legal name.':'Account holder matches the legal name.')); }
+      if(r==='CM'||r==='HOC'||sa){ var ready=v.flags.bank==='Verified'&&hasSignedAgreement(v);
+        sec('Approver — activation', btn('Activate garage','ok',"act('activate','"+v.id+"')",!ready||makerBlock, makerBlock?mk:'Needs bank verified and the signed agreement')+btn('Send back','g',"askReason('sendBack','"+v.id+"')",makerBlock,mk), makerBlock?mk:(ready?'Activation creates the supplier account in Oracle EBS.':'Waiting for: '+[v.flags.bank!=='Verified'?'bank verification':'',!hasSignedAgreement(v)?'signed agreement':''].filter(Boolean).join(', '))); }
+      break;
+    case 'Active':
+      sec('After go-live', '<button class="btn g" onclick="toast(\'Changes follow the Party Management BRD endorsement flows (4.5)\')">Request change</button>', 'Changes, soft block, block and deactivation follow the Party Management BRD (4.5–4.6).');
+      break;
+  }
+  if(!out) out='<div class="muted" style="font-size:12.5px">No action for '+esc(me().label)+' at this stage. Pending with: <b>'+esc(pendingWith(v))+'</b>.</div>';
+  return '<div class="card act-panel"><h3>Actions · '+esc(me().label)+'</h3>'+out+'</div>';
+}
+function act(kind, id){
+  var v=V(id); S.id=id;
+  if(kind==='sanClear'){ v.flags.sanctions='Clear'; log(v,'Preliminary sanctions check cleared'); toast('Sanctions check cleared'); }
+  if(kind==='empApprove'){ v.status='Pending KYC'; v.partyId='PTY-'+(100800+Math.floor(Math.random()*99)); v.flags.kyc='In progress'; v.flags.aml='In progress'; log(v,'Empanelment approved'); log(v,'Party created in the Party Master: '+v.partyId+' (P-08 Garage, supplier). KYC and AML screening started'); toast('Empanelment approved · Party '+v.partyId+' created'); }
+  if(kind==='kycOk'){ v.flags.kyc='KYC Success'; v.kycId='KYC-'+Math.floor(Math.random()*9e5+1e5); log(v,'KYC Success ('+v.kycId+')'); }
+  if(kind==='kycResend'){ v.kycCorrection=null; v.kycDue=null; v.flags.kyc='In progress'; (v.d.owners||[]).forEach(function(o){ if(o.exp&&o.exp<=today()) o.exp=addDays(today(),730); }); v.docs.ids=Object.assign({},v.docs.ids||{},{file:'ids_renewed.pdf',expiry:addDays(today(),730)}); log(v,'Corrected document uploaded; KYC resent'); toast('KYC resent'); }
+  if(kind==='amlClear'){ v.flags.aml='AML Clear'; v.amlId='AML-'+Math.floor(Math.random()*9e5+1e5); v.risk='Low'; log(v,'AML screening complete'); }
+  if(kind==='amlFlag'){ v.flags.aml='AML Flagged'; log(v,'AML screening returned a possible match — Compliance review'); }
+  if(kind==='amlFalse'){ v.flags.aml='AML Clear'; v.amlId='AML-'+Math.floor(Math.random()*9e5+1e5); v.risk='Medium'; log(v,'Compliance cleared the AML match as a false positive'); }
+  if(kind==='bankOk'){ v.flags.bank='Verified'; log(v,'Bank details verified (IBAN, account holder, call-back)'); toast('Bank verified'); }
+  if(kind==='activate'){ v.status='Active'; v.supplierCode='SUP-GAR-'+v.id.slice(-4); v.crmId='CRM-'+Math.floor(Math.random()*9e4+1e4); v.panel={status:'Panel',from:today(),to:v.d.agTo};
+    log(v,'Activation approved. Oracle EBS supplier account created: '+v.supplierCode+'; CRM ID '+v.crmId);
+    log(v,'Go-live: added to the Claims Core garage master'+(v.d.usesPortal==='Yes'?'; Garage Portal admin invite sent to '+(v.d.spEmail||'SPOC'):'; agency mode (no portal user)')+'; welcome email sent');
+    toast('✓ '+v.name+' is Active · '+v.supplierCode); }
+  if(v.status==='Pending KYC' && v.flags.kyc==='KYC Success' && v.flags.aml==='AML Clear'){ v.status='Pending Approval'; log(v,'KYC Success and AML Clear — moved to Pending Approval'); toast('Screening complete · Pending Approval'); }
+  save(); render();
+}
+function askReason(kind, id){
+  var cfg={
+    withdraw:{ t:'Withdraw request', p:'The request closes as "Request lapsed or withdrawn".', f:'Reason', btn:'Withdraw' },
+    sendBack:{ t:'Send back for correction', p:'The maker sees your comment and resubmits.', f:'Comment (mandatory)', btn:'Send back' },
+    decline:{ t:'Decline', p:'Closes the request as "Approver declined". The reason is shared with the requester.', f:'Reason (mandatory)', btn:'Decline' },
+    sanRefer:{ t:'Refer sanctions check', p:'Approval is held until Compliance clears the check.', f:'Compliance note (not shown to the requester)', btn:'Refer' },
+    kycFail:{ t:'Simulate KYC Failed', p:'The reason goes back to the maker with a deadline.', f:'What to correct', btn:'Return KYC failure', def:'Signatory QID does not match the ID record — upload a clear copy' },
+    amlFail:{ t:'Confirm AML match', p:'The request is rejected as "Screening failed". A watchlist flag is set. The requester is told only that the request cannot proceed.', f:'Compliance reason (Compliance only)', btn:'Reject' },
+    callback:{ t:'Record call-back', p:'Call the finance contact on details already on file and confirm the account.', f:'Spoke to (name, number)', btn:'Save call-back' },
+    mismatch:{ t:'Approve account-holder mismatch', p:'Written Finance approval for the difference between the account holder and the legal name.', f:'Reason / reference', btn:'Approve mismatch' },
+    bankReturn:{ t:'Return bank details', p:'The application goes back to the maker for the bank step.', f:'What to fix', btn:'Return' }
+  }[kind];
+  var v=V(id), def=cfg.def||(kind==='callback'?(v.d.fcName||'')+' · '+(v.d.fcMobile||''):'');
+  document.getElementById('modal').innerHTML='<div class="modal-bg" onclick="if(event.target===this)closeModal()"><div class="modal"><h4>'+cfg.t+'</h4><p>'+cfg.p+'</p>'
+    +(kind==='decline'?'<div class="f"><label>Reason code</label><select disabled><option>Approver declined</option></select></div>':'')
+    +'<div class="f"><label>'+cfg.f+'</label><textarea id="m-txt" rows="3">'+esc(def)+'</textarea></div>'
+    +'<div class="actionbar"><div class="msg" id="m-msg"></div><button class="btn g" onclick="closeModal()">Cancel</button><button class="btn '+(/decline|amlFail|withdraw/.test(kind)?'bad':'p')+'" onclick="doReason(\''+kind+'\',\''+id+'\')">'+cfg.btn+'</button></div></div></div>';
+  setTimeout(function(){ var t=document.getElementById('m-txt'); if(t) t.focus(); },50);
+}
+function closeModal(){ document.getElementById('modal').innerHTML=''; }
+function doReason(kind, id){
+  var txt=(document.getElementById('m-txt').value||'').trim(); if(!txt){ document.getElementById('m-msg').textContent='This field is mandatory.'; return; }
+  var v=V(id); closeModal(); S.id=id;
+  if(kind==='withdraw'){ v.status='Rejected'; v.rejection={code:'Request lapsed or withdrawn',note:txt}; log(v,'Withdrawn: '+txt); }
+  if(kind==='sendBack'){ v.status='Returned for Correction'; v.returnNote=txt; log(v,'Sent back for correction: '+txt); }
+  if(kind==='decline'){ v.status='Rejected'; v.rejection={code:'Approver declined',note:txt}; log(v,'Declined — Approver declined: '+txt); }
+  if(kind==='sanRefer'){ v.flags.sanctions='Referred'; log(v,'Preliminary sanctions check referred by Compliance'); }
+  if(kind==='kycFail'){ v.flags.kyc='KYC Failed'; v.kycCorrection=txt; v.kycDue=addDays(today(),15); log(v,'KYC Failed: '+txt+' (correct by '+fmtD(v.kycDue)+')'); }
+  if(kind==='amlFail'){ v.flags.aml='AML Failed'; v.status='Rejected'; v.rejection={code:'Screening failed',note:txt}; v.watchlist=true; log(v,'Rejected — Screening failed. Watchlist flag set'); }
+  if(kind==='callback'){ v.callback={spoke:txt,at:nowStamp()}; v.flags.bank='Call-back done'; log(v,'Bank call-back recorded: '+txt); }
+  if(kind==='mismatch'){ v.nameMismatchOk=true; log(v,'Finance approved the account-holder name mismatch: '+txt); }
+  if(kind==='bankReturn'){ v.status='Returned for Correction'; v.returnNote='Bank details: '+txt; v.step=3; log(v,'Bank details returned by Finance: '+txt); }
+  save(); render(); toast('Saved');
+}
+
+/* ════════════ Config ════════════ */
+function viewConfig(){
+  var g=VTYPES.garage;
+  return '<div class="hero"><div class="eyebrow">Admin &amp; System Control</div><h1>Vendor Type Configuration</h1><div style="opacity:.7;font-size:13px;margin-top:6px">One onboarding journey for every vendor type. What differs per type is configured here.</div></div>'
+    +'<div class="card" style="padding:0;overflow:hidden"><div class="tbl-wrap"><table><thead><tr><th>Vendor type</th><th>Party type (BRD 3.1)</th><th>Financial role</th><th>Party created on</th><th>Approver</th><th>Agreement</th><th>Portal on go-live</th><th>Journey</th></tr></thead><tbody>'
+    +Object.keys(VTYPES).map(function(k){ var t=VTYPES[k]; return '<tr><td><b>'+t.icon+' '+t.label+'</b></td><td>'+t.party+'</td><td>'+t.role+'</td><td>'+t.created+'</td><td>'+t.approver+'</td><td>'+t.agreement+'</td><td>'+t.portal+'</td><td>'+(t.live?'<span class="pill" style="background:rgba(21,128,61,.1);color:var(--ok)">Live</span>':'<span class="pill" style="background:#f1f5f9;color:#64748b">Next phase</span>')+'</td></tr>'; }).join('')
+    +'</tbody></table></div></div>'
+    +'<div class="card"><h3>Garage — document list</h3><table><thead><tr><th>Document</th><th>Rule</th><th>Expiry tracked</th></tr></thead><tbody>'
+    +DOCS.map(function(x){ return '<tr><td>'+x.label+'</td><td>'+({M:'Mandatory',C:'Conditional — when '+x.why,O:'Optional',A:'Mandatory before activation'}[x.rule])+'</td><td>'+(x.exp?'Yes · 30 / 15 / 7-day notices':'No')+'</td></tr>'; }).join('')+'</tbody></table></div>'
+    +'<div class="card"><h3>Garage — service catalogue</h3><div class="chips">'+SERVICES.map(function(s){return '<span class="c on">'+s+'</span>';}).join('')+'</div></div>';
+}
+</script>
+</body>
+</html>
