@@ -140,6 +140,21 @@ tr.click:hover td{background:rgba(3,105,161,.035);cursor:pointer}
 .capbulk{font-size:11.5px;font-weight:600;color:var(--text-3);margin:-4px 0 8px}
 .capbulk a{color:var(--vd);cursor:pointer;margin-left:6px}
 @media (max-width:820px){.capgrid,.opt2{grid-template-columns:1fr}}
+.lnk{color:var(--vd);cursor:pointer;font-size:12px;font-weight:600}
+.vnav span.bad{background:rgba(220,38,38,.08);color:var(--bad)}
+.hrs{width:auto}.hrs td{padding:6px 12px 6px 0;border:none;font-size:12.5px;vertical-align:middle}.hrs td.dn{font-weight:700;width:110px}
+.hrs input[type=time]{padding:6px 8px;border:1.5px solid #e2e8f0;border-radius:8px;font-size:12.5px}
+.phgrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px 18px}
+.phcat b{font-size:12.5px;margin-right:6px}.phcat .muted{font-size:11.5px}
+.phrow{display:flex;gap:8px;flex-wrap:wrap;margin-top:6px}
+.ph{width:84px;height:64px;border-radius:10px;border:1.5px solid #e2e8f0;background:#f8fafc;position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center;font-size:20px}
+.ph img{width:100%;height:100%;object-fit:cover}.ph a{position:absolute;top:2px;right:4px;font-size:14px;cursor:pointer;color:#fff;text-shadow:0 0 3px #000}
+.ph i{position:absolute;bottom:0;left:0;right:0;font-size:9.5px;font-style:normal;background:rgba(15,23,42,.55);color:#fff;padding:1px 4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ph.add{cursor:pointer;border-style:dashed;color:var(--vd);font-size:22px}
+.rtbl input{width:100%;min-width:80px;padding:6px 8px;border:1.5px solid #e2e8f0;border-radius:8px;font-size:12.5px}
+.rtbl td{vertical-align:middle}.rtbl .x{border:none;background:none;font-size:16px;cursor:pointer;color:var(--bad)}
+.tagp{display:inline-block;margin-left:8px;padding:1px 8px;border-radius:999px;background:rgba(217,119,6,.12);color:#b45309;font-size:11px;font-weight:800;vertical-align:middle}
+@media (max-width:820px){.phgrid{grid-template-columns:1fr}}
 /* banners */
 .banner{border-radius:10px;padding:11px 14px;font-size:13px;margin-bottom:14px;display:flex;gap:10px;align-items:flex-start}
 .banner.ok{background:rgba(21,128,61,.07);border:1.5px solid rgba(21,128,61,.2);color:#14532d}
@@ -149,7 +164,7 @@ tr.click:hover td{background:rgba(3,105,161,.035);cursor:pointer}
 .banner b{display:block;margin-bottom:2px}
 /* stepper */
 .stepper{display:flex;gap:6px;margin-bottom:16px;overflow-x:auto;padding-bottom:2px}
-.st{flex:1;min-width:120px;display:flex;align-items:center;gap:8px;padding:9px 11px;border-radius:10px;background:#fff;border:1.5px solid #e2e8f0;font-size:12px;font-weight:700;color:var(--text-3);cursor:pointer}
+.st{flex:1;min-width:92px;display:flex;align-items:center;gap:6px;padding:8px 8px;border-radius:10px;background:#fff;border:1.5px solid #e2e8f0;font-size:11.5px;line-height:1.25;font-weight:700;color:var(--text-3);cursor:pointer}
 .st .n{width:22px;height:22px;border-radius:50%;background:#e2e8f0;color:#475569;display:flex;align-items:center;justify-content:center;font-size:11px;flex-shrink:0}
 .st.on{border-color:var(--vd);color:var(--vd)}
 .st.on .n{background:var(--vd);color:#fff}
@@ -402,7 +417,7 @@ function makeModels(mk){ for(var g in VEH){ if(VEH[g][mk]) return VEH[g][mk]; } 
 function makeGroup(mk){ for(var g in VEH){ if(VEH[g][mk]) return g; } return ''; }
 
 /* Garage master enums (Garage_Master_Data_For_Testing.xlsx › Garage Enums & Masters) */
-var NET_REL = ['Preferred','Empanelled','Non-Network','OEM / Dealer','Specialist','Temporary'];
+var NET_REL = ['Panel','Agency'];
 var GARAGE_CAT = ['General Workshop','Body Shop','Accident Repair Center','Mechanical Workshop','Auto Electrical','Tyre & Wheel','Auto Glass','Detailing Center','Motorcycle Workshop','Commercial/Heavy Vehicle','EV Specialist','Multi-Service Center'];
 var SEGMENTS = ['Private Car','SUV / MPV','Light Commercial Vehicle','Truck','Bus','Motorcycle','Taxi','Fleet','Mixed'];
 var COVERAGE = ['Basic','Standard','Accident Repair','Full Service','Specialist'];
@@ -420,7 +435,7 @@ var CAP_VALS = ['Yes','No','To Validate'];
 var CAPS = [
   { g:'Repair and body', items:[['mech','Mechanical Service'],['elec','Electrical Service'],['ac','AC Service'],['diag','Diagnostics / Scan'],['dent','Denting'],['paint','Painting'],['body','Body Repair'],['accident','Accident Repair'],['glass','Glass / Windshield'],['tyre','Tyre Service'],['align','Wheel Alignment / Balancing'],['engine','Engine Repair'],['transm','Transmission Repair'],['susp','Suspension / Steering'],['battery','Battery Service'],['detail','Detailing / Cleaning']] },
   { g:'Specialist', items:[['ev','EV Service'],['hybrid','Hybrid Service'],['adas','ADAS Calibration'],['lux','Luxury Vehicles']] },
-  { g:'Mobility', items:[['tow','Towing / Recovery'],['rsa','Roadside Assistance'],['pickup','Pickup & Drop'],['loaner','Loaner Vehicle']] },
+  { g:'Mobility', items:[['tow','Towing / Recovery'],['pickup','Pickup & Drop'],['loaner','Loaner Vehicle']] },
   { g:'Parts', items:[['oemParts','Spare Parts – OEM'],['afterParts','Spare Parts – Aftermarket']] },
   { g:'Insurance and billing', items:[['estimate','Estimate Preparation'],['survey','Surveyor Inspection'],['claimsSupport','Insurance Claims Support'],['cashless','Cashless Repair'],['direct','Direct Billing'],['custPay','Customer Pay / Reimbursement']] },
   { g:'Operations and quality', items:[['h24','24x7 Service'],['oemAuth','OEM Authorized'],['warranty','Warranty Support'],['complaint','Customer Complaint Handling'],['digital','Digital Integration']] }
@@ -429,31 +444,52 @@ var CAP_KEYS = []; CAPS.forEach(function(g){ g.items.forEach(function(i){ CAP_KE
 function capLabel(k){ var l=''; CAPS.forEach(function(g){ g.items.forEach(function(i){ if(i[0]===k) l=i[1]; }); }); return l; }
 var BANKS = ['Qatar National Bank (QNB)','Commercial Bank of Qatar','Doha Bank','Qatar Islamic Bank (QIB)','Masraf Al Rayan','Dukhan Bank','Ahli Bank','HSBC Qatar'];
 var DOCS = [
-  { id:'cr',     label:'Commercial Registration (CR) certificate', rule:'M', exp:true },
-  { id:'tl',     label:'Trade licence',                             rule:'M', exp:true },
-  { id:'opl',    label:'Garage / workshop operating licence',       rule:'M', exp:true },
-  { id:'ids',    label:'Owner and signatory IDs (QID / passport)',  rule:'M', exp:true },
-  { id:'auth',   label:'Signatory authorisation letter',            rule:'C', cond:'signatoryNotOwner', why:'a signatory is not an owner' },
-  { id:'bank',   label:'Bank letter / IBAN certificate',            rule:'M' },
-  { id:'ins',    label:'Garage liability insurance certificate',    rule:'M', exp:true },
-  { id:'oem',    label:'Agency / OEM authorisation letter',         rule:'C', cond:'agency', exp:true, why:'network relationship is OEM / Dealer' },
-  { id:'tax',    label:'Tax registration certificate',              rule:'C', cond:'tax', why:'a tax number is given' },
-  { id:'agr',    label:'Signed panel agreement',                    rule:'A', exp:true },
-  { id:'price',  label:'Price list',                                rule:'O' },
-  { id:'photos', label:'Workshop photographs',                      rule:'O' },
-  { id:'equip',  label:'Equipment list',                            rule:'O' }
+  { id:'cr',     g:'Company',                label:'Commercial Registration (CR) certificate', rule:'M', exp:true },
+  { id:'tl',     g:'Company',                label:'Trade licence',                             rule:'M', exp:true },
+  { id:'tax',    g:'Company',                label:'Tax registration certificate',              rule:'C', cond:'tax', why:'a tax number is given' },
+  { id:'opl',    g:'Licences & insurance',   label:'Garage / workshop operating licence',       rule:'M', exp:true },
+  { id:'ins',    g:'Licences & insurance',   label:'Garage liability insurance certificate',    rule:'M', exp:true },
+  { id:'oem',    g:'Licences & insurance',   label:'Agency / OEM authorisation letter',         rule:'C', cond:'agency', exp:true, why:'the garage is an Agency' },
+  { id:'ids',    g:'Owners & signatories',   label:'Owner and signatory IDs (QID / passport)',  rule:'M', exp:true },
+  { id:'auth',   g:'Owners & signatories',   label:'Signatory authorisation letter',            rule:'C', cond:'signatoryNotOwner', why:'a signatory is not an owner' },
+  { id:'bank',   g:'Bank',                   label:'Bank letter / IBAN certificate',            rule:'M' },
+  { id:'agr',    g:'Agreement & price list', label:'Signed panel agreement',                    rule:'A', exp:true },
+  { id:'price',  g:'Agreement & price list', label:'Price list',                                rule:'O' },
+  { id:'equip',  g:'Agreement & price list', label:'Equipment list',                            rule:'O' }
 ];
 var STEPS = [
   { id:'profile',   label:'Garage profile' },
+  { id:'locations', label:'Locations & hours' },
   { id:'vehicles',  label:'Vehicles serviced' },
   { id:'services',  label:'Services & capacity' },
   { id:'contacts',  label:'Contacts & owners' },
   { id:'bank',      label:'Bank & payment' },
   { id:'docs',      label:'Documents' },
-  { id:'agreement', label:'Agreement & SLA' },
+  { id:'agreement', label:'Agreement' },
+  { id:'ratecard',  label:'Rate card' },
+  { id:'sla',       label:'SLA & penalties' },
   { id:'review',    label:'Review & submit' }
 ];
 var REJECT_REASONS = ['Approver declined','Request lapsed or withdrawn','Screening failed'];
+var DAYS = ['Saturday','Sunday','Monday','Tuesday','Wednesday','Thursday','Friday'];
+var PHOTO_CATS = [['logo','Logo',1],['cover','Cover photo',1],['exterior','Exterior / signage',6],['interior','Reception / interior',6],['bays','Workshop bays',6],['equipment','Equipment',6],['team','Team',6]];
+/* Rate card rows: one rate per vehicle class the garage services */
+var RATE_ROWS = [
+  { k:'lGen',   item:'Labour — general',          unit:'QAR / hour',   d:{Light:'120', Heavy:'180', Motorcycle:'90'} },
+  { k:'lMech',  item:'Labour — mechanical',       unit:'QAR / hour',   d:{Light:'150', Heavy:'220', Motorcycle:'110'} },
+  { k:'lElec',  item:'Labour — electrical',       unit:'QAR / hour',   d:{Light:'160', Heavy:'230', Motorcycle:'120'} },
+  { k:'paint',  item:'Paint',                     unit:'QAR / panel',  d:{Light:'180', Heavy:'300', Motorcycle:'120'} },
+  { k:'dent',   item:'Denting',                   unit:'QAR / panel',  d:{Light:'120', Heavy:'200', Motorcycle:'80'} },
+  { k:'metal',  item:'Metallic paint surcharge',  unit:'% of paint',   d:{Light:'15', Heavy:'15', Motorcycle:'15'} },
+  { k:'oem',    item:'OEM parts discount (min)',  unit:'% off list',   d:{Light:'10', Heavy:'8', Motorcycle:'10'} },
+  { k:'cons',   item:'Consumables',               unit:'% of labour',  d:{Light:'7', Heavy:'7', Motorcycle:'7'} },
+  { k:'consCap',item:'Consumables cap',           unit:'% of bill',    d:{Light:'7.5', Heavy:'7.5', Motorcycle:'7.5'} },
+  { k:'ev',     item:'EV labour loading',         unit:'% on labour',  d:{Light:'25', Heavy:'25', Motorcycle:'25'}, opt:true },
+  { k:'lux',    item:'Luxury labour multiplier',  unit:'× labour',     d:{Light:'2.0', Heavy:'1.5', Motorcycle:'1.5'}, opt:true },
+  { k:'store',  item:'Storage after free period', unit:'QAR / day',    d:{Light:'50', Heavy:'100', Motorcycle:'30'}, opt:true }
+];
+function rateDefaults(){ return RATE_ROWS.map(function(r){ return { k:r.k, item:r.item, unit:r.unit, opt:!!r.opt, v:Object.assign({}, r.d) }; }); }
+function hoursDefault(){ var h={}; DAYS.forEach(function(d){ h[d]= d==='Friday' ? { open:false, h24:false, from:'', to:'' } : { open:true, h24:false, from:'07:30', to:'18:30' }; }); return h; }
 
 /* Field schema per wizard step. t: text|select|date|number|email|tel|chips|radio|textarea. req: true | function(d) */
 var F = {
@@ -473,23 +509,13 @@ var F = {
     { id:'tlExpiry', l:'Trade licence expiry', t:'date', req:true, future:true },
     { id:'taxNo', l:'Tax registration number', hint:'When applicable' },
     { h:'Classification' },
-    { id:'category', l:'Network relationship', t:'radio', o:NET_REL, req:true, full:true, hint:'OEM / Dealer = agency (manufacturer-authorised) workshop. Used to filter the Claims Core allocation list' },
+    { id:'category', l:'Network relationship', t:'radio', o:NET_REL, req:true, hint:'Agency = manufacturer-authorised workshop for one make' },
+    { id:'preferred', l:'Preferred tag', t:'radio', o:['Yes','No'], req:true, hint:'A tag on a Panel or Agency garage — shown first at allocation' },
     { id:'garageCat', l:'Garage category', t:'select', o:GARAGE_CAT, req:true },
     { id:'coverage', l:'Service coverage level', t:'select', o:COVERAGE, req:true },
     { id:'segment', l:'Primary vehicle segment', t:'select', o:SEGMENTS, req:true },
     { id:'garageStatus', l:'Garage status', ro:true, hint:'Set by the system from the onboarding status' },
     { id:'usesPortal', l:'Uses Garage Portal', t:'radio', o:['Yes','No'], req:true, full:true, hint:'No = the Claims Handler operates the Garage Portal for this workshop (agency mode). Yes = an admin user is invited at go-live' },
-    { h:'Location' },
-    { id:'location', l:'Address (as listed)', req:true, full:true, hint:'e.g. Zone 57, Industrial Area, Street 30, Doha' },
-    { id:'building', l:'Building no.' },
-    { id:'street', l:'Street no.' },
-    { id:'zone', l:'Zone no.' },
-    { id:'unit', l:'Unit / shop / gate' },
-    { id:'city', l:'City', t:'select', o:CITIES, req:true },
-    { id:'region', l:'Region', t:'select', o:REGIONS, req:true },
-    { id:'gps', l:'Geo-tag (lat, long)', req:true, pin:true, hint:'Used for distance at allocation' },
-    { id:'mapsUrl', l:'Google Maps link', url:true },
-    { id:'serviceArea', l:'Service area', t:'select', o:SERVICE_AREA, req:true },
     { h:'Online presence' },
     { id:'website', l:'Website', url:true },
     { id:'rating', l:'Google rating (0–5)', t:'number', rng:[0,5] },
@@ -502,6 +528,20 @@ var F = {
     { id:'validationReq', l:'Validation required', t:'textarea', full:true },
     { id:'remarks', l:'Remarks / validation', t:'textarea', full:true }
   ],
+  locations: [
+    { h:'Main location' },
+    { id:'location', l:'Address (as listed)', req:true, full:true, hint:'e.g. Zone 57, Industrial Area, Street 30, Doha' },
+    { id:'building', l:'Building no.' },
+    { id:'street', l:'Street no.' },
+    { id:'zone', l:'Zone no.' },
+    { id:'unit', l:'Unit / shop / gate' },
+    { id:'city', l:'City', t:'select', o:CITIES, req:true },
+    { id:'region', l:'Region', t:'select', o:REGIONS, req:true },
+    { id:'gps', l:'Geo-tag (lat, long)', req:true, pin:true, hint:'Used for distance at allocation' },
+    { id:'mapsUrl', l:'Google Maps link', url:true },
+    { id:'serviceArea', l:'Service area', t:'select', o:SERVICE_AREA, req:true },
+    { id:'opHours', l:'Operating hours', t:'select', o:OP_HOURS, req:true }
+  ],
   vehicles: [],
   services: [
     { h:'Key services and claims' },
@@ -509,28 +549,33 @@ var F = {
     { id:'claimTypes', l:'Claim types supported', t:'chips', o:CLAIM_TYPES, req:true, full:true },
     { id:'repairMode', l:'Preferred repair mode', t:'select', o:REPAIR_MODE, req:true },
     { id:'payModes', l:'Payment modes', t:'chips', o:PAY_MODES, req:true, full:true },
-    { h:'Capacity and hours' },
+    { h:'Roadside assistance (RSA)' },
+    { id:'rsaCovered', l:'RSA covered', t:'radio', o:CAP_VALS, req:true, hint:'Towing / breakdown support offered by the garage' },
+    { id:'rsaName', l:'RSA single point of contact', req:function(d){return d.rsaCovered==='Yes';} },
+    { id:'rsaMobile', l:'RSA contact mobile', t:'tel', req:function(d){return d.rsaCovered==='Yes';} },
+    { id:'rsaHotline', l:'RSA 24x7 hotline', t:'tel' },
+    { h:'Capacity' },
     { id:'capBand', l:'Workshop capacity band (concurrent vehicles)', t:'select', o:CAP_BAND, hint:'Leave empty while it is to be validated' },
+    { id:'capDay', l:'Repair capacity (vehicles / day)', t:'number', min0:true },
     { id:'capacity', l:'Repair capacity (vehicles / month)', t:'number', min0:true },
     { id:'bays', l:'Number of bays', t:'number', min0:true },
-    { id:'opHours', l:'Operating hours', t:'select', o:OP_HOURS, req:true },
-    { id:'hours', l:'Working days and hours', req:true, hint:'e.g. Sat–Thu 07:00–19:00' },
     { id:'evCert', l:'EV-certified technicians', t:'radio', o:['Yes','No'], req:function(d){return (d.caps||{}).ev==='Yes';}, hint:'Mandatory when EV Service = Yes' },
     { h:'Digital and quality' },
     { id:'apiCap', l:'API / Portal capability', t:'select', o:API_CAP, req:true },
     { id:'quality', l:'Quality certification', t:'select', o:QUALITY, req:true }
   ],
   contacts: [
-    { h:'Primary contact' },
+    { h:'1 · Garage contact details' },
+    { id:'phones', l:'Garage phone numbers', full:true, hint:'All numbers, separated by " / "' },
+    { id:'emails', l:'Garage email addresses', full:true, hint:'All addresses, separated by " / "' },
+    { h:'2 · Primary contact (owner / manager)' },
     { id:'pcName', l:'Name', req:true }, { id:'pcDesig', l:'Designation', req:true }, { id:'pcMobile', l:'Mobile', t:'tel', req:true }, { id:'pcEmail', l:'Email', t:'email', req:true },
-    { id:'phones', l:'All phone numbers', full:true, hint:'As listed, separated by " / "' },
-    { id:'emails', l:'All email addresses', full:true, hint:'As listed, separated by " / "' },
-    { h:'Claims SPOC (printed on transfer letters; Garage Portal admin user)' },
+    { h:'3 · Claims SPOC — printed on transfer letters; Garage Portal admin user', copy:'sp' },
     { id:'spName', l:'Name', req:true }, { id:'spTitle', l:'Title', req:true }, { id:'spMobile', l:'Mobile', t:'tel', req:true },
     { id:'spWhatsapp', l:'WhatsApp', t:'tel', req:true }, { id:'spEmail', l:'Email', t:'email', req:true }, { id:'spAvail', l:'Availability', req:true, hint:'e.g. Sun–Thu 07:00–20:00' },
-    { h:'Finance contact (bank call-back)' },
+    { h:'4 · Finance contact — bank call-back and payments', copy:'fc' },
     { id:'fcName', l:'Name', req:true }, { id:'fcMobile', l:'Mobile', t:'tel', req:true }, { id:'fcEmail', l:'Email', t:'email', req:true },
-    { h:'Communication consent' },
+    { h:'5 · Communication consent' },
     { id:'consent', l:'Channels', t:'chips', o:['SMS','WhatsApp','Email'], req:true, full:true }
   ],
   bank: [
@@ -547,45 +592,47 @@ var F = {
     { id:'selfBilling', l:'Self-billing agreement', t:'radio', o:['Yes','No'], req:true }
   ],
   agreement: [
-    { h:'Agreement' },
-    { id:'agTemplate', l:'Template', t:'select', o:['Standard Panel Workshop Agreement','Preferred Workshop Agreement','Agency Workshop Agreement'], req:true },
+    { h:'Panel agreement' },
+    { id:'agTemplate', l:'Template', t:'select', o:['Standard Panel Workshop Agreement','Agency Workshop Agreement'], req:true },
     { id:'agRef', l:'Agreement reference', ro:true },
     { id:'agFrom', l:'Effective date', t:'date', req:true },
     { id:'agYears', l:'Validity', t:'select', o:['1 year','2 years','3 years'], req:true },
     { id:'agTo', l:'End date', ro:true, hint:'Calculated' },
-    { id:'agDiscount', l:'Discount on invoice (%)', t:'number' },
-    { h:'Labour rates (QAR / hour)' },
-    { id:'rGen', l:'General', t:'number', req:true }, { id:'rMech', l:'Mechanical', t:'number', req:true }, { id:'rElec', l:'Electrical', t:'number', req:true },
-    { h:'Paint and body (QAR)' },
-    { id:'rPaint', l:'Paint per panel', t:'number', req:true }, { id:'rDent', l:'Denting per panel', t:'number', req:true }, { id:'rMetallic', l:'Metallic surcharge (%)', t:'number', req:true },
-    { h:'Parts and consumables' },
-    { id:'rOem', l:'OEM discount minimum (%)', t:'number', req:true },
+    { id:'agRenew', l:'Auto-renewal', t:'radio', o:['Yes','No'], req:true },
+    { id:'agNotice', l:'Notice period (days)', t:'number', req:true, min0:true },
+    { id:'agDiscount', l:'Discount on invoice (%)', t:'number', pct:true }
+  ],
+  ratecard: [
+    { h:'Parts rules' },
     { id:'rAfter', l:'Aftermarket parts allowed', t:'radio', o:['Yes','No'], req:true },
     { id:'rUsed', l:'Used parts allowed', t:'radio', o:['Yes','No'], req:true },
     { id:'rUsedAge', l:'Used parts: minimum vehicle age (years)', t:'number', req:function(d){return d.rUsed==='Yes';} },
-    { id:'rCons', l:'Consumables (% of labour)', t:'number', req:true }, { id:'rConsCap', l:'Consumables cap (% of bill)', t:'number', req:true },
-    { id:'rEv', l:'EV labour loading (%)', t:'number' }, { id:'rLux', l:'Luxury labour multiplier', t:'number' },
+    { id:'rFree', l:'Free storage period (days)', t:'number', min0:true }
+  ],
+  sla: [
     { h:'Service levels' },
     { id:'slaTier', l:'SLA tier', t:'select', o:SLA_TIER, req:true, hint:'Tier 1 = priority network · Tier 4 = exception' },
     { id:'sAccept', l:'Accept allocation within (hours)', t:'number', req:true },
     { id:'sEstimate', l:'Estimate within (hours of vehicle receipt)', t:'number', req:true },
+    { id:'sRepairStart', l:'Start repair after LPO (hours)', t:'number', req:true },
+    { id:'sSupp', l:'Supplementary after strip-down (hours)', t:'number', req:true },
     { id:'sMinor', l:'Minor repair (days)', t:'number', req:true }, { id:'sMajor', l:'Major repair (days)', t:'number', req:true },
     { id:'sUpdate', l:'Status update every (hours)', t:'number', req:true },
-    { id:'sDelivery', l:'Delivery adherence (%)', t:'number', req:true }, { id:'sCsat', l:'Minimum CSAT (out of 5)', t:'number', req:true },
+    { id:'sDelivery', l:'Delivery adherence (%)', t:'number', req:true, pct:true }, { id:'sCsat', l:'Minimum CSAT (out of 5)', t:'number', req:true, rng:[0,5] },
     { h:'Penalties' },
     { id:'pTat', l:'TAT breach (% per day)', t:'number' }, { id:'pCap', l:'TAT penalty cap (%)', t:'number' }, { id:'pRepeat', l:'Repeat-breach threshold (count)', t:'number' }
   ]
 };
 /* Broker (P-04): own steps, fields and documents; same journey */
 var DOCS_B = [
-  { id:'lic',    label:'Broker licence (QCB / QFCRA)',              rule:'M', exp:true },
-  { id:'cr',     label:'Commercial Registration (CR) certificate', rule:'M', exp:true },
-  { id:'tl',     label:'Trade licence',                             rule:'M', exp:true },
-  { id:'ids',    label:'Owner and signatory IDs (QID / passport)',  rule:'M', exp:true },
-  { id:'auth',   label:'Signatory authorisation letter',            rule:'C', cond:'signatoryNotOwner', why:'a signatory is not an owner' },
-  { id:'bank',   label:'Bank letter / IBAN certificate',            rule:'M' },
-  { id:'tax',    label:'Tax registration certificate',              rule:'C', cond:'tax', why:'a tax number is given' },
-  { id:'agr',    label:'Signed broker agreement',                   rule:'A', exp:true }
+  { id:'lic',    g:'Licence',                label:'Broker licence (QCB / QFCRA)',              rule:'M', exp:true },
+  { id:'cr',     g:'Company',                label:'Commercial Registration (CR) certificate', rule:'M', exp:true },
+  { id:'tl',     g:'Company',                label:'Trade licence',                             rule:'M', exp:true },
+  { id:'ids',    g:'Owners & signatories',   label:'Owner and signatory IDs (QID / passport)',  rule:'M', exp:true },
+  { id:'auth',   g:'Owners & signatories',   label:'Signatory authorisation letter',            rule:'C', cond:'signatoryNotOwner', why:'a signatory is not an owner' },
+  { id:'bank',   g:'Bank',                   label:'Bank letter / IBAN certificate',            rule:'M' },
+  { id:'tax',    g:'Company',                label:'Tax registration certificate',              rule:'C', cond:'tax', why:'a tax number is given' },
+  { id:'agr',    g:'Agreement',              label:'Signed broker agreement',                   rule:'A', exp:true }
 ];
 var STEPS_B = [
   { id:'bprofile',   label:'Broker profile' },
@@ -667,7 +714,7 @@ function isOnbApproval(s){ return s==='Pending Empanelment Approval' || s==='Pen
 function canMake(v){ return S.role==='SA' || S.role===(isBroker(v)?'UE':'NE'); }
 function canApprove(v){ return S.role==='SA' || (isBroker(v) ? S.role==='HUW' : (S.role==='CM'||S.role==='HOC')); }
 
-var AGR_DEFAULTS = { agTemplate:'Standard Panel Workshop Agreement', agYears:'1 year', agDiscount:'5', slaTier:'Tier 2', rGen:'120', rMech:'150', rElec:'160', rPaint:'180', rDent:'120', rMetallic:'15', rOem:'10', rAfter:'No', rUsed:'Yes', rUsedAge:'4', rCons:'7', rConsCap:'7.5', rEv:'25', rLux:'2.0', sAccept:'24', sEstimate:'24', sMinor:'3', sMajor:'7', sUpdate:'48', sDelivery:'92', sCsat:'4.2', pTat:'2', pCap:'10', pRepeat:'3' };
+var AGR_DEFAULTS = { agTemplate:'Standard Panel Workshop Agreement', agYears:'1 year', agRenew:'Yes', agNotice:'60', agDiscount:'5', slaTier:'Tier 2', rAfter:'No', rUsed:'Yes', rUsedAge:'4', rFree:'7', sRepairStart:'24', sSupp:'24', sAccept:'24', sEstimate:'24', sMinor:'3', sMajor:'7', sUpdate:'48', sDelivery:'92', sCsat:'4.2', pTat:'2', pCap:'10', pRepeat:'3' };
 
 /* ════════════ Helpers ════════════ */
 function esc(s){ return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
@@ -696,7 +743,7 @@ function pill(st){ var s=STATUS[st]||STATUS.Draft; return '<span class="pill" st
 function me(){ return ROLES[S.role]; }
 
 /* ════════════ State ════════════ */
-var KEY='vo-proto-v3';
+var KEY='vo-proto-v4';
 var S = { role:'SA', view:'list', id:null, step:0, tab:'all', q:'', fStatus:'all', fCat:'all', recTab:'overview', start:null, showErr:false };
 
 function seed(){
@@ -705,11 +752,11 @@ function seed(){
     var caps={}; CAP_KEYS.forEach(function(k){ caps[k]='To Validate'; });
     var d=Object.assign({}, AGR_DEFAULTS, {
       legalForm:'W.L.L.', regDate:'2015-03-12', regCountry:'Qatar', crExpiry:addDays(t0,420), tlExpiry:addDays(t0,300),
-      category:'Empanelled', garageCat:'General Workshop', coverage:'Standard', segment:'Mixed', usesPortal:'Yes', city:'Doha', region:'Doha', serviceArea:'City',
+      category:'Panel', preferred:'No', rsaCovered:'To Validate', hoursWeek:hoursDefault(), branches:[], photos:{}, rates:rateDefaults(), agRenew:'Yes', agNotice:'60', garageCat:'General Workshop', coverage:'Standard', segment:'Mixed', usesPortal:'Yes', city:'Doha', region:'Doha', serviceArea:'City',
       netStatus:'Prospect', validationReq:'Confirm services, capacity, insurer agreement, SLA, billing process and claims contact',
       vclass:['Light','Heavy'], veh:{ allMakes:true, all:vehCfgNew(), makes:{} },
       caps:caps, claimTypes:['Own Damage','Third Party'], repairMode:'Network Garage', payModes:['Insurer Settlement','Bank Transfer'],
-      opHours:'Business Hours', hours:'Sat–Thu 07:30–18:30', evCert:'No', apiCap:'Portal', quality:'None',
+      opHours:'Business Hours', evCert:'No', apiCap:'Portal', quality:'None',
       pcDesig:'Owner', spTitle:'Claims Coordinator', spAvail:'Sat–Thu 07:30–18:30', consent:['SMS','Email','WhatsApp'],
       bankName:'Qatar National Bank (QNB)', branch:'Head Office', currency:'QAR', method:'Bank transfer', terms:'30', selfBilling:'No',
       agFrom:t0, agRef:'', owners:[], signatories:[]
@@ -779,7 +826,7 @@ function seed(){
       crNo:'140233', tlNo:'TL-81004', pcName:'', pcMobile:'', pcEmail:'', iban:'', owners:[{name:'',id:'',exp:'',nat:'',pct:''}], signatories:[{name:'',id:'',auth:''}] } }));
   V.push(base({ id:'VND-0010', src:'Sr 11', name:'Infinity Motorcycle', status:'Pending Empanelment Approval', createdAt:addDays(t0,-6)+'T09:30:00', updatedAt:addDays(t0,-1)+'T09:00:00',
     flags:{ sanctions:'Clear', kyc:'Not started', aml:'Not screened', edd:'Not required', bank:'Not verified' },
-    d:Object.assign({ legalName:'Infinity Motorcycle W.L.L.', arabicName:'', garageType:'Motorcycle service / motorcycle shop', category:'Specialist', garageCat:'Motorcycle Workshop', coverage:'Specialist', segment:'Motorcycle', vclass:['Motorcycle'], location:'Street 03, Doha, Qatar', street:'03', gps:'25.2630, 51.5330',
+    d:Object.assign({ legalName:'Infinity Motorcycle W.L.L.', arabicName:'', garageType:'Motorcycle service / motorcycle shop', category:'Panel', garageCat:'Motorcycle Workshop', coverage:'Specialist', segment:'Motorcycle', vclass:['Motorcycle'], location:'Street 03, Doha, Qatar', street:'03', gps:'25.2630, 51.5330',
       phones:'+974 77794817', emails:'info@infinity-qatar.com (company-level)', rating:'4.8', reviewCount:'206', keyServices:'Motorcycle sales/service; motorcycle-related parts/accessories', insNetwork:'Not verified', website:'https://infinity-qatar.com/',
       dataStatus:'Verified business listing; motorcycle specialization confirmed', notes:'Flag separately from passenger-vehicle garages. Include in Motor network only if motorcycle insurance is in scope.',
       crNo:'125540', tlNo:'TL-71211', pcName:'Deepak Singh', pcMobile:'+974 7779 4817', pcEmail:'info@infinity-qatar.com', spName:'Deepak Singh', spMobile:'+974 7779 4817', spWhatsapp:'+974 7779 4817', spEmail:'info@infinity-qatar.com', fcName:'Deepak Singh', fcMobile:'+974 7779 4817', fcEmail:'info@infinity-qatar.com', iban:makeIban('QNBA') }, own('Deepak Singh','P7012233','India')) }));
@@ -875,7 +922,7 @@ function amlLabel(v){
 }
 function docNeeded(x, d){
   if(x.rule==='M') return true; if(x.rule!=='C') return false;
-  if(x.cond==='agency') return d.category==='OEM / Dealer';
+  if(x.cond==='agency') return d.category==='Agency';
   if(x.cond==='tax') return !!(d.taxNo&&String(d.taxNo).trim());
   if(x.cond==='signatoryNotOwner'){ var on=(d.owners||[]).map(function(o){return normName(o.name);}); return (d.signatories||[]).some(function(s){ return s.name && on.indexOf(normName(s.name))<0; }); }
   return false;
@@ -904,6 +951,8 @@ function stepErrors(stepId, v){
   var d=v.d, errs=[];
   if(F[stepId]) F[stepId].forEach(function(f){ if(f.h) return; var e=fieldErr(f,d); if(e) errs.push({ id:f.id, l:f.l, e:e }); });
   if(stepId==='vehicles') vehErrors(d).forEach(function(e){ errs.push(e); });
+  if(stepId==='locations'){ hoursErrors(d.hoursWeek, 'Opening hours').forEach(function(e){ errs.push(e); }); branchErrors(d).forEach(function(e){ errs.push(e); }); }
+  if(stepId==='ratecard') rateErrors(d).forEach(function(e){ errs.push(e); });
   if(stepId==='services'){ var miss=CAP_KEYS.filter(function(k){ return !(d.caps||{})[k]; });
     if(miss.length) errs.push({ id:'caps', l:'Services and capabilities', e:miss.length+' not answered: '+miss.slice(0,4).map(capLabel).join(', ')+(miss.length>4?'…':'') }); }
   if(stepId==='contacts'||stepId==='bcontacts'){
@@ -991,7 +1040,7 @@ function listRows(rows){
       +'<td><span class="code">'+v.id+'</span></td>'
       +'<td><b>'+esc(v.name)+'</b>'+(v.supplierCode?'<div class="muted mono" style="font-size:10.5px">'+esc(v.supplierCode)+'</div>':'')+'</td>'
       +'<td><span class="chip">'+VTYPES[v.type].icon+' '+VTYPES[v.type].label+'</span></td>'
-      +'<td>'+esc(v.d.category||'—')+'</td>'
+      +'<td>'+esc(v.d.category||'—')+(v.d.preferred==='Yes'?'<span class="tagp">Preferred</span>':'')+'</td>'
       +'<td class="mono" style="font-size:12px">'+esc(v.d.crNo||'—')+'</td>'
       +'<td>'+esc(v.d.city||'—')+'</td>'
       +'<td>'+pill(v.status)+'</td>'
@@ -1080,7 +1129,7 @@ function createDraft(level){
   var s=S.start, n=1+VENDORS.reduce(function(a,v){ return Math.max(a, parseInt(v.id.slice(4),10)); },0);
   var id='VND-'+String(n).padStart(4,'0'), brk=s.type==='broker';
   var d=Object.assign({}, brk?{ agYears:'1 year', brokerId:'BRK-'+today().slice(0,4)+'-'+id.slice(-4) }:AGR_DEFAULTS, { legalName:s.legalName.trim(), crNo:s.crNo.trim(), tlNo:s.tlNo.trim(), estNo:s.estNo.trim(), pcMobile:s.mobile.trim(), pcEmail:s.email.trim(), regCountry:'Qatar', currency:'QAR', method:'Bank transfer', agFrom:today(), agRef:(brk?'AGR-BRK-':'AGR-GAR-')+today().slice(0,4)+'-'+id.slice(-4), consent:['SMS','Email'], owners:[{name:'',id:'',exp:'',nat:'',pct:''}], signatories:[{name:'',id:'',auth:''}] });
-  if(!brk){ d.terms='30'; d.vclass=[]; d.veh={ allMakes:false, all:vehCfgNew(), makes:{} }; d.caps={}; d.garageStatus='Onboarding'; }
+  if(!brk){ d.terms='30'; d.vclass=[]; d.veh={ allMakes:false, all:vehCfgNew(), makes:{} }; d.caps={}; d.garageStatus='Onboarding'; d.hoursWeek=hoursDefault(); d.branches=[]; d.photos={}; d.rates=rateDefaults(); }
   d.agTo=addYears(d.agFrom,1);
   var v={ id:id, type:s.type, name:s.legalName.trim().replace(/\s+W\.?L\.?L\.?$/i,''), status:'Draft', createdBy:me().user, createdAt:nowStamp(), updatedAt:nowStamp(), step:0,
     flags:{ sanctions:'Not started', kyc:'Not started', aml:'Not screened', edd:'Not required', bank:'Not verified' }, docs:{}, activity:[], d:d, dup:{ level:level } };
@@ -1108,16 +1157,18 @@ function viewWizard(v){
     +(st.id!=='review'?'<button class="btn p" onclick="nextStep()">Continue →</button>':'')
     +'</div>';
 }
-function gotoStep(i){ var v=V(S.id); var visited=i<(v.maxStep||0); v.maxStep=Math.max(v.maxStep||0,S.step); S.step=i; v.step=i; S.vq=0; S.showErr=visited; save(); render(); window.scrollTo(0,0); }
+function gotoStep(i){ var v=V(S.id); var visited=i<(v.maxStep||0); v.maxStep=Math.max(v.maxStep||0,S.step); S.step=i; v.step=i; S.vq=0; S.dq=0; S.showErr=visited; save(); render(); window.scrollTo(0,0); }
 function nextStep(){
   var v=V(S.id), id=stepsOf(v)[S.step].id, e=stepErrors(id,v);
-  if(e.length){ S.showErr=true; render(); document.getElementById('wz-msg').textContent=e.length+' item(s) to fix on this step'; var first=document.querySelector('.f.bad, .doc .err, .rep-err'); if(first) first.scrollIntoView({behavior:'smooth',block:'center'}); return; }
-  S.showErr=false; v.maxStep=Math.max(v.maxStep||0,S.step+1); S.step++; v.step=S.step; S.vq=0; save(); render(); window.scrollTo(0,0);
+  if(e.length){ S.showErr=true; if(id==='docs'){ var gs=docGroups(v); for(var gi=0;gi<gs.length;gi++){ if(e.some(function(x){ return docsOf(v).some(function(dd){ return (dd.g||'Documents')===gs[gi] && x.id==='doc-'+dd.id; }); })){ S.dq=gi; break; } } } render(); document.getElementById('wz-msg').textContent=e.length+' item(s) to fix on this step'; var first=document.querySelector('.f.bad, .doc .err, .rep-err'); if(first) first.scrollIntoView({behavior:'smooth',block:'center'}); return; }
+  S.showErr=false; v.maxStep=Math.max(v.maxStep||0,S.step+1); S.step++; v.step=S.step; S.vq=0; S.dq=0; save(); render(); window.scrollTo(0,0);
 }
 function saveDraft(){ var v=V(S.id); log(v,'Draft saved (step: '+stepsOf(v)[S.step].label+')'); toast('Draft saved'); }
 function setD(fid, val, rerender){ var v=V(S.id); v.d[fid]=val; if(fid==='legalName'){ v.name=val.replace(/\s+W\.?L\.?L\.?$/i,'')||v.name; }
   if(fid==='agFrom'||fid==='agYears'){ v.d.agTo=addYears(v.d.agFrom||today(), parseInt(v.d.agYears,10)||1); rerender=true; }
-  if(fid==='agTemplate' && val==='Agency Workshop Agreement' && v.d.category!=='OEM / Dealer') toast('Tip: the Agency template is meant for OEM / Dealer garages');
+  if(fid==='agTemplate' && val==='Agency Workshop Agreement' && v.d.category!=='Agency') toast('Tip: the Agency template is meant for Agency garages');
+  if(fid==='category' && val==='Agency'){ v.d.agTemplate='Agency Workshop Agreement'; var vh0=vehOf(v.d); vh0.allMakes=false; var mk0=Object.keys(vh0.makes); mk0.slice(1).forEach(function(m){ delete vh0.makes[m]; }); }
+  if(fid==='category' && val==='Panel' && v.d.agTemplate==='Agency Workshop Agreement') v.d.agTemplate='Standard Panel Workshop Agreement';
   save(); if(rerender) render(); }
 function toggleChip(fid, opt){ var v=V(S.id), a=(v.d[fid]||[]).slice(), i=a.indexOf(opt); if(i>-1) a.splice(i,1); else a.push(opt);
   if(fid==='claimTypes'){ if(opt==='All'&&i<0) a=['All']; else a=a.filter(function(x){return x!=='All'||opt==='All';}); }
@@ -1141,6 +1192,115 @@ function fieldHtml(f, v){
 }
 function pickPin(){ var lat=(25.15+Math.random()*0.25).toFixed(4), lng=(51.40+Math.random()*0.18).toFixed(4); setD('gps', lat+', '+lng, true); toast('Pin dropped at '+lat+', '+lng); }
 
+
+/* ════════════ Opening hours (per day, like Google Business) ════════════ */
+function hoursErrors(hr, label){
+  var e=[], open=DAYS.filter(function(d){ return hr && hr[d] && hr[d].open; });
+  if(!open.length) e.push({ id:'hours', l:label, e:'Mark at least one day open' });
+  open.forEach(function(d){ var x=hr[d]; if(!x.h24 && (!x.from || !x.to || x.from>=x.to)) e.push({ id:'hours', l:label+' · '+d, e:'Opening time must be before closing time' }); });
+  return e;
+}
+function hoursText(hr){
+  if(!hr) return '—';
+  return DAYS.map(function(d){ var x=hr[d]||{}; return d.slice(0,3)+' '+(!x.open?'Closed':x.h24?'24 h':(x.from||'?')+'–'+(x.to||'?')); }).join(' · ');
+}
+function hoursHtml(hr, key){
+  var k=qs(key);
+  return '<table class="hrs"><tbody>'+DAYS.map(function(d){ var x=hr[d]||{}, dq=qs(d);
+    return '<tr><td class="dn">'+d+'</td>'
+      +'<td><div class="radio">'+vChip('Open', x.open, 'setHr('+k+','+dq+',\'open\',true)')+vChip('Closed', !x.open, 'setHr('+k+','+dq+',\'open\',false)')+'</div></td>'
+      +'<td>'+(x.open?'<div class="chips">'+vChip('Open 24 hours', x.h24, 'setHr('+k+','+dq+',\'h24\','+(!x.h24)+')')+'</div>':'')+'</td>'
+      +'<td>'+(x.open&&!x.h24?'<input type="time" value="'+esc(x.from||'')+'" onchange="setHr('+esc(k)+','+esc(dq)+',\'from\',this.value)"> <span class="muted">to</span> <input type="time" value="'+esc(x.to||'')+'" onchange="setHr('+esc(k)+','+esc(dq)+',\'to\',this.value)">':(x.open?'<span class="muted">All day</span>':'<span class="muted">Closed</span>'))+'</td></tr>'; }).join('')
+    +'</tbody></table><div style="margin-top:6px"><a class="lnk" onclick="copyHr('+esc(k)+')">Copy Saturday hours to all open days</a></div>';
+}
+function hrOf(key){ var d=V(S.id).d; if(key==='main'){ d.hoursWeek=d.hoursWeek||hoursDefault(); return d.hoursWeek; } var b=d.branches[+key]; b.hours=b.hours||hoursDefault(); return b.hours; }
+function setHr(key, day, f, val){ var hr=hrOf(key); hr[day]=hr[day]||{}; hr[day][f]=val; if(f==='open'&&val&&!hr[day].from){ hr[day].from='07:30'; hr[day].to='18:30'; } save(); render(); }
+function copyHr(key){ var hr=hrOf(key), s=hr.Saturday; DAYS.forEach(function(d){ if(d!=='Saturday' && hr[d].open) hr[d]=Object.assign({}, s); }); save(); render(); toast('Saturday hours copied'); }
+
+/* ════════════ Additional locations (branches) ════════════ */
+function branchNew(){ return { name:'', location:'', building:'', street:'', zone:'', city:'', region:'', gps:'', mapsUrl:'', phone:'', spName:'', spMobile:'', sameHours:true, hours:hoursDefault() }; }
+function branchErrors(d){ var e=[]; (d.branches||[]).forEach(function(b,i){ var l='Location '+(i+2)+(b.name?' ('+b.name+')':'');
+  ['name','location','city','region','gps'].forEach(function(f){ if(!String(b[f]||'').trim()) e.push({ id:'branch', l:l, e:({name:'Location name',location:'Address',city:'City',region:'Region',gps:'Geo-tag'}[f])+' is required' }); });
+  if(b.spMobile && normPhone(b.spMobile).length<11) e.push({ id:'branch', l:l, e:'Enter a mobile with country code' });
+  if(b.mapsUrl && !/^https?:\/\/\S+\.\S+/.test(b.mapsUrl)) e.push({ id:'branch', l:l, e:'Google Maps link must start with http:// or https://' });
+  if(!b.sameHours) hoursErrors(b.hours, l).forEach(function(x){ e.push(x); }); }); return e; }
+function branchesHtml(v){
+  var d=v.d, bs=d.branches||[], inp=function(i,f,l,req,o){ var val=bs[i][f]||'';
+    if(o) return '<div class="f"><label>'+l+(req?' <span class="req">*</span>':'')+'</label><select onchange="setBr('+i+',\''+f+'\',this.value,true)"><option value="">Select…</option>'+o.map(function(x){ return '<option'+(val===x?' selected':'')+'>'+esc(x)+'</option>'; }).join('')+'</select></div>';
+    return '<div class="f'+(f==='location'?' full':'')+'"><label>'+l+(req?' <span class="req">*</span>':'')+'</label>'+(f==='gps'?'<div style="display:flex;gap:6px"><input style="flex:1" value="'+esc(val)+'" oninput="setBr('+i+',\'gps\',this.value)"><button class="btn g sm" type="button" onclick="brPin('+i+')">📍 Pick on map</button></div>':'<input value="'+esc(val)+'" oninput="setBr('+i+',\''+f+'\',this.value)">')+'</div>'; };
+  var out='<div class="subhead">Other locations (branches)</div>';
+  if(!bs.length) out+='<div class="muted" style="font-size:12.5px;margin-bottom:10px">Only one location. Add a branch if the garage works from more than one site — each location can be allocated separately.</div>';
+  bs.forEach(function(b,i){
+    out+='<div class="mkcard open" style="margin-bottom:12px"><div class="hd" style="cursor:default"><b>Location '+(i+2)+(b.name?' · '+esc(b.name):'')+'</b><button class="btn g sm" onclick="delBranch('+i+')">Remove</button></div><div class="bd"><div class="grid">'
+      +inp(i,'name','Location name',true)+inp(i,'location','Address (as listed)',true)+inp(i,'building','Building no.')+inp(i,'street','Street no.')+inp(i,'zone','Zone no.')
+      +inp(i,'city','City',true,CITIES)+inp(i,'region','Region',true,REGIONS)+inp(i,'gps','Geo-tag (lat, long)',true)+inp(i,'mapsUrl','Google Maps link')+inp(i,'phone','Location phone')+inp(i,'spName','Location contact')+inp(i,'spMobile','Location contact mobile')
+      +'</div><div class="lbl" style="margin-top:12px">Opening hours</div><div class="chips">'+vChip('Same as main location', b.sameHours, 'setBr('+i+',\'sameHours\',true,true)')+vChip('Own hours', !b.sameHours, 'setBr('+i+',\'sameHours\',false,true)')+'</div>'
+      +(b.sameHours?'':'<div style="margin-top:8px">'+hoursHtml(b.hours||hoursDefault(), String(i))+'</div>')+'</div></div>';
+  });
+  return out+'<button class="btn s sm" onclick="addBranch()">+ Add another location</button>';
+}
+function setBr(i,f,val,rr){ var d=V(S.id).d; d.branches[i][f]=val; save(); if(rr) render(); }
+function addBranch(){ var d=V(S.id).d; d.branches=d.branches||[]; d.branches.push(branchNew()); save(); render(); }
+function delBranch(i){ var d=V(S.id).d; d.branches.splice(i,1); save(); render(); }
+function brPin(i){ var lat=(25.15+Math.random()*0.25).toFixed(4), lng=(51.40+Math.random()*0.18).toFixed(4); setBr(i,'gps',lat+', '+lng,true); toast('Pin dropped at '+lat+', '+lng); }
+
+/* ════════════ Garage photos (uploaded by the garage) ════════════ */
+function photosHtml(v){
+  var ph=v.d.photos||{};
+  return '<div class="subhead">Garage photos</div><div class="muted" style="font-size:11.5px;margin-bottom:10px">JPG or PNG · shown on the garage record and the Claims Core allocation list</div><div class="phgrid">'
+    +PHOTO_CATS.map(function(c){ var list=ph[c[0]]||[];
+      return '<div class="phcat"><b>'+c[1]+'</b><span class="muted">'+list.length+' / '+c[2]+'</span><div class="phrow">'
+        +list.map(function(p,i){ return '<div class="ph">'+(p.src?'<img src="'+p.src+'" alt="">':'<span>🖼</span>')+'<a onclick="delPhoto(\''+c[0]+'\','+i+')">×</a><i>'+esc(p.n)+'</i></div>'; }).join('')
+        +(list.length<c[2]?'<label class="ph add">＋<input type="file" accept="image/*"'+(c[2]>1?' multiple':'')+' style="display:none" onchange="addPhoto(\''+c[0]+'\',this)"></label>':'')+'</div></div>'; }).join('')+'</div>';
+}
+function addPhoto(cat, input){
+  var files=[].slice.call(input.files||[]), d=V(S.id).d, max=(PHOTO_CATS.find(function(c){return c[0]===cat;})||[0,0,6])[2];
+  d.photos=d.photos||{}; d.photos[cat]=d.photos[cat]||[];
+  files.slice(0, max-d.photos[cat].length).forEach(function(f){
+    if(!/^image\//.test(f.type)){ toast('Only image files'); return; }
+    var rec={ n:f.name, src:'' }; d.photos[cat].push(rec);
+    try{ var r=new FileReader(); r.onload=function(){ var img=new Image(); img.onload=function(){ try{ var s=Math.min(1,320/Math.max(img.width,img.height)), c=document.createElement('canvas'); c.width=Math.round(img.width*s); c.height=Math.round(img.height*s); c.getContext('2d').drawImage(img,0,0,c.width,c.height); rec.src=c.toDataURL('image/jpeg',0.7); }catch(e){} save(); render(); }; img.src=r.result; }; r.readAsDataURL(f); }catch(e){}
+  });
+  save(); render(); toast(files.length+' photo(s) added');
+}
+function delPhoto(cat,i){ var d=V(S.id).d; d.photos[cat].splice(i,1); save(); render(); }
+function photoCount(d){ var n=0; Object.keys(d.photos||{}).forEach(function(k){ n+=(d.photos[k]||[]).length; }); return n; }
+
+/* ════════════ Rate card table ════════════ */
+function rateClasses(d){ var c=(d.vclass||[]).slice(); return c.length?c:['Light']; }
+function rateErrors(d){ var e=[], cls=rateClasses(d);
+  (d.rates||[]).forEach(function(r){ if(!String(r.item||'').trim()) e.push({ id:'rates', l:'Rate card', e:'A custom line has no item name' });
+    cls.forEach(function(c){ var x=(r.v||{})[c]; if((x===''||x==null) && !r.opt) e.push({ id:'rates', l:r.item||'Line', e:c+' rate is required' }); else if(x!==''&&x!=null&&(isNaN(+x)||+x<0)) e.push({ id:'rates', l:r.item||'Line', e:c+' rate must be a number of 0 or more' }); }); });
+  if(!(d.rates||[]).length) e.push({ id:'rates', l:'Rate card', e:'Add at least one rate line' });
+  return e; }
+function rateTableHtml(v){
+  var d=v.d, cls=rateClasses(d), lab={Light:'Light (cars & SUVs)',Heavy:'Heavy (commercial)',Motorcycle:'Motorcycle'}, errs=S.showErr?rateErrors(d):[];
+  d.rates=d.rates||rateDefaults();
+  return '<div class="subhead">Rate card</div><div class="muted" style="font-size:11.5px;margin-bottom:8px">One rate per vehicle class the garage services ('+cls.join(', ')+'). Lines marked optional can be left empty.</div>'
+    +(errs.length?'<div class="banner bad rep-err"><div>'+errs.slice(0,6).map(function(e){return esc(e.l)+': '+esc(e.e);}).join('<br>')+'</div></div>':'')
+    +'<div class="tbl-wrap"><table class="rtbl"><thead><tr><th>Item</th><th>Unit</th>'+cls.map(function(c){return '<th>'+lab[c]+'</th>';}).join('')+'<th></th></tr></thead><tbody>'
+    +d.rates.map(function(r,i){ var custom=!RATE_ROWS.some(function(x){return x.k===r.k;});
+      return '<tr><td>'+(custom?'<input value="'+esc(r.item)+'" placeholder="Item" oninput="setRateMeta('+i+',\'item\',this.value)">':'<b>'+esc(r.item)+'</b>'+(r.opt?' <span class="muted" style="font-size:11px">optional</span>':''))+'</td>'
+        +'<td>'+(custom?'<input value="'+esc(r.unit)+'" placeholder="Unit" oninput="setRateMeta('+i+',\'unit\',this.value)">':esc(r.unit))+'</td>'
+        +cls.map(function(c){ return '<td><input type="number" value="'+esc((r.v||{})[c]||'')+'" oninput="setRate('+i+','+esc(qs(c))+',this.value)"></td>'; }).join('')
+        +'<td>'+(custom?'<button class="x" onclick="delRate('+i+')">×</button>':'')+'</td></tr>'; }).join('')
+    +'</tbody></table></div><div style="margin-top:8px"><button class="btn g sm" onclick="addRate()">+ Add rate line</button></div>';
+}
+function setRate(i,c,val){ var r=V(S.id).d.rates[i]; r.v=r.v||{}; r.v[c]=val; save(); }
+function setRateMeta(i,f,val){ V(S.id).d.rates[i][f]=val; save(); }
+function addRate(){ var d=V(S.id).d; d.rates=d.rates||rateDefaults(); d.rates.push({ k:'c'+Date.now(), item:'', unit:'QAR', opt:false, v:{} }); save(); render(); }
+function delRate(i){ V(S.id).d.rates.splice(i,1); save(); render(); }
+function rateKvs(d){ var cls=rateClasses(d); return '<div class="tbl-wrap"><table><thead><tr><th>Item</th><th>Unit</th>'+cls.map(function(c){return '<th>'+c+'</th>';}).join('')+'</tr></thead><tbody>'+(d.rates||[]).map(function(r){ return '<tr><td><b>'+esc(r.item)+'</b></td><td>'+esc(r.unit)+'</td>'+cls.map(function(c){ return '<td>'+esc((r.v||{})[c]||'—')+'</td>'; }).join('')+'</tr>'; }).join('')+'</tbody></table></div>'; }
+
+/* ════════════ Contacts: copy from the primary contact ════════════ */
+function copyContact(kind){ var d=V(S.id).d;
+  if(kind==='sp'){ d.spName=d.pcName; d.spTitle=d.pcDesig; d.spMobile=d.pcMobile; d.spWhatsapp=d.pcMobile; d.spEmail=d.pcEmail; }
+  if(kind==='fc'){ d.fcName=d.pcName; d.fcMobile=d.pcMobile; d.fcEmail=d.pcEmail; }
+  save(); render(); toast('Copied from the primary contact'); }
+
+/* ════════════ Documents, page by page ════════════ */
+function docGroups(v){ var g=[]; docsOf(v).forEach(function(x){ var k=x.g||'Documents'; if(g.indexOf(k)<0) g.push(k); }); return g; }
+
 /* ════════════ Vehicles serviced (make → models → variants → years) ════════════ */
 function vehCfgNew(){ return { allModels:true, models:[], allFuels:true, fuels:[], allTrans:true, trans:[], yAll:true, yFrom:'', yTo:'' }; }
 function vehOf(d){ if(!d.veh) d.veh={ allMakes:false, all:vehCfgNew(), makes:{} }; if(!d.veh.all) d.veh.all=vehCfgNew(); if(!d.veh.makes) d.veh.makes={}; return d.veh; }
@@ -1149,7 +1309,7 @@ function vehErrors(d){
   var e=[], vh=vehOf(d), mk=Object.keys(vh.makes), gs=vehGroups(d);
   if(!gs.length) e.push({ id:'vclass', l:'Vehicle classes', e:'Pick at least one vehicle class' });
   if(!vh.allMakes && !mk.length) e.push({ id:'makes', l:'Makes', e:'Pick at least one make, or All makes' });
-  if(vh.allMakes && d.category==='OEM / Dealer') e.push({ id:'makes', l:'Makes', e:'An OEM / Dealer garage must pick its authorised make(s)' });
+  if(d.category==='Agency' && (vh.allMakes || mk.length!==1)) e.push({ id:'makes', l:'Makes', e:'An Agency garage is authorised for one make only — pick exactly one' });
   var list = vh.allMakes ? [['All makes', vh.all]] : mk.map(function(m){ return [m, vh.makes[m]]; });
   list.forEach(function(p){ var n=p[0], c=p[1];
     if(!vh.allMakes && gs.indexOf(makeGroup(n))<0) e.push({ id:'makes', l:n, e:'Not in the selected vehicle classes' });
@@ -1194,7 +1354,7 @@ function vehiclesStep(v){
   var err = errs.length ? '<div class="banner bad rep-err"><div>'+errs.map(function(e){ return esc(e.l)+': '+esc(e.e); }).join('<br>')+'</div></div>' : '';
   var out='';
   if(q===0){
-    out+='<div class="gq"><h2>What vehicles does this garage work on?</h2><p class="lead">Pick the vehicle classes, then the makes. You can select all.</p>'
+    out+='<div class="gq"><h2>What vehicles does this garage work on?</h2><p class="lead">Pick the vehicle classes, then the makes. You can select all.</p>'+(d.category==='Agency'?'<div class="banner info"><div><b>Agency garage</b>Pick the one make it is authorised for.</div></div>':'')
       +'<div class="q">Vehicle classes</div><div class="chips">'+[['Light','Light — cars & SUVs'],['Heavy','Heavy — commercial, trucks & buses'],['Motorcycle','Motorcycles']].map(function(c){ return vChip(c[1], (d.vclass||[]).indexOf(c[0])>-1, 'vClass('+qs(c[0])+')'); }).join('')+'</div>'
       +'<div class="q">Which makes?</div><div class="opt2"><div class="'+(vh.allMakes?'on':'')+'" onclick="vAll(true)"><b>All makes</b><span>Multi-brand workshop — every make in the selected classes</span></div><div class="'+(!vh.allMakes?'on':'')+'" onclick="vAll(false)"><b>Specific makes</b><span>Choose makes, then models and variants</span></div></div>';
     if(!vh.allMakes){
@@ -1229,9 +1389,9 @@ function vehiclesStep(v){
 }
 function vClass(c){ var d=V(S.id).d, a=(d.vclass||[]).slice(), i=a.indexOf(c); if(i>-1) a.splice(i,1); else a.push(c); d.vclass=a;
   var vh=vehOf(d), gs=vehGroups(d); Object.keys(vh.makes).forEach(function(m){ if(gs.indexOf(makeGroup(m))<0) delete vh.makes[m]; }); save(); render(); }
-function vAll(b){ vehOf(V(S.id).d).allMakes=b; save(); render(); }
-function vMake(m){ var vh=vehOf(V(S.id).d); if(vh.makes[m]){ delete vh.makes[m]; } else { vh.makes[m]=vehCfgNew(); S.vOpen=m; } save(); render(); var s=document.getElementById('vsearch'); if(s&&S.vSearch){ s.focus(); s.setSelectionRange(S.vSearch.length,S.vSearch.length); } }
-function vGroup(g){ var vh=vehOf(V(S.id).d); Object.keys(VEH[g]).forEach(function(m){ if(!vh.makes[m]) vh.makes[m]=vehCfgNew(); }); save(); render(); }
+function vAll(b){ var d=V(S.id).d; if(b && d.category==='Agency'){ toast('An Agency garage is authorised for one make only'); return; } vehOf(d).allMakes=b; save(); render(); }
+function vMake(m){ var d=V(S.id).d, vh=vehOf(d); if(vh.makes[m]){ delete vh.makes[m]; } else { if(d.category==='Agency'){ vh.makes={}; toast('Agency garage: one make only'); } vh.makes[m]=vehCfgNew(); S.vOpen=m; } save(); render(); var s=document.getElementById('vsearch'); if(s&&S.vSearch){ s.focus(); s.setSelectionRange(S.vSearch.length,S.vSearch.length); } }
+function vGroup(g){ if(V(S.id).d.category==='Agency'){ toast('An Agency garage is authorised for one make only'); return; } var vh=vehOf(V(S.id).d); Object.keys(VEH[g]).forEach(function(m){ if(!vh.makes[m]) vh.makes[m]=vehCfgNew(); }); save(); render(); }
 function vCfgOf(key){ var vh=vehOf(V(S.id).d); return key==='*' ? vh.all : vh.makes[key]; }
 function vPick(key, list, val){ var c=vCfgOf(key), flag={models:'allModels',fuels:'allFuels',trans:'allTrans'}[list];
   if(val==='*'){ c[flag]=!c[flag]; if(c[flag]) c[list]=[]; }
@@ -1271,9 +1431,9 @@ function afName(type){ // a name that the duplicate check will not match to any 
 function afSlug(d){ return String(d.legalName||'testgarage').toLowerCase().replace(/w\.?l\.?l\.?/g,'').replace(/[^a-z]+/g,'')||'testgarage'; }
 var AF_TEXT={ arabicName:'كراج الاختبار', hours:'Sat–Thu 07:00–19:00', pcDesig:'Owner', spTitle:'Claims Coordinator', spAvail:'Sun–Thu 07:00–20:00', branch:'Head Office', swift:'QNBAQAQA' };
 var AF_SEL={ legalForm:'W.L.L.', regCountry:'Qatar', city:'Doha', region:'Industrial Area', garageCat:'General Workshop', coverage:'Standard', segment:'Private Car', serviceArea:'City', netStatus:'Prospect', repairMode:'Network Garage', capBand:'16-30', opHours:'Business Hours', apiCap:'Portal', quality:'None', slaTier:'Tier 2', bankName:'Qatar National Bank (QNB)', currency:'QAR', method:'Bank transfer', agTemplate:'Standard Panel Workshop Agreement', agYears:'1 year' };
-var AF_RADIO={ category:'Empanelled', usesPortal:'Yes', usesBPortal:'Yes', rAfter:'No', rUsed:'Yes', selfBilling:'No' };
+var AF_RADIO={ category:'Panel', preferred:'No', rsaCovered:'No', agRenew:'Yes', usesPortal:'Yes', usesBPortal:'Yes', rAfter:'No', rUsed:'Yes', selfBilling:'No' };
 var AF_CHIPS={ claimTypes:['Own Damage','Third Party'], payModes:['Insurer Settlement','Bank Transfer'], vclass:['Light'], consent:['SMS','WhatsApp','Email'] };
-var AF_NUM={ capacity:'60', bays:'12', terms:'30', float:'100000', commission:'12.5' };
+var AF_NUM={ capDay:'3', agNotice:'60', rFree:'7', sRepairStart:'24', sSupp:'24', capacity:'60', bays:'12', terms:'30', float:'100000', commission:'12.5' };
 function afValue(f, d){
   var slug=afSlug(d);
   if(f.id==='legalName') return afName();
@@ -1296,6 +1456,10 @@ function afValue(f, d){
   if(f.id==='agRef') return 'AGR-GAR-'+today().slice(0,4)+'-'+afNum(4);
   if(f.id==='licNo') return 'QCB-IB-'+afNum(4);
   if(f.id==='poBox') return afNum(4);
+  if(f.id==='building'||f.id==='street'||f.id==='zone') return afNum(2);
+  if(f.id==='unit') return 'Gate '+afNum(2);
+  if(f.id==='rsaName') return d.pcName||afPick(AF_PEOPLE);
+  if(f.id==='rsaMobile'||f.id==='rsaHotline') return afMobile();
   if(/^pa/.test(f.id)) return f.id==='paName'?(d.pcName||afPick(AF_PEOPLE)):f.id==='paEmail'?'portal@'+slug+'.qa':(d.pcMobile||afMobile());
   if(f.id==='credit') return '30 days';
   if(f.id==='agFrom') return today();
@@ -1313,9 +1477,12 @@ function afEmpty(val){ return val==null || (Array.isArray(val)? val.length===0 :
 function afFillStep(v, stepId){
   var d=v.d;
   if(stepId==='vehicles'){ if(!(d.vclass||[]).length) d.vclass=['Light']; var vh=vehOf(d);
-    if(d.category==='OEM / Dealer'){ vh.allMakes=false; if(!Object.keys(vh.makes).length) vh.makes['Toyota']=vehCfgNew(); }
+    if(d.category==='Agency'){ vh.allMakes=false; var km=Object.keys(vh.makes); km.slice(1).forEach(function(m){ delete vh.makes[m]; }); if(!km.length) vh.makes['Toyota']=vehCfgNew(); }
     else if(!Object.keys(vh.makes).length) vh.allMakes=true;
     (vh.allMakes?[vh.all]:Object.keys(vh.makes).map(function(m){ return vh.makes[m]; })).forEach(function(c){ if(!c.allModels&&!c.models.length) c.allModels=true; if(!c.allFuels&&!c.fuels.length) c.allFuels=true; if(!c.allTrans&&!c.trans.length) c.allTrans=true; if(!c.yAll&&(!c.yFrom||!c.yTo||+c.yFrom>+c.yTo)) c.yAll=true; }); }
+  if(stepId==='locations'){ d.hoursWeek=d.hoursWeek||hoursDefault(); if(hoursErrors(d.hoursWeek,'').length) d.hoursWeek=hoursDefault();
+    (d.branches||[]).forEach(function(b,i){ b.name=b.name||'Branch '+(i+2); b.location=b.location||'Street '+afNum(2)+', Industrial Area, Doha'; b.city=b.city||'Doha'; b.region=b.region||'Industrial Area'; b.gps=b.gps||(25.15+Math.random()*0.25).toFixed(4)+', '+(51.40+Math.random()*0.18).toFixed(4); if(!b.sameHours && hoursErrors(b.hours,'').length) b.hours=hoursDefault(); }); }
+  if(stepId==='ratecard'){ d.rates=d.rates&&d.rates.length?d.rates:rateDefaults(); var rc=rateClasses(d); d.rates.forEach(function(r){ var def=RATE_ROWS.find(function(x){return x.k===r.k;}); r.item=r.item||'Custom line'; r.v=r.v||{}; rc.forEach(function(c){ var x=r.v[c]; if(x===''||x==null||isNaN(+x)||+x<0) r.v[c]= def ? def.d[c] : '0'; }); }); }
   if(stepId==='services'){ d.caps=d.caps||{}; var yes=['mech','elec','ac','diag','dent','paint','body','accident','estimate','survey','claimsSupport','direct'];
     CAP_KEYS.forEach(function(k){ if(!d.caps[k]) d.caps[k]= yes.indexOf(k)>-1 ? 'Yes' : 'To Validate'; }); }
   if(F[stepId]) F[stepId].forEach(function(f){ if(f.h||!afEmpty(d[f.id])) return; if(!isReq(f,d) && f.ro) return; d[f.id]=afValue(f,d); });
@@ -1357,10 +1524,14 @@ function autoFillReason(kind){ var t=document.getElementById('m-txt'); if(t && !
 function formStep(stepId, v){
   var out=stepId==='services'?capsHtml(v):'', open=false;
   F[stepId].forEach(function(f){
-    if(f.h){ if(open) out+='</div>'; out+='<div class="subhead">'+esc(f.h)+'</div><div class="grid">'; open=true; return; }
+    if(f.h){ if(open) out+='</div>'; out+='<div class="subhead">'+esc(f.h)+(f.copy?' <a class="lnk" style="float:right;font-weight:700" onclick="copyContact(\''+f.copy+'\')">Same as primary contact</a>':'')+'</div><div class="grid">'; open=true; return; }
     out+=fieldHtml(f,v);
   });
   if(open) out+='</div>';
+  if(stepId==='locations'){ var he=S.showErr?hoursErrors(v.d.hoursWeek,'Opening hours'):[]; out+='<div class="subhead">Opening hours — main location</div>'+(he.length?'<div class="banner bad rep-err"><div>'+he.map(function(e){return esc(e.l)+': '+esc(e.e);}).join('<br>')+'</div></div>':'')+hoursHtml(v.d.hoursWeek||hoursDefault(),'main');
+    var be=S.showErr?branchErrors(v.d):[]; out+=(be.length?'<div class="banner bad rep-err" style="margin-top:14px"><div>'+be.map(function(e){return esc(e.l)+': '+esc(e.e);}).join('<br>')+'</div></div>':'')+branchesHtml(v); }
+  if(stepId==='profile') out+=photosHtml(v);
+  if(stepId==='ratecard') out=rateTableHtml(v)+out;
   if(stepId==='contacts'||stepId==='bcontacts') out+=ownersHtml(v);
   if((stepId==='bank'||stepId==='bbank') && v.d.holder && v.d.legalName && normName(v.d.holder)!==normName(v.d.legalName)) out='<div class="banner warn"><div><b>Account holder differs from the legal name</b>The application can be submitted; Finance must approve the difference before activation.</div></div>'+out;
   return out;
@@ -1368,7 +1539,7 @@ function formStep(stepId, v){
 function ownersHtml(v){
   var d=v.d, sErr=S.showErr?stepErrors(isBroker(v)?'bcontacts':'contacts',v).filter(function(e){return e.id==='owners'||e.id==='signatories';}):[];
   var tot=(d.owners||[]).reduce(function(a,o){return a+(+o.pct||0);},0);
-  var o='<div class="subhead">Owners (20% or more, or control) — screened for KYC / AML</div><div class="rep-h"><span>Name</span><span>QID / passport no.</span><span>ID expiry</span><span>Nationality</span><span>%</span><span></span></div>'
+  var gn=v.type==='garage', o='<div class="subhead">'+(gn?'6 · ':'')+'Owners (20% or more, or control) — screened for KYC / AML</div><div class="rep-h"><span>Name</span><span>QID / passport no.</span><span>ID expiry</span><span>Nationality</span><span>%</span><span></span></div>'
     +(d.owners||[]).map(function(x,i){ return '<div class="rep">'
       +'<input value="'+esc(x.name)+'" placeholder="Full name" oninput="setRow(\'owners\','+i+',\'name\',this.value)">'
       +'<input value="'+esc(x.id)+'" oninput="setRow(\'owners\','+i+',\'id\',this.value)">'
@@ -1377,7 +1548,7 @@ function ownersHtml(v){
       +'<input type="number" value="'+esc(x.pct)+'" oninput="setRow(\'owners\','+i+',\'pct\',this.value)">'
       +'<button class="x" onclick="delRow(\'owners\','+i+')">×</button></div>'; }).join('')
     +'<div style="display:flex;justify-content:space-between;align-items:center"><button class="btn g sm" onclick="addRow(\'owners\')">+ Add owner</button><span class="muted" style="font-size:12px">Total ownership listed: <b>'+tot+'%</b></span></div>'
-    +'<div class="subhead">Authorised signatories</div><div class="rep-h sig"><span>Name</span><span>QID / passport no.</span><span>Authority</span><span></span></div>'
+    +'<div class="subhead">'+(gn?'7 · ':'')+'Authorised signatories</div><div class="rep-h sig"><span>Name</span><span>QID / passport no.</span><span>Authority</span><span></span></div>'
     +(d.signatories||[]).map(function(x,i){ return '<div class="rep sig">'
       +'<input value="'+esc(x.name)+'" placeholder="Full name" oninput="setRow(\'signatories\','+i+',\'name\',this.value)">'
       +'<input value="'+esc(x.id)+'" oninput="setRow(\'signatories\','+i+',\'id\',this.value)">'
@@ -1391,11 +1562,14 @@ function setRow(k,i,f,val){ var v=V(S.id); v.d[k][i][f]=val; save(); }
 function addRow(k){ var v=V(S.id); v.d[k]=v.d[k]||[]; v.d[k].push(k==='owners'?{name:'',id:'',exp:'',nat:'',pct:''}:{name:'',id:'',auth:''}); save(); render(); }
 function delRow(k,i){ var v=V(S.id); v.d[k].splice(i,1); save(); render(); }
 function docsStep(v){
-  var need=docsOf(v).filter(function(x){return docNeeded(x,v.d);}), up=need.filter(function(x){return v.docs[x.id]&&v.docs[x.id].file;}).length, pct=need.length?Math.round(up*100/need.length):100;
-  var errs=S.showErr?stepErrors('docs',v):[];
+  var all=docsOf(v), need=all.filter(function(x){return docNeeded(x,v.d);}), up=need.filter(function(x){return v.docs[x.id]&&v.docs[x.id].file;}).length, pct=need.length?Math.round(up*100/need.length):100;
+  var errs=S.showErr?stepErrors('docs',v):[], gs=docGroups(v), q=Math.min(S.dq||0, gs.length-1), g=gs[q];
+  var nav='<div class="vnav">'+gs.map(function(x,i){ var ds=all.filter(function(d){return (d.g||'Documents')===x;}), nd=ds.filter(function(d){return docNeeded(d,v.d);}), ud=nd.filter(function(d){return v.docs[d.id]&&v.docs[d.id].file;}).length,
+      bad=errs.some(function(e){ return ds.some(function(d){ return e.id==='doc-'+d.id; }); });
+    return '<span class="'+(i===q?'on':bad?'bad':nd.length&&ud===nd.length?'done':'')+'" onclick="S.dq='+i+';render()">'+(i+1)+' · '+esc(x)+(nd.length?' ('+ud+'/'+nd.length+')':'')+'</span>'; }).join('')+'</div>';
   return '<div style="display:flex;justify-content:space-between;font-size:12.5px;font-weight:700;margin-bottom:6px"><span>'+up+' / '+need.length+' required documents uploaded</span><span style="color:var(--vd)">'+pct+'%</span></div><div class="bar"><i style="width:'+pct+'%"></i></div>'
-    +'<div class="muted" style="font-size:11.5px;margin:8px 0 6px">PDF, JPG or PNG · up to 5 MB each · a document with a past expiry date cannot be accepted</div>'
-    +docsOf(v).map(function(x){
+    +'<div style="margin-top:14px">'+nav+'</div><div class="gq"><h2>'+esc(g)+'</h2><p class="lead">PDF, JPG or PNG · up to 5 MB each · a document with a past expiry date cannot be accepted</p></div>'
+    +all.filter(function(x){ return (x.g||'Documents')===g; }).map(function(x){
       var u=v.docs[x.id]||{}, needed=docNeeded(x,v.d), er=errs.find(function(e){return e.id==='doc-'+x.id;});
       var tag = x.rule==='A' ? '<span class="pill" style="background:rgba(124,58,237,.1);color:#7c3aed">Before activation</span>'
         : needed ? '<span class="pill" style="background:rgba(220,38,38,.07);color:var(--bad)">Required'+(x.rule==='C'?' — '+x.why:'')+'</span>'
@@ -1405,7 +1579,8 @@ function docsStep(v){
         +(u.file?'<span class="muted" style="font-size:12px">📎 '+esc(u.file)+'</span>':'')
         +'<label class="btn '+(u.file?'g':'s')+' sm" style="cursor:pointer">'+(u.file?'Replace':'⬆ Upload')+'<input type="file" accept=".pdf,.jpg,.jpeg,.png" style="display:none" onchange="uploadDoc(\''+x.id+'\',this)"></label>'
         +(er?'<div class="err" style="width:100%;font-size:11.5px;color:var(--bad);font-weight:600">'+esc(er.e)+'</div>':'')+'</div>';
-    }).join('');
+    }).join('')
+    +'<div style="display:flex;justify-content:space-between;margin-top:14px">'+(q>0?'<button class="btn g" onclick="S.dq='+(q-1)+';render()">← '+esc(gs[q-1])+'</button>':'<span></span>')+(q<gs.length-1?'<button class="btn s" onclick="S.dq='+(q+1)+';render()">Next: '+esc(gs[q+1])+' →</button>':'<span></span>')+'</div>';
 }
 function uploadDoc(id, input){
   var file=input.files&&input.files[0]; if(!file) return;
@@ -1431,13 +1606,16 @@ function reviewStep(v, errs){
 }
 function summary(stepId, v){
   var d=v.d, kv=function(a,b){return '<div><span>'+a+'</span><span>'+esc(b||'—')+'</span></div>';};
-  if(stepId==='profile') return kv('Garage name',d.legalName)+kv('Garage type',d.garageType)+kv('CR number',d.crNo)+kv('Network relationship',d.category)+kv('Garage category',d.garageCat)+kv('Coverage · segment',(d.coverage||'—')+' · '+(d.segment||'—'))+kv('Uses Garage Portal',d.usesPortal)+kv('Location',d.location)+kv('Recommended network status',d.netStatus);
+  if(stepId==='profile') return kv('Garage name',d.legalName)+kv('Garage type',d.garageType)+kv('CR number',d.crNo)+kv('Network relationship',(d.category||'—')+(d.preferred==='Yes'?' · Preferred':''))+kv('Photos',String(photoCount(d)))+kv('Garage category',d.garageCat)+kv('Coverage · segment',(d.coverage||'—')+' · '+(d.segment||'—'))+kv('Uses Garage Portal',d.usesPortal)+kv('Recommended network status',d.netStatus);
   if(stepId==='vehicles') return kv('Vehicle classes',(d.vclass||[]).join(', '))+kv('Makes',vehSummary(d));
-  if(stepId==='services') return kv('Capabilities = Yes',CAP_KEYS.filter(function(k){return (d.caps||{})[k]==='Yes';}).map(capLabel).join(', ')||'—')+kv('To validate',String(CAP_KEYS.filter(function(k){return (d.caps||{})[k]==='To Validate';}).length))+kv('Claim types',(d.claimTypes||[]).join(', '))+kv('Capacity band',d.capBand)+kv('Operating hours',(d.opHours||'—')+' · '+(d.hours||''));
+  if(stepId==='locations') return kv('Main location',d.location)+kv('Geo-tag',d.gps)+kv('Opening hours',hoursText(d.hoursWeek))+kv('Other locations',(d.branches||[]).length?(d.branches||[]).map(function(b){return b.name||'—';}).join(', '):'None');
+  if(stepId==='ratecard') return kv('Rate lines',String((d.rates||[]).length))+kv('Labour general',rateClasses(d).map(function(c){ var r=(d.rates||[]).find(function(x){return x.k==='lGen';}); return c+' '+((r&&r.v[c])||'—'); }).join(' · '))+kv('Aftermarket · used parts',(d.rAfter||'—')+' · '+(d.rUsed||'—'));
+  if(stepId==='sla') return kv('SLA tier',d.slaTier)+kv('Accept · estimate',(d.sAccept||'—')+' h · '+(d.sEstimate||'—')+' h')+kv('Repair minor / major',(d.sMinor||'—')+' / '+(d.sMajor||'—')+' days')+kv('TAT penalty',(d.pTat||'—')+'% per day, cap '+(d.pCap||'—')+'%');
+  if(stepId==='services') return kv('Capabilities = Yes',CAP_KEYS.filter(function(k){return (d.caps||{})[k]==='Yes';}).map(capLabel).join(', ')||'—')+kv('To validate',String(CAP_KEYS.filter(function(k){return (d.caps||{})[k]==='To Validate';}).length))+kv('Claim types',(d.claimTypes||[]).join(', '))+kv('RSA',(d.rsaCovered||'—')+(d.rsaCovered==='Yes'?' · '+(d.rsaName||'')+' '+(d.rsaMobile||''):''))+kv('Capacity',(d.capDay||'—')+' / day · '+(d.capacity||'—')+' / month · band '+(d.capBand||'—'));
   if(stepId==='contacts') return kv('Primary contact',d.pcName)+kv('Claims SPOC',d.spName+' · '+d.spMobile)+kv('Owners',(d.owners||[]).filter(function(o){return o.name;}).map(function(o){return o.name+' '+o.pct+'%';}).join(', '))+kv('Signatories',(d.signatories||[]).filter(function(s){return s.name;}).map(function(s){return s.name;}).join(', '));
   if(stepId==='bank') return kv('Bank',d.bankName)+kv('IBAN',groupIban(d.iban))+kv('Account holder',d.holder)+kv('Payment terms',d.terms+' days');
   if(stepId==='docs') return kv('Uploaded',Object.keys(v.docs).filter(function(k){return v.docs[k].file;}).length+' documents')+kv('Signed agreement',hasSignedAgreement(v)?'Uploaded':'Before activation');
-  if(stepId==='agreement') return kv('Template',d.agTemplate)+kv('Validity',fmtD(d.agFrom)+' – '+fmtD(d.agTo))+kv('Labour (gen / mech / elec)',d.rGen+' / '+d.rMech+' / '+d.rElec+' QAR')+kv('Repair TAT minor / major',d.sMinor+' / '+d.sMajor+' days');
+  if(stepId==='agreement') return kv('Template',d.agTemplate)+kv('Validity',fmtD(d.agFrom)+' – '+fmtD(d.agTo))+kv('Auto-renewal · notice',(d.agRenew||'—')+' · '+(d.agNotice||'—')+' days');
   if(stepId==='bprofile') return kv('Broker name',d.legalName)+kv('Volaris Broker ID',d.brokerId)+kv('CR number',d.crNo)+kv('Broker licence',(d.licNo||'—')+' · expires '+fmtD(d.licExpiry))+kv('Uses Broker Portal',d.usesBPortal)+kv('City',d.city);
   if(stepId==='bcontacts') return kv('Primary contact',d.pcName)+kv('Portal admin',d.paName?d.paName+' · '+d.paEmail:'—')+kv('Owners',(d.owners||[]).filter(function(o){return o.name;}).map(function(o){return o.name+' '+o.pct+'%';}).join(', '))+kv('Signatories',(d.signatories||[]).filter(function(s){return s.name;}).map(function(s){return s.name;}).join(', '));
   if(stepId==='bbank') return kv('Bank',d.bankName)+kv('IBAN',groupIban(d.iban))+kv('Account holder',d.holder)+kv('Method',d.method);
@@ -1463,10 +1641,10 @@ function viewRecord(v){
     var c = rej ? (i<rejAt?'done':i===rejAt?'x':'') : (i<idx?'done':i===idx?'on':'');
     return '<div class="s '+c+'"><span class="d">'+(c==='done'?'✓':c==='x'?'✗':i+1)+'</span>'+t+'</div>'; }).join('')+'</div>';
   var tabs=b ? [['overview','Overview'],['contacts','Contacts & owners'],['bank','Bank'],['docs','Documents'],['agreement','Agreement & commercial terms'],['screening','Screening'],['activity','Activity']]
-    : [['overview','Overview'],['vehicles','Vehicles'],['services','Services'],['contacts','Contacts & owners'],['bank','Bank'],['docs','Documents'],['agreement','Agreement & SLA'],['screening','Screening'],['activity','Activity']];
+    : [['overview','Overview'],['locations','Locations'],['vehicles','Vehicles'],['services','Services'],['contacts','Contacts'],['bank','Bank'],['docs','Documents'],['agreement','Agreement, rates & SLA'],['screening','Screening'],['activity','Activity']];
   var pw=pendingWith(v);
   return '<div style="margin-bottom:12px"><button class="btn g sm" onclick="go(\'list\')">← Vendor Onboarding</button></div>'
-    +'<div class="rec-head"><div class="t"><h2>'+esc(v.name)+'</h2><div class="meta">'+(b?'Broker · '+esc(v.d.licNo||'—'):'Garage · '+esc(v.d.category||'—')+' · '+esc(v.d.garageCat||'—'))+' · '+esc(v.d.city||'—')+' · created by '+esc(v.createdBy)+' on '+fmtD(v.createdAt)+'</div>'
+    +'<div class="rec-head"><div class="t"><h2>'+esc(v.name)+'</h2><div class="meta">'+(b?'Broker · '+esc(v.d.licNo||'—'):'Garage · '+esc(v.d.category||'—')+(v.d.preferred==='Yes'?' · Preferred':'')+' · '+esc(v.d.garageCat||'—'))+' · '+esc(v.d.city||'—')+' · created by '+esc(v.createdBy)+' on '+fmtD(v.createdAt)+'</div>'
     +'<div class="ids"><div>Vendor ID<b>'+v.id+'</b></div>'+(b?'<div>Volaris Broker ID<b>'+(v.d.brokerId||'—')+'</b></div>':'')+'<div>Party ID<b>'+(v.partyId||'—')+'</b></div><div>Supplier Code<b>'+(v.supplierCode||'—')+'</b></div>'+(!b?'<div>Garage ID<b>'+(v.garageId||'—')+'</b></div>':'')+(b?'<div>Customer Code<b>'+(v.customerCode||'—')+'</b></div>':'')+'<div>CRM ID<b>'+(v.crmId||'—')+'</b></div></div></div>'
     +'<div style="text-align:right"><span style="background:#fff;border-radius:999px;display:inline-block">'+pill(v.status)+'</span><div style="font-size:12px;margin-top:8px;opacity:.8">Pending with</div><div style="font-weight:800">'+esc(pw)+'</div></div></div>'
     +track
@@ -1490,11 +1668,15 @@ function recTab(v){
       +'<div class="card"><h3>Verification</h3>'+kvs([['Data status',d.dataStatus],['Recommended network status',d.netStatus],['Notes',d.notes],['Validation required',d.validationReq],['Remarks / validation',d.remarks],['Source',v.src?'Garage master data · '+v.src:'Entered in Volaris']])+'</div>';
     return out;
   }
+  if(S.recTab==='locations'){ var bl=d.branches||[];
+    return '<div class="card"><h3>Main location</h3>'+kvs([['Address',d.location],['City · region',(d.city||'—')+' · '+(d.region||'—')],['Geo-tag',d.gps],['Service area',d.serviceArea],['Operating hours',d.opHours]])+'<div style="margin-top:10px;font-size:12.5px">'+DAYS.map(function(x){ var o=(d.hoursWeek||{})[x]||{}; return '<div style="display:flex;justify-content:space-between;padding:4px 0;border-bottom:1px dashed var(--line)"><b>'+x+'</b><span>'+(!o.open?'Closed':o.h24?'Open 24 hours':esc(o.from)+' – '+esc(o.to))+'</span></div>'; }).join('')+'</div></div>'
+      +(bl.length?bl.map(function(b,i){ return '<div class="card"><h3>Location '+(i+2)+' · '+esc(b.name)+'</h3>'+kvs([['Address',b.location],['City · region',(b.city||'—')+' · '+(b.region||'—')],['Geo-tag',b.gps],['Phone',b.phone],['Contact',(b.spName||'—')+' · '+(b.spMobile||'—')],['Hours',b.sameHours?'Same as main location':hoursText(b.hours)]])+'</div>'; }).join(''):'<div class="card"><h3>Other locations</h3><div class="muted" style="font-size:12.5px">Single location</div></div>')
+      +'<div class="card"><h3>Photos</h3>'+(photoCount(d)?PHOTO_CATS.map(function(c){ var l=(d.photos||{})[c[0]]||[]; return l.length?'<div style="margin-bottom:8px"><b style="font-size:12.5px">'+c[1]+'</b><div class="phrow">'+l.map(function(p){ return '<div class="ph">'+(p.src?'<img src="'+p.src+'" alt="">':'<span>🖼</span>')+'<i>'+esc(p.n)+'</i></div>'; }).join('')+'</div></div>':''; }).join(''):'<div class="muted" style="font-size:12.5px">No photos uploaded</div>')+'</div>'; }
   if(S.recTab==='vehicles'){ var vh=vehOf(d), vr=vh.allMakes?[['All makes',cfgText(vh.all,null)]]:Object.keys(vh.makes).map(function(m){ return [m,cfgText(vh.makes[m],m)]; });
     return '<div class="card"><h3>Vehicles serviced</h3>'+kvs([['Vehicle classes',(d.vclass||[]).join(', ')],['Makes',vehSummary(d)]])+'<div class="tbl-wrap" style="margin-top:12px"><table><thead><tr><th>Make</th><th>Models</th><th>Powertrain</th><th>Transmission</th><th>Model years</th></tr></thead><tbody>'+(vr.length?vr.map(function(r){ return '<tr><td><b>'+esc(r[0])+'</b></td><td style="white-space:normal">'+esc(r[1].models)+'</td><td>'+esc(r[1].fuels)+'</td><td>'+esc(r[1].trans)+'</td><td>'+esc(r[1].years)+'</td></tr>'; }).join(''):'<tr><td colspan="5" class="muted">Not captured</td></tr>')+'</tbody></table></div></div>'; }
   if(S.recTab==='services'){ var cp=d.caps||{}, col={'Yes':'var(--ok)','No':'#64748b','To Validate':'var(--warn)'};
     return '<div class="card"><h3>Services and capabilities</h3>'+CAPS.map(function(g){ return '<div style="margin-bottom:10px"><b style="font-size:12.5px">'+esc(g.g)+'</b><div class="capgrid">'+g.items.map(function(it){ var x=cp[it[0]]||'—'; return '<div class="caprow"><span>'+esc(it[1])+'</span><b style="color:'+(col[x]||'inherit')+';font-size:12px">'+esc(x)+'</b></div>'; }).join('')+'</div></div>'; }).join('')+'</div>'
-      +'<div class="card"><h3>Claims, capacity and hours</h3>'+kvs([['Key services / capabilities',d.keyServices],['Claim types supported',(d.claimTypes||[]).join(', ')],['Preferred repair mode',d.repairMode],['Payment modes',(d.payModes||[]).join(', ')],['Workshop capacity band',d.capBand],['Capacity',(d.capacity||'—')+' vehicles / month · '+(d.bays||'—')+' bays'],['Operating hours',d.opHours],['Working days and hours',d.hours],['EV-certified technicians',d.evCert],['API / Portal capability',d.apiCap],['Quality certification',d.quality]])+'</div>'; }
+      +'<div class="card"><h3>Claims, capacity and hours</h3>'+kvs([['Key services / capabilities',d.keyServices],['Claim types supported',(d.claimTypes||[]).join(', ')],['Preferred repair mode',d.repairMode],['Payment modes',(d.payModes||[]).join(', ')],['RSA covered',d.rsaCovered],['RSA single point of contact',(d.rsaName||'—')+' · '+(d.rsaMobile||'—')+(d.rsaHotline?' · 24x7 '+d.rsaHotline:'')],['Workshop capacity band',d.capBand],['Capacity',(d.capDay||'—')+' vehicles / day · '+(d.capacity||'—')+' / month · '+(d.bays||'—')+' bays'],['EV-certified technicians',d.evCert],['API / Portal capability',d.apiCap],['Quality certification',d.quality]])+'</div>'; }
   if(S.recTab==='contacts') return '<div class="card"><h3>Contacts</h3>'+(isBroker(v)?kvs([['Primary contact',(d.pcName||'—')+' · '+(d.pcDesig||'')],['Mobile · email',(d.pcMobile||'—')+' · '+(d.pcEmail||'—')],['Broker Portal admin',(d.paName||'—')+' · '+(d.paMobile||'—')+' · '+(d.paEmail||'—')],['Finance contact',(d.fcName||'—')+' · '+(d.fcMobile||'—')+' · '+(d.fcEmail||'—')],['Consent',(d.consent||[]).join(', ')]]):kvs([['Primary contact',(d.pcName||'—')+' · '+(d.pcDesig||'')],['Mobile · email',(d.pcMobile||'—')+' · '+(d.pcEmail||'—')],['Claims SPOC',(d.spName||'—')+' · '+(d.spTitle||'')],['SPOC mobile · WhatsApp',(d.spMobile||'—')+' · '+(d.spWhatsapp||'—')],['SPOC email',d.spEmail],['Availability',d.spAvail],['Finance contact',(d.fcName||'—')+' · '+(d.fcMobile||'—')],['Consent',(d.consent||[]).join(', ')]]))+'</div>'
     +'<div class="card"><h3>Owners and signatories</h3><table><thead><tr><th>Owner</th><th>ID</th><th>ID expiry</th><th>Nationality</th><th>%</th></tr></thead><tbody>'+(d.owners||[]).filter(function(o){return o.name;}).map(function(o){return '<tr><td><b>'+esc(o.name)+'</b></td><td class="mono" style="font-size:12px">'+esc(o.id)+'</td><td'+(o.exp&&o.exp<=today()?' style="color:var(--bad);font-weight:700"':'')+'>'+fmtD(o.exp)+'</td><td>'+esc(o.nat)+'</td><td>'+esc(o.pct)+'</td></tr>';}).join('')+'</tbody></table>'
     +'<table style="margin-top:12px"><thead><tr><th>Signatory</th><th>ID</th><th>Authority</th></tr></thead><tbody>'+(d.signatories||[]).filter(function(o){return o.name;}).map(function(o){return '<tr><td><b>'+esc(o.name)+'</b></td><td class="mono" style="font-size:12px">'+esc(o.id)+'</td><td>'+esc(o.auth)+'</td></tr>';}).join('')+'</tbody></table></div>';
@@ -1513,9 +1695,9 @@ function recTab(v){
   }
   if(S.recTab==='agreement' && isBroker(v)) return '<div class="card"><h3>Broker agreement</h3>'+kvs([['Reference',d.agRef],['Effective',fmtD(d.agFrom)],['End',fmtD(d.agTo)],['Signed copy',hasSignedAgreement(v)?v.docs.agr.file:'Not uploaded']])+'</div>'
     +'<div class="card"><h3>Commercial terms</h3>'+kvs([['Float account balance','QAR '+fmtQ(d.float)],['Credit period',d.credit],['Refund method',(d.refund||'—')+' (commission refund on cancellation)'],['Commission',(d.commission||'—')+'%']])+'</div>';
-  if(S.recTab==='agreement') return '<div class="card"><h3>Agreement</h3>'+kvs([['Template',d.agTemplate],['Reference',d.agRef],['Effective',fmtD(d.agFrom)],['End',fmtD(d.agTo)],['Discount',(d.agDiscount||'—')+'%'],['Signed copy',hasSignedAgreement(v)?v.docs.agr.file:'Not uploaded']])+'</div>'
-    +'<div class="card"><h3>Rate card</h3>'+kvs([['Labour general / mech / elec',d.rGen+' / '+d.rMech+' / '+d.rElec+' QAR per hour'],['Paint per panel',d.rPaint+' QAR'],['Denting per panel',d.rDent+' QAR'],['Metallic surcharge',d.rMetallic+'%'],['OEM discount minimum',d.rOem+'%'],['Aftermarket parts',d.rAfter],['Used parts',d.rUsed+(d.rUsed==='Yes'?' (vehicles ≥ '+d.rUsedAge+' years)':'')],['Consumables',d.rCons+'% of labour · cap '+d.rConsCap+'%'],['EV loading · luxury multiplier',(d.rEv||'—')+'% · ×'+(d.rLux||'—')]])+'</div>'
-    +'<div class="card"><h3>Service levels and penalties</h3>'+kvs([['Accept allocation',d.sAccept+' h'],['Estimate after receipt',d.sEstimate+' h'],['Minor / major repair',d.sMinor+' / '+d.sMajor+' days'],['Status update',' every '+d.sUpdate+' h'],['Delivery adherence',d.sDelivery+'%'],['Minimum CSAT',d.sCsat],['TAT breach penalty',(d.pTat||'—')+'% per day, cap '+(d.pCap||'—')+'%'],['Repeat-breach threshold',d.pRepeat]])+'</div>';
+  if(S.recTab==='agreement') return '<div class="card"><h3>Agreement</h3>'+kvs([['Template',d.agTemplate],['Reference',d.agRef],['Effective',fmtD(d.agFrom)],['End',fmtD(d.agTo)],['Auto-renewal',d.agRenew],['Notice period',(d.agNotice||'—')+' days'],['Discount',(d.agDiscount||'—')+'%'],['Signed copy',hasSignedAgreement(v)?v.docs.agr.file:'Not uploaded']])+'</div>'
+    +'<div class="card"><h3>Rate card</h3>'+rateKvs(d)+'<div style="margin-top:10px">'+kvs([['Aftermarket parts',d.rAfter],['Used parts',d.rUsed+(d.rUsed==='Yes'?' (vehicles ≥ '+d.rUsedAge+' years)':'')],['Free storage',(d.rFree||'—')+' days']])+'</div></div>'
+    +'<div class="card"><h3>Service levels and penalties</h3>'+kvs([['SLA tier',d.slaTier],['Accept allocation',d.sAccept+' h'],['Estimate after receipt',d.sEstimate+' h'],['Start repair after LPO',(d.sRepairStart||'—')+' h'],['Supplementary after strip-down',(d.sSupp||'—')+' h'],['Minor / major repair',d.sMinor+' / '+d.sMajor+' days'],['Status update',' every '+d.sUpdate+' h'],['Delivery adherence',d.sDelivery+'%'],['Minimum CSAT',d.sCsat],['TAT breach penalty',(d.pTat||'—')+'% per day, cap '+(d.pCap||'—')+'%'],['Repeat-breach threshold',d.pRepeat]])+'</div>';
   if(S.recTab==='screening') return '<div class="card"><h3>Screening</h3>'+kvs([['Preliminary sanctions check',v.flags.sanctions],['KYC flag',v.flags.kyc],['AML flag',amlLabel(v)],['EDD flag',(S.role==='CO'||S.role==='SA'||isApprover())?v.flags.edd:'—'],['KYC ID',v.kycId||'—'],['AML ID',(S.role==='CO'||S.role==='SA')?(v.amlId||'—'):'Compliance only'],['Risk rating',v.risk||'—'],['Screened',((v.d.owners||[]).filter(function(o){return o.name;}).length)+' owner(s) · '+((v.d.signatories||[]).filter(function(o){return o.name;}).length)+' signatory(ies) · the '+VTYPES[v.type].label.toLowerCase()]])
     +((S.role==='CO'||S.role==='SA')?'':'<div class="muted" style="font-size:12px;margin-top:10px">The AML result and its reasons are visible to Compliance only (BR-42).</div>')+'</div>';
   if(S.recTab==='activity') return '<div class="card"><h3>Activity (audit trail)</h3><div class="timeline">'+v.activity.slice().reverse().map(function(e){return '<div class="ev"><span class="dot"></span><div><div style="font-size:13px;font-weight:600">'+esc(e.what)+'</div><div class="w">'+esc(e.who)+' · '+fmtT(e.t)+'</div></div></div>';}).join('')+'</div></div>';
@@ -1646,6 +1828,7 @@ function viewConfig(){
     +'<div class="card"><h3>Garage — document list</h3><table><thead><tr><th>Document</th><th>Rule</th><th>Expiry tracked</th></tr></thead><tbody>'
     +DOCS.map(function(x){ return '<tr><td>'+x.label+'</td><td>'+({M:'Mandatory',C:'Conditional — when '+x.why,O:'Optional',A:'Mandatory before activation'}[x.rule])+'</td><td>'+(x.exp?'Yes · 30 / 15 / 7-day notices':'No')+'</td></tr>'; }).join('')+'</tbody></table></div>'
     +'<div class="card"><h3>Garage — services and capabilities (Yes / No / To Validate)</h3>'+CAPS.map(function(g){ return '<div style="margin-bottom:8px"><b style="font-size:12.5px">'+g.g+'</b><div class="chips" style="margin-top:6px">'+g.items.map(function(i){return '<span class="c on">'+i[1]+'</span>';}).join('')+'</div></div>'; }).join('')+'</div>'
+    +'<div class="card"><h3>Garage — default rate card</h3><table><thead><tr><th>Item</th><th>Unit</th><th>Light</th><th>Heavy</th><th>Motorcycle</th></tr></thead><tbody>'+RATE_ROWS.map(function(r){ return '<tr><td>'+r.item+(r.opt?' <span class="muted">(optional)</span>':'')+'</td><td>'+r.unit+'</td><td>'+r.d.Light+'</td><td>'+r.d.Heavy+'</td><td>'+r.d.Motorcycle+'</td></tr>'; }).join('')+'</tbody></table></div>'
     +'<div class="card"><h3>Garage — vehicle master</h3>'+kvs(Object.keys(VEH).map(function(g){ var mk=Object.keys(VEH[g]), n=mk.reduce(function(a,m){return a+VEH[g][m].length;},0); return [g, mk.length+' makes · '+n+' models']; }).concat([['Powertrain variants',FUELS.join(' · ')],['Transmission variants',TRANS.join(' · ')],['Model years',YEAR_MIN+' – '+YEAR_MAX]]))+'</div>'
     +'<div class="card"><h3>Broker — document list</h3><table><thead><tr><th>Document</th><th>Rule</th><th>Expiry tracked</th></tr></thead><tbody>'
     +DOCS_B.map(function(x){ return '<tr><td>'+x.label+'</td><td>'+({M:'Mandatory',C:'Conditional — when '+x.why,O:'Optional',A:'Mandatory before activation'}[x.rule])+'</td><td>'+(x.exp?'Yes · 30 / 15 / 7-day notices':'No')+'</td></tr>'; }).join('')+'</tbody></table></div>'
