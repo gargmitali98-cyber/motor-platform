@@ -671,7 +671,7 @@ function viewStart(){
     +'<div class="banner info"><div><b>The check runs before an application is created.</b>Strong fields (CR, trade licence, establishment number) stop creation on an exact match. Name, mobile and email are supporting fields. Demo: CR <span class="mono">104521</span> = Active garage · <span class="mono">77001</span> = Inactive garage · name "Doha Motors" with mobile +974 5500 1002 = probable match.</div></div>'
     +'<div class="grid">'+f('crNo','CR number',true,'Spaces and hyphens are ignored')+f('tlNo','Trade licence number',true)+f('estNo','Establishment card number',false,'Where held')
     +f('legalName','Legal name (English)',true,'As on the CR')+f('mobile','Mobile',true,'','+974 5xxx xxxx')+f('email','Email',true)+'</div>'
-    +'<div class="actionbar" style="margin-top:14px"><div class="msg" id="start-msg"></div><button class="btn p" onclick="runDup()">Run duplicate check</button></div>'
+    +'<div class="actionbar" style="margin-top:14px"><div class="msg" id="start-msg"></div><button class="btn g sm" title="Prototype testing only" onclick="autoFillStart()">⚡ Auto-fill (test)</button><button class="btn p" onclick="runDup()">Run duplicate check</button></div>'
     +'<div id="dup-res" style="margin-top:14px">'+(s.result?dupResult(s.result):'')+'</div></div>';
 }
 function runDup(){
@@ -742,6 +742,7 @@ function viewWizard(v){
     +'<div class="muted" style="font-size:12.5px"><span class="mono" style="color:var(--vd);font-weight:700">'+v.id+'</span> · '+pill(v.status)+' · Garage</div></div>'
     +stepper+banner+'<div class="card">'+body+'</div>'
     +'<div class="actionbar"><div class="msg" id="wz-msg"></div>'
+    +'<button class="btn g sm" title="Prototype testing only" onclick="autoFill()">⚡ '+(st.id==='review'?'Auto-fill all steps (test)':'Auto-fill (test)')+'</button>'
     +(S.step>0?'<button class="btn g" onclick="gotoStep('+(S.step-1)+')">← Back</button>':'')
     +'<button class="btn s" onclick="saveDraft()">Save draft</button>'
     +(st.id!=='review'?'<button class="btn p" onclick="nextStep()">Continue →</button>':'')
@@ -778,6 +779,89 @@ function fieldHtml(f, v){
   return '<div class="'+cls+'">'+lab+inp+(e?'<div class="err">'+e+'</div>':f.hint?'<div class="hint">'+esc(f.hint)+'</div>':'')+extra+'</div>';
 }
 function pickPin(){ var lat=(25.15+Math.random()*0.25).toFixed(4), lng=(51.40+Math.random()*0.18).toFixed(4); setD('gps', lat+', '+lng, true); toast('Pin dropped at '+lat+', '+lng); }
+
+/* ════════════ Auto-fill (prototype testing only) ════════════ */
+// Fills only empty fields with valid sample data so every step passes its checks.
+var AF_PLACES=['Zubarah','Simaisma','Ruwais','Dukhan','Fuwairit','Mesaieed','Jumailiya','Shahaniya','Sealine','Lekhwiya','Rawdat','Wadi'];
+var AF_NOUNS=['Precision','Collision','Torque','Craft','Prestige','Apex','Falcon','Oryx','Dune','Pearl','Crescent','Sidra'];
+var AF_PEOPLE=['Ahmed Al-Mohannadi','Rashid Al-Kuwari','Vinod Nair','Yousef Al-Ansari','Mohammed Iqbal','Nasser Al-Thani'];
+function afPick(a){ return a[Math.floor(Math.random()*a.length)]; }
+function afNum(n){ var s=''; for(var i=0;i<n;i++) s+=Math.floor(Math.random()*10); return s; }
+function afMobile(){ return '+974 5'+afNum(3)+' '+afNum(4); }
+function afName(){ // a name that the duplicate check will not match to any existing vendor
+  for(var i=0;i<60;i++){ var n=afPick(AF_PLACES)+' '+afPick(AF_NOUNS)+' W.L.L.';
+    if(!VENDORS.some(function(v){ return nameSimilar((v.d&&v.d.legalName)||v.name, n); })) return n; }
+  return 'Q'+afNum(5)+' '+afPick(AF_NOUNS)+' W.L.L.';
+}
+function afSlug(d){ return String(d.legalName||'testgarage').toLowerCase().replace(/w\.?l\.?l\.?/g,'').replace(/[^a-z]+/g,'')||'testgarage'; }
+var AF_TEXT={ arabicName:'كراج الاختبار', hours:'Sat–Thu 07:00–19:00', pcDesig:'Owner', spTitle:'Claims Coordinator', spAvail:'Sun–Thu 07:00–20:00', branch:'Head Office', swift:'QNBAQAQA' };
+var AF_SEL={ legalForm:'W.L.L.', regCountry:'Qatar', city:'Doha', region:'Industrial Area', bankName:'Qatar National Bank (QNB)', currency:'QAR', method:'Bank transfer', agTemplate:'Standard Panel Workshop Agreement', agYears:'1 year' };
+var AF_RADIO={ category:'Panel', usesPortal:'Yes', courtesy:'No', rAfter:'No', rUsed:'Yes', selfBilling:'No' };
+var AF_CHIPS={ brands:['All makes'], services:['Body / denting & painting','Mechanical','Electrical & AC'], vclass:['Light'], consent:['SMS','WhatsApp','Email'] };
+var AF_NUM={ capacity:'60', bays:'12', terms:'30' };
+function afValue(f, d){
+  var slug=afSlug(d);
+  if(f.id==='legalName') return afName();
+  if(f.id==='tradeName') return String(d.legalName||'').replace(/\s+W\.?L\.?L\.?$/i,'');
+  if(f.id==='crNo') return '3'+afNum(5);
+  if(f.id==='tlNo') return 'TL-'+afNum(5);
+  if(f.id==='estNo') return 'EST-'+afNum(5);
+  if(f.id==='taxNo') return '50'+afNum(8);
+  if(f.id==='holder') return d.legalName||'';
+  if(f.id==='iban') return makeIban('QNBA');
+  if(f.id==='gps') return (25.15+Math.random()*0.25).toFixed(4)+', '+(51.40+Math.random()*0.18).toFixed(4);
+  if(f.id==='evCert') return (d.services||[]).indexOf('EV repair')>-1?'Yes':'No';
+  if(f.id==='agRef') return 'AGR-GAR-'+today().slice(0,4)+'-'+afNum(4);
+  if(f.id==='agFrom') return today();
+  if(/Name$/.test(f.id) && /^(pc|sp|fc)/.test(f.id)) return f.id==='fcName'?afPick(AF_PEOPLE):(d.pcName||afPick(AF_PEOPLE));
+  if(f.t==='select') return AF_SEL[f.id]||f.o[0];
+  if(f.t==='radio') return AF_RADIO[f.id]||f.o[f.o.length-1];
+  if(f.t==='chips') return (AF_CHIPS[f.id]||f.o.slice(0,2)).slice();
+  if(f.t==='date') return f.past?'2016-04-10':f.future?addDays(today(),400):today();
+  if(f.t==='email') return ({pcEmail:'ops',spEmail:'claims',fcEmail:'accounts'}[f.id]||'info')+'@'+slug+'.qa';
+  if(f.t==='tel') return d.pcMobile&&f.id!=='fcMobile'?d.pcMobile:afMobile();
+  if(f.t==='number') return AF_NUM[f.id]!=null?AF_NUM[f.id]:(AGR_DEFAULTS[f.id]!=null?AGR_DEFAULTS[f.id]:'10');
+  return AF_TEXT[f.id]!=null?AF_TEXT[f.id]:(AGR_DEFAULTS[f.id]!=null?AGR_DEFAULTS[f.id]:'Test value');
+}
+function afEmpty(val){ return val==null || (Array.isArray(val)? val.length===0 : String(val).trim()===''); }
+function afFillStep(v, stepId){
+  var d=v.d;
+  if(F[stepId]) F[stepId].forEach(function(f){ if(f.h||!afEmpty(d[f.id])) return; if(!isReq(f,d) && f.ro) return; d[f.id]=afValue(f,d); });
+  if(stepId==='profile' && d.legalName) v.name=d.legalName.replace(/\s+W\.?L\.?L\.?$/i,'')||v.name;
+  if(stepId==='agreement') d.agTo=addYears(d.agFrom||today(), parseInt(d.agYears,10)||1);
+  if(stepId==='contacts'){
+    var person=d.pcName||afPick(AF_PEOPLE), qid='28'+afNum(9);
+    var ow=(d.owners||[]).filter(function(o){return o.name;});
+    if(!ow.length) d.owners=[{ name:person, id:qid, exp:addDays(today(),600), nat:'Qatar', pct:'100' }];
+    else d.owners.forEach(function(o){ if(!o.name) return; o.id=o.id||'28'+afNum(9); o.exp=o.exp||addDays(today(),600); o.nat=o.nat||'Qatar'; o.pct=o.pct||'100'; });
+    d.owners=d.owners.filter(function(o){return o.name;});
+    var sg=(d.signatories||[]).filter(function(s){return s.name;});
+    if(!sg.length) d.signatories=[{ name:d.owners[0].name, id:d.owners[0].id, auth:'All' }];
+    else d.signatories.forEach(function(s){ if(!s.name) return; s.id=s.id||'28'+afNum(9); s.auth=s.auth||'All'; });
+    d.signatories=d.signatories.filter(function(s){return s.name;});
+  }
+  if(stepId==='docs') DOCS.forEach(function(x){
+    if(x.rule==='C' && !docNeeded(x,d)) return;
+    var u=v.docs[x.id]||{}; v.docs[x.id]=Object.assign({}, u, { file:u.file||(x.id+'-test.pdf'), expiry: x.exp ? (u.expiry&&u.expiry>today()?u.expiry:addDays(today(),365)) : (u.expiry||'') });
+  });
+}
+function autoFill(){
+  var v=V(S.id), st=STEPS[S.step].id;
+  if(st==='review') STEPS.forEach(function(s){ if(s.id!=='review') afFillStep(v, s.id); });
+  else afFillStep(v, st);
+  save(); render(); toast(st==='review'?'Test data filled on all steps':'Test data filled on this step');
+}
+function autoFillStart(){
+  var s=S.start;
+  s.legalName=s.legalName||afName();
+  s.crNo=s.crNo||'3'+afNum(5); s.tlNo=s.tlNo||'TL-'+afNum(5); s.estNo=s.estNo||'EST-'+afNum(5);
+  s.mobile=s.mobile||afMobile(); s.email=s.email||('ops@'+afSlug({legalName:s.legalName})+'.qa');
+  s.type=s.type||'garage'; s.result=null; render(); toast('Test data filled');
+}
+var AF_REASON={ withdraw:'Garage withdrew the request — will reapply next quarter', sendBack:'Please correct the CR expiry date and re-upload a clear trade licence copy',
+  decline:'Workshop capacity does not meet the panel requirement for this region', sanRefer:'Possible name match on the sanctions list — Compliance to review',
+  amlFail:'Confirmed match on the sanctions list (Compliance reference AML-TEST-001)', mismatch:'Finance approval FIN-TEST-001: account held in the owner\'s trading name', bankReturn:'IBAN letter does not match the account holder — upload a new bank letter' };
+function autoFillReason(kind){ var t=document.getElementById('m-txt'); if(t && !t.value.trim()) t.value=AF_REASON[kind]||'Test reason'; }
 function formStep(stepId, v){
   var out='', open=false;
   F[stepId].forEach(function(f){
@@ -1010,7 +1094,7 @@ function askReason(kind, id){
   document.getElementById('modal').innerHTML='<div class="modal-bg" onclick="if(event.target===this)closeModal()"><div class="modal"><h4>'+cfg.t+'</h4><p>'+cfg.p+'</p>'
     +(kind==='decline'?'<div class="f"><label>Reason code</label><select disabled><option>Approver declined</option></select></div>':'')
     +'<div class="f"><label>'+cfg.f+'</label><textarea id="m-txt" rows="3">'+esc(def)+'</textarea></div>'
-    +'<div class="actionbar"><div class="msg" id="m-msg"></div><button class="btn g" onclick="closeModal()">Cancel</button><button class="btn '+(/decline|amlFail|withdraw/.test(kind)?'bad':'p')+'" onclick="doReason(\''+kind+'\',\''+id+'\')">'+cfg.btn+'</button></div></div></div>';
+    +'<div class="actionbar"><div class="msg" id="m-msg"></div><button class="btn g sm" title="Prototype testing only" onclick="autoFillReason(\''+kind+'\')">⚡ Auto-fill (test)</button><button class="btn g" onclick="closeModal()">Cancel</button><button class="btn '+(/decline|amlFail|withdraw/.test(kind)?'bad':'p')+'" onclick="doReason(\''+kind+'\',\''+id+'\')">'+cfg.btn+'</button></div></div></div>';
   setTimeout(function(){ var t=document.getElementById('m-txt'); if(t) t.focus(); },50);
 }
 function closeModal(){ document.getElementById('modal').innerHTML=''; }
